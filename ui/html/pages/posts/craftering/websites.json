@@ -1,0 +1,146 @@
+[
+	{
+		"name": "shom.dev",
+		"slug": "@shom",
+		"about": "I like people, dogs, photography, scuba-diving, computers, open-source software, privacy, and generally improving things where I can.",
+		"url": "https://shom.dev",
+		"rss": "https://shom.dev/index.xml",
+		"owner": "Shom Bandopadhaya"
+	},
+	{
+		"name": "Benoit J - My mostly tech blog",
+		"slug": "@benoitj",
+		"about": "Messing around with computers and coding since I was 8. Now getting paid to do what I love.",
+		"url": "https://blog.benoitj.ca",
+		"rss": "https://blog.benoitj.ca/posts/index.xml",
+		"owner": "Benoit J"
+	},
+	{
+		"name": "Trevor Arjeski's Site",
+		"slug": "@trev",
+		"about": "I am a programmer working with Rust who hangs out on IRC.",
+		"url": "https://www.trevs.site",
+		"rss": "https://www.trevs.site/rss.xml",
+		"owner": "Trevor Arjeski"
+	},
+	{
+		"name": "Chris Hughes dot Dev",
+		"slug": "@naokotani",
+		"about": "I am a full stack developer based in Cape Breton, Nova Scotia",
+		"url": "https://chris-hughes.dev",
+		"rss": "https://chris-hughes.dev/rss",
+		"owner": "Chris Hughes"
+	},
+	{
+		"name": "Snamellit's Site",
+		"slug": "@snamellit",
+		"about": "Electronics engineer, IT dev and architect, 3D printer with too many interest for the number of hours in a day.",
+		"url": "https://www.snamellit.com",
+		"rss": "https://www.snamellit.com/rss.xml",
+		"owner": "Peter Tillemans"
+	},
+	{
+		"name": "💩 Kaka Farm! 💩",
+		"slug": "@cow_2001",
+		"about": "Kaka Farm has all of cow_2001's stuff! (RSS for the Kaka Farm Haunt blog)",
+		"url": "https://kaka.farm/",
+		"rss": "https://kaka.farm/feed.xml",
+		"owner": "Yuval Langer"
+	},
+	{
+		"name": "Just Another Personal Blog",
+		"slug": "@glenneth",
+		"about": "Hello there! I'm Glenn Thompson, and this is the beginning of a journey I'm thrilled to share with you.",
+		"url": "https://glenneth.org/",
+		"rss": "https://glenneth.org/feed.xml",
+		"owner": "Glenn Thompson"
+	},
+	{
+		"name": "Hunter, Christerpher info page",
+		"slug": "@hunter",
+		"about": "I use my last name as my first name.  I've been using Emacs for several years. I use Arch, btw.  Software Engineer specializing in Rust these days.",
+		"url": "https://christerpher.com",
+		"rss": "",
+		"owner": "Christerpher Hunter"
+	},
+	{
+		"name": "Rahul's Blog",
+		"slug": "@lionyxml",
+		"about": "I am an Engineer based in São Paulo, Brazil.",
+		"url": "https://www.rahuljuliato.com",
+		"rss": "https://www.rahuljuliato.com/rss.xml",
+		"owner": "Rahul Juliato"
+	},
+	{
+		"name": "tusharhero's pages",
+		"slug": "@tusharhero",
+		"about": "I like computering, emacsing, programming and writing.",
+		"url": "https://tusharhero.codeberg.page/",
+		"rss": "https://tusharhero.codeberg.page/rss.xml",
+		"owner": "tusharhero"
+	},
+	{
+		"name": "tdback's site",
+		"slug": "@tdback",
+		"about": "*nix hobbyist and avid self-hoster",
+		"url": "https://tdback.net",
+		"rss": "https://tdback.net/index.xml",
+		"owner": "Tyler Dunneback"
+	},
+	{
+		"name": "PurplSite",
+		"slug": "@purplg",
+		"about": "Software is fun. Hacking on Emacs packages or other random projects.",
+		"url": "https://purplg.dev/",
+		"rss": "https://purplg.dev/index.xml",
+		"owner": "Ben Whitley"
+	},
+	{
+		"name": "Richard Davis's Blog",
+		"slug": "@davisrichard437",
+		"about": "Musician, part-time hobbyist crafter, sometimes both.",
+		"url": "https://richarddavis.xyz/en/blog/",
+		"rss": "https://richarddavis.xyz/en/blog/rss.xml",
+		"owner": "Richard Davis"
+	},
+	{
+		"name": "Jabbo's Website",
+		"slug": "@jabbo",
+		"about": "Nerdy things, Emacs, Zettelkasten",
+		"url": "https://jabbo.webdings.de",
+		"rss": "https://jabbo.webdings.de/blog/atom.xml",
+		"owner": "Jabbo"
+	},
+	{
+		"name": "Dilip's Log",
+		"slug": "@idlip",
+		"about": "A Bioinformatics student, tinkering with Nixos and Emacs with the power of Org mode.",
+		"url": "https://idlip.github.io",
+		"rss": "https://idlip.github.io/rss.xml",
+		"owner": "Dilip"
+	},
+	{
+		"name": "System Crafters Community",
+		"slug": "@scc",
+		"about": "System Crafters Community page with information about forum, chatting, other community projects, and News (RSS). ",
+		"url": "https://systemcrafters.net/community",
+		"rss": "https://systemcrafters.net/rss/news.xml",
+		"owner": "David Wilson"
+	},
+	{
+		"name": "BigEatie's Blog",
+		"slug": "@bigeatie",
+		"about": "Emacs, Chess, Physics, Math, and other nerdy things. Sometimes not-so-nerdy things too.",
+		"url": "https://bigeatie.com",
+		"rss": "https://bigeatie.com/index.xml",
+		"owner": "BigEatie"
+	},
+	{
+		"name": "Spark Town",
+		"slug": "@talos",
+		"about": "Site focused on gaming and tech, sometimes rambling about other content too, with focus on NixOS, Guix, immutable systems in general.",
+		"url": "https://sparktown.xyz",
+		"rss": "https://sparktown.xyz/feed",
+		"owner": "talos"
+	}
+]

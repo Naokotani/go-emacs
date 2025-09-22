@@ -1,0 +1,177 @@
+<p>
+  <title>Emmet React Mode</title>
+</p>
+<summary>
+  My first attempt at an Emacs minor mode. Used to generate JSX/Svelte style components.
+</summary>
+<h1>Emmet React Mode</h1>
+<small class="date">Published: Sun, 04 Feb 2024 14:03:54-4:00</small>
+<br>
+<small class="tech">Elisp | React</small>
+
+<p>
+  <a href="https://github.com/Naokotani/emmet-react-mode/">emmet-react-mode</a> is my first attempt at creating a minor
+  mode in Emacs. It is designed as an extension for <a href="https://github.com/smihica/emmet-mode">emmet-mode</a>
+  though it doesn't rely on it. I find myself frequently writing out components for Svelte and React that have several
+  props and I wanted a convenient way to quickly write them in Emacs.
+</p>
+<div id="outline-container-orge08a89d" class="outline-2">
+  <h2 id="orge08a89d">Expand Component</h2>
+  <div class="outline-text-2" id="text-orge08a89d">
+    <p>
+      The minor mode is centered around three interactive functions. The first,
+      <code>emmet-react-expand-component</code> expands a shorthand version of a of a component with props that are
+      separated by periods. If you write the shorthand starting with the component name and then separate the props with
+      periods in the follow form <code>Foo.bar.baz</code>, it will expand to <code>&lt;Foo bar='' baz='' /&gt;</code>
+      and move the cursor between the first single quotes. If you want to use <code>{}</code> or <code>""</code>, you
+      can set <code>emmet-react-prop-pair</code> to any pair of characters you want to wrap with.
+    </p>
+
+    <div class="org-src-container">
+      <pre class="src src-emacs-lisp"> <span style="color: #379cf6;">(</span><span
+          style="color: #6f80ff; font-weight: bold;">defun</span> <span
+          style="color: #0dafdf;">emmet-react-expand-component</span> <span style="color: #d0730f;">()</span>
+        <span style="color: #d0730f;">(</span><span style="color: #6f80ff; font-weight: bold;">interactive</span><span
+          style="color: #d0730f;">)</span>
+        <span style="color: #d0730f;">(</span>message <span style="color: #6f80ff;">(</span>string <span
+          style="color: #df805f;">(</span>region-end<span style="color: #df805f;">)</span><span
+          style="color: #6f80ff;">)</span><span style="color: #d0730f;">)</span>
+        <span style="color: #d0730f;">(</span><span style="color: #6f80ff; font-weight: bold;">let</span> <span
+          style="color: #6f80ff;">(</span><span style="color: #df805f;">(</span>component<span
+          style="color: #df805f;">)</span>
+        <span style="color: #df805f;">(</span>propList<span style="color: #df805f;">)</span><span
+          style="color: #6f80ff;">)</span>
+        <span style="color: #6f80ff;">(</span><span style="color: #6f80ff; font-weight: bold;">setq</span> propList
+        <span style="color: #df805f;">(</span>emmet-react-get-component<span style="color: #df805f;">)</span><span
+          style="color: #6f80ff;">)</span>
+        <span style="color: #6f80ff;">(</span><span style="color: #6f80ff; font-weight: bold;">setq</span> component
+        <span style="color: #df805f;">(</span><span style="color: #6f80ff; font-weight: bold;">pop</span> propList<span
+          style="color: #df805f;">)</span><span style="color: #6f80ff;">)</span>
+        <span style="color: #6f80ff;">(</span>emmet-react-insert-component propList component<span
+          style="color: #6f80ff;">)</span><span style="color: #d0730f;">)</span><span style="color: #379cf6;">)</span>
+
+      </pre>
+    </div>
+  </div>
+</div>
+<div id="outline-container-org5ab2509" class="outline-2">
+  <h2 id="org5ab2509">Wrap Component</h2>
+  <div class="outline-text-2" id="text-org5ab2509">
+    <p>
+      <code>emmet-react-wrap-component</code> is useful for situations where you want to wrap Svelte or JSX in a
+      component. You will be prompted to enter the component in the echo area. If you want to add props to the
+      component, you can separate them with periods and they will be automatically separated. For example
+      <code>Foo.bar.baz</code> will be expanded to <code>&lt;Foo bar='' baz''&gt;&lt;/Foo&gt;</code> and the cursor will
+      be moved between the quotes after <code>baz</code>.
+    </p>
+
+    <div class="org-src-container">
+      <pre class="src src-emacs-lisp"><span style="color: #379cf6;">(</span><span
+          style="color: #6f80ff; font-weight: bold;">defun</span> <span
+          style="color: #0dafdf;">emmet-react-wrap-component</span> <span style="color: #d0730f;">()</span>
+        <span style="color: #d0730f;">(</span><span style="color: #6f80ff; font-weight: bold;">interactive</span><span
+          style="color: #d0730f;">)</span>
+        <span style="color: #d0730f;">(</span><span style="color: #6f80ff; font-weight: bold;">let</span> <span
+          style="color: #6f80ff;">(</span><span style="color: #df805f;">(</span>str <span
+          style="color: #0dafdf;">(</span>read-string <span style="color: #df805f;">"Enter component: "</span><span
+          style="color: #0dafdf;">)</span><span style="color: #df805f;">)</span>
+        <span style="color: #df805f;">(</span>propList<span style="color: #df805f;">)</span>
+        <span style="color: #df805f;">(</span>body <span style="color: #0dafdf;">(</span>buffer-substring <span
+          style="color: #c48702;">(</span>region-end<span style="color: #c48702;">)</span> <span
+          style="color: #c48702;">(</span>region-beginning<span style="color: #c48702;">)</span><span
+          style="color: #0dafdf;">)</span><span style="color: #df805f;">)</span>
+        <span style="color: #df805f;">(</span>component<span style="color: #df805f;">)</span>
+        <span style="color: #df805f;">(</span>propPos<span style="color: #df805f;">)</span><span
+          style="color: #6f80ff;">)</span>
+        <span style="color: #6f80ff;">(</span><span style="color: #6f80ff; font-weight: bold;">setq</span> propList
+        <span style="color: #df805f;">(</span>split-string str <span style="color: #df805f;">"\\."</span><span
+          style="color: #df805f;">)</span><span style="color: #6f80ff;">)</span>
+        <span style="color: #6f80ff;">(</span><span style="color: #6f80ff; font-weight: bold;">setq</span> component
+        <span style="color: #df805f;">(</span><span style="color: #6f80ff; font-weight: bold;">pop</span> propList<span
+          style="color: #df805f;">)</span><span style="color: #6f80ff;">)</span>
+        <span style="color: #6f80ff;">(</span>delete-region <span style="color: #df805f;">(</span>region-end<span
+          style="color: #df805f;">)</span> <span style="color: #df805f;">(</span>region-beginning<span
+          style="color: #df805f;">)</span><span style="color: #6f80ff;">)</span>
+        <span style="color: #6f80ff;">(</span>insert <span style="color: #df805f;">(</span>format <span
+          style="color: #df805f;">"&lt;%s"</span> component<span style="color: #df805f;">)</span><span
+          style="color: #6f80ff;">)</span>
+        <span style="color: #6f80ff;">(</span>js-indent-line<span style="color: #6f80ff;">)</span>
+        <span style="color: #6f80ff;">(</span><span style="color: #6f80ff; font-weight: bold;">while</span> propList
+        <span style="color: #df805f;">(</span>insert <span style="color: #0dafdf;">(</span>format <span
+          style="color: #df805f;">" %s=%s"</span>
+        <span style="color: #c48702;">(</span><span style="color: #6f80ff; font-weight: bold;">pop</span> propList<span
+          style="color: #c48702;">)</span>
+        emmet-react-prop-pair<span style="color: #0dafdf;">)</span><span style="color: #df805f;">)</span>
+        <span style="color: #df805f;">(</span><span style="color: #6f80ff; font-weight: bold;">if</span> <span
+          style="color: #0dafdf;">(</span>not propPos<span style="color: #0dafdf;">)</span>
+        <span style="color: #0dafdf;">(</span><span style="color: #6f80ff; font-weight: bold;">setq</span> propPos <span
+          style="color: #c48702;">(</span>- <span style="color: #029fff;">(</span>point<span
+          style="color: #029fff;">)</span> 1<span style="color: #c48702;">)</span><span
+          style="color: #0dafdf;">)</span><span style="color: #df805f;">)</span><span style="color: #6f80ff;">)</span>
+        <span style="color: #6f80ff;">(</span>insert <span style="color: #df805f;">"&gt;\n"</span><span
+          style="color: #6f80ff;">)</span>
+        <span style="color: #6f80ff;">(</span>insert body<span style="color: #6f80ff;">)</span>
+        <span style="color: #6f80ff;">(</span>insert <span style="color: #df805f;">(</span>format <span
+          style="color: #df805f;">"&lt;/%s&gt;\n"</span> component<span style="color: #df805f;">)</span><span
+          style="color: #6f80ff;">)</span>
+        <span style="color: #6f80ff;">(</span><span style="color: #6f80ff; font-weight: bold;">if</span>
+        emmet-react-auto-indent
+        <span style="color: #df805f;">(</span>web-mode-buffer-indent<span style="color: #df805f;">)</span><span
+          style="color: #6f80ff;">)</span>
+        <span style="color: #6f80ff;">(</span><span style="color: #6f80ff; font-weight: bold;">cond</span> <span
+          style="color: #df805f;">(</span><span style="color: #0dafdf;">(</span>eq evil-state 'visual<span
+          style="color: #0dafdf;">)</span> <span style="color: #0dafdf;">(</span>evil-insert-state<span
+          style="color: #0dafdf;">)</span><span style="color: #df805f;">)</span><span style="color: #6f80ff;">)</span>
+        <span style="color: #6f80ff;">(</span><span style="color: #6f80ff; font-weight: bold;">if</span> propPos
+        <span style="color: #df805f;">(</span>goto-char propPos<span style="color: #df805f;">)</span><span
+          style="color: #6f80ff;">)</span><span style="color: #d0730f;">)</span><span style="color: #379cf6;">)</span>
+      </pre>
+    </div>
+  </div>
+</div>
+<div id="outline-container-orgc0c8e8e" class="outline-2">
+  <h2 id="orgc0c8e8e">Expand Wrap Component</h2>
+  <div class="outline-text-2" id="text-orgc0c8e8e">
+    <p>
+      If you want to generate a wrapping style JSX component with props you can use
+      <code>emmet-react-expand-wrap-component</code>. This function is not used to wrap highlighted text, it simply
+      generates the component but with an opening and closing tag. For example <code>Foo.bar.baz</code> will expand to
+      <code>&lt;Foo bar='' baz=''&gt;&lt;/Foo&gt;</code>.
+    </p>
+
+    <div class="org-src-container">
+      <pre class="src src-emacs-lisp">
+        <span style="color: #379cf6;">(</span><span style="color: #6f80ff; font-weight: bold;">defun</span> <span
+          style="color: #0dafdf;">emmet-react-expand-wrap-component</span> <span style="color: #d0730f;">()</span>
+        <span style="color: #d0730f;">(</span><span style="color: #6f80ff; font-weight: bold;">interactive</span><span
+          style="color: #d0730f;">)</span>
+        <span style="color: #d0730f;">(</span><span style="color: #6f80ff; font-weight: bold;">let</span> <span
+          style="color: #6f80ff;">(</span><span style="color: #df805f;">(</span>component<span
+          style="color: #df805f;">)</span>
+        <span style="color: #df805f;">(</span>propList<span style="color: #df805f;">)</span><span
+          style="color: #6f80ff;">)</span>
+        <span style="color: #6f80ff;">(</span><span style="color: #6f80ff; font-weight: bold;">setq</span> propList
+        <span style="color: #df805f;">(</span>emmet-react-get-component<span style="color: #df805f;">)</span><span
+          style="color: #6f80ff;">)</span>
+        <span style="color: #6f80ff;">(</span><span style="color: #6f80ff; font-weight: bold;">setq</span> component
+        <span style="color: #df805f;">(</span><span style="color: #6f80ff; font-weight: bold;">pop</span> propList<span
+          style="color: #df805f;">)</span><span style="color: #6f80ff;">)</span>
+        <span style="color: #6f80ff;">(</span>emmet-react-insert-wrap-component propList component<span
+          style="color: #6f80ff;">)</span><span style="color: #d0730f;">)</span><span style="color: #379cf6;">)</span>
+
+      </pre>
+    </div>
+  </div>
+</div>
+<div id="outline-container-org6c91b01" class="outline-2">
+  <h2 id="org6c91b01">Future plans</h2>
+  <div class="outline-text-2" id="text-org6c91b01">
+    <p>
+      There are a few things I would like to add to this project over time. I would like the functions to be smart
+      enough to recognize when the user has set the prop to a specific value. I think the easiest way to do this will be
+      to continue to split the strings on the periods, but to later also split them by = and wrap what comes after the
+      equals between the selected characters. I think it would also be nice to have a variable to determine where the
+      cursor should be moved after expanding the component.
+    </p>
+  </div>
+</div>

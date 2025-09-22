@@ -1,0 +1,57 @@
+{{define "nav"}}
+<header class="desktop">
+  <nav>
+    <a href="/about" hx-get="/cards" hx-swap="innerHTML" hx-push-url="/" hx-target="#contentDiv">
+      <h2>Chris Hughes dot Dev</h2>
+    </a>
+    <div class="social-links">
+      <a href="/about" hx-get="/resume" hx-swap="innerHTML" hx-push-url="/resume"
+        hx-target="#contentDiv">Resume</a>
+      <a href="https://github.com/naokotani" target="_blank" rel="noopener noreferrer">
+        GitHub
+      </a>
+      <a href="/about" hx-get="/about" hx-swap="innerHTML" hx-push-url="/about" hx-target="#contentDiv">About</a>
+      <a href="mailto: chris@chris-hughes.dev">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+      <a href="https://chris-hughes.dev/rss">
+        <i class="fa-solid fa-rss"></i>
+      </a>
+      <button id="theme-toggle">
+        <i id="moon" class="fa-regular fa-moon"></i>
+        <i id="bulb" class="fa-regular fa-lightbulb"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<header class="mobile">
+  <nav>
+    <a href="/cards" hx-get="/cards" hx-swap="innerHTML" hx-push-url="/" hx-target="#contentDiv">
+      <h2>Chris Hughes.Dev</h2>
+    </a>
+    <a href="javascript:void(0);" onclick="handleSocial()">
+      <i class="fa fa-bars menu"></i>
+    </a>
+  </nav>
+</header>
+<div id="social-menu" style="display: none;">
+  <div class="mobile-social">
+    <a href="https://chris-hughes.dev/rss">
+      <i class="fa-solid fa-rss"></i>
+    </a>
+    <a href="mailto: chris@chris-hughes.dev">
+      <i class="fa-solid fa-envelope"></i>
+    </a>
+    <a href="https://github.com/Naokotani/" target="_blank" rel="noopener noreferrer">
+      <i class="fa-brands fa-github"></i>
+    </a>
+    <a href="#" hx-get="/resume" hx-swap="innerHTML" hx-push-url="/resume" hx-target="#contentDiv">
+      <i class="fa-regular fa-address-card"></i>
+    </a>
+    <button id="theme-toggle-mobile">
+      <i id="moon-mobile" class="fa-regular fa-moon"></i>
+      <i id="bulb-mobile" class="fa-regular fa-lightbulb"></i>
+    </button>
+  </div>
+</div>
+{{end}}

@@ -1,0 +1,27 @@
+<div class="ring-container">
+  <div class="ring-desktop">
+    <h2 class="h4">System Crafters Web Ring</h2>
+    <div class="ring-widget">
+      <button hx-get="/ring/prev/{{index}}" hx-target="#web-ring" hx-swap="innerHTML">
+        <i class="fa-solid fa-arrow-left-long"></i>
+      </button>
+      <div>
+        <a class="anchor h4" href="{{url}}">{{name}}</a>
+        <a class="anchor h4" href="{{rss}}"><i class="fa-solid fa-rss"></i></a>
+      </div>
+      <button hx-get="/ring/next/{{index}}" hx-target="#web-ring" hx-swap="innerHTML">
+        <i class="fa-solid fa-arrow-right-long"></i>
+      </button>
+    </div>
+    <p class="ring-about">{{about}}</p>
+  </div>
+  <div class="craftering">
+    <a class="anchor" href="https://craftering.systemcrafters.net/@naokotani/previous">
+      Prev.
+    </a>
+    <a class="anchor center-ring h5" href="https://craftering.systemcrafters.net/">craftering</a>
+    <a class="anchor" href="https://craftering.systemcrafters.net/@naokotani/next">
+      Next
+    </a>
+  </div>
+</div>
