@@ -11,7 +11,7 @@ func (app *application) generateIndex() error {
 	if err != nil {
 		return err
 	}
-	defer outputFile.Close() // Ensure the file is closed
+	defer outputFile.Close()
 
 	ts, ok := app.templateCache["home.gotmpl"]
 
@@ -20,7 +20,7 @@ func (app *application) generateIndex() error {
 		fmt.Printf("ERROR: %s", err)
 	}
 
-	err = ts.Execute(outputFile, app.config)
+	err = ts.ExecuteTemplate(outputFile, "base", app.config)
 	if err != nil {
 		return err
 	}

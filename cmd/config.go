@@ -12,7 +12,7 @@ type Config struct {
 	Site    Site
 	Page    Page
 	Contact Contact
-	Year    time.Time
+	Date    time.Time
 }
 
 type Site struct {

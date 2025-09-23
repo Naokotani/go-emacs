@@ -26,7 +26,8 @@ func main() {
 	}
 
 	config := Config{}
-	config.Year = time.Now()
+	config.Date = time.Now()
+	fmt.Printf("Year: %d", config.Date.Year())
 
 	app := &application{
 		templateCache: templateCache,
