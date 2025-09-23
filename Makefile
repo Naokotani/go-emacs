@@ -2,6 +2,7 @@ SRC_PATH=cmd
 BIN_PATH=bin
 BIN=go-emacs
 export OUTPUT_PATH=./www
+export CONFIG_PATH=./config.toml
 
 build:
 	@mkdir -p ${SRC_PATH} ${BIN_PATH}

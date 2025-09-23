@@ -1,0 +1,9 @@
+[contact]
+name = "Chris Hughes"
+email = "chris@chris-hughes.dev"
+git = "https://github.com/naokontai"
+linkedin = "https://www.linkedin.com/in/chris-hughes-a06867235/"
+
+[site]
+meta = "A Developer blog for Chris Hughes. Specializes in JavaScript, Rust, Web development, SQL"
+title = "Chris Hughes dot Dev"
