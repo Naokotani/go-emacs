@@ -1,0 +1,303 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title></title>
+  <link rel="shortcut icon" type="static/image/png" href="images/favicon-16x16.png" />
+  <link rel="stylesheet" type="text/css" href="/static/css/normalize.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/styles.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Source+Sans+Pro&display=swap"
+    rel="stylesheet">
+  <link rel="alternate" type="application/rss+xml" title="" href="/rss">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description"
+    content="A Developer blog for Chris Hughes. Specializes in JavaScript, Rust, Web development, SQL" />
+  <script src="https://unpkg.com/htmx.org@1.9.10"
+    integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous" defer>
+    </script>
+  <script src="/static/js/menu.js" defer></script>
+  <script src="/static/js/colors.js" defer></script>
+</head>
+
+
+<header class="desktop">
+  <nav>
+    <a href="/about" hx-get="/cards" hx-swap="innerHTML" hx-push-url="/" hx-target="#contentDiv">
+      <h2>Chris Hughes dot Dev</h2>
+    </a>
+    <div class="social-links">
+      <a href="/about" hx-get="/resume" hx-swap="innerHTML" hx-push-url="/resume"
+        hx-target="#contentDiv">Resume</a>
+      <a href="https://github.com/naokontai" target="_blank" rel="noopener noreferrer">
+        GitHub
+      </a>
+      <a href="/about" hx-get="/about" hx-swap="innerHTML" hx-push-url="/about" hx-target="#contentDiv">About</a>
+      <a href="mailto: chris@chris-hughes.dev">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+      <a href="/rss">
+        <i class="fa-solid fa-rss"></i>
+      </a>
+      <button id="theme-toggle">
+        <i id="moon" class="fa-regular fa-moon"></i>
+        <i id="bulb" class="fa-regular fa-lightbulb"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<header class="mobile">
+  <nav>
+    <a href="/cards" hx-get="/cards" hx-swap="innerHTML" hx-push-url="/" hx-target="#contentDiv">
+      <h2>Chris Hughes.Dev</h2>
+    </a>
+    <a href="javascript:void(0);" onclick="handleSocial()">
+      <i class="fa fa-bars menu"></i>
+    </a>
+  </nav>
+</header>
+<div id="social-menu" style="display: none;">
+  <div class="mobile-social">
+    <a href="/rss">
+      <i class="fa-solid fa-rss"></i>
+    </a>
+    <a href="mailto: chris@chris-hughes.dev">
+      <i class="fa-solid fa-envelope"></i>
+    </a>
+    <a href="https://github.com/naokontai" target="_blank" rel="noopener noreferrer">
+      <i class="fa-brands fa-github"></i>
+    </a>
+    <a href="/resume" hx-get="/resume" hx-swap="innerHTML" hx-push-url="/resume" hx-target="#contentDiv">
+      <i class="fa-regular fa-address-card"></i>
+    </a>
+    <button id="theme-toggle-mobile">
+      <i id="moon-mobile" class="fa-regular fa-moon"></i>
+      <i id="bulb-mobile" class="fa-regular fa-lightbulb"></i>
+    </button>
+  </div>
+</div>
+
+<div id="contentDiv" class="contentDiv">
+
+<p>
+  <title>Diesel Database</title>
+</p>
+<summary>
+  Designing a database for an e-commerce website in Rust with Diesel and Plantuml
+</summary>
+<h1>Diesel Database</h1>
+<small class="date">Published: Sun, 03 Mar 2024 11:13:54:-4:00</small>
+<br>
+<small class="tech">Rust | Diesel</small>
+
+<p>
+  When I decided to start work on this project, I knew it would be important to carefully design the database. I did
+  some research into software to draw an entity relationship diagram and a UML diagram to help me map out the project,
+  and a friend suggested that I try <a href="https://plantuml.com/">plantuml</a>. Plantuml is a java based application
+  that builds diagrams from a very intuitive but powerful text based description syntax. It can create all different
+  kinds of diagrams through the use of class definitions that load based on your text description.
+</p>
+<div id="outline-container-org4b0eea5" class="outline-2">
+  <h2 id="org4b0eea5">Creating an ERD Diagram with Plantuml</h2>
+  <div class="outline-text-2" id="text-org4b0eea5">
+    <p>
+      The web application I am designing is intended to host different types of assets for table-top role-playing games
+      such as books, maps, music and so on. My strategy was to create a user table and use the primary key for that
+      table in a one to one relationship with a creator table. The idea is that everyone is a user, but being a creator
+      is optional. Instead of having the creator data fields nullable, I decided it made more sense to keep the
+      information separate. Each asset is then stored in various asset tables that have a serial primary key and stores
+      the id of the creator that owns them. In order to link ownership, I made a linking table that has a one to many
+      relationship between the user table and the asset's table. This information can be easily created in a plantuml
+      diagram like so:
+    </p>
+
+    <div class="org-src-container">
+      <pre class="src src-nil">
+        ' hide the spot
+        ' hide circle
+
+        ' avoid problems with angled crows feet
+        skinparam linetype ortho
+
+        entity user {
+        * id &lt;&lt;PK&gt;&gt;
+        --
+        * username
+        * email
+        }
+
+        entity creator {
+        * id &lt;&lt;PK, FK&gt;&gt;
+        --
+        creator_name
+        }
+
+        entity user_asset {
+        * user_id &lt;&lt;FK, PK&gt;&gt;
+        * asset_id &lt;&lt;FK, PK&gt;&gt;
+        }
+
+        entity asset {
+        * id &lt;&lt;PK&gt;&gt;
+        * creator_id &lt;&lt;FK&gt;&gt;
+        --
+        * title
+        * summary
+        * image
+        }
+      </pre>
+    </div>
+
+
+    <p>
+      This creates the four tables, but does nothing to link them up. The few lines at the top are used to set things up
+      to correctly display an ERD diagram as it differs slightly from the default UML class implementation. The
+      <code>*</code> creates a <code>NOT NULL</code> field and the <code>--</code> is designed to indicate which of the
+      fields are identifiers.
+    </p>
+
+
+    <div id="orgec08b06" class="figure">
+      <p><img src="blog/diesel-database/images/sample-erd-one.png" alt="sample-erd-one.png">
+      </p>
+    </div>
+
+    <p>
+      Plantuml uses a simple syntax in order to represent linkages. It is important to note that it is a drawing tool
+      and will not prevent you from linking tables that might otherwise not be joinable.
+    </p>
+
+    <div class="org-src-container">
+      <pre class="src src-nil">
+        user |o--|| creator
+        creator |o--|| asset
+        asset |o--|{ user_asset
+        user |o-left-|{ user_asset
+
+      </pre>
+    </div>
+
+    <p>
+      Adding these lines below the table definitions will create linkages between the tables using a visually
+      representative syntax that is very easy to remember. For example <code>|o--|{</code> represents an optional one to
+      mandatory many relationship and <code>||--||</code> would represent a mandatory one to one relationship. Detailed
+      examples for all the possible combinations can be found in the <a href="https://plantuml.com/ie-diagram">ERD class
+        documentation</a>.
+    </p>
+
+
+    <div id="orgaa21dc8" class="figure">
+      <p><img src="blog/diesel-database/images/sample-erd-two.png" alt="sample-erd-two.png">
+      </p>
+    </div>
+  </div>
+</div>
+<div id="outline-container-orgc06505f" class="outline-2">
+  <h2 id="orgc06505f">Creating a complimentary UML diagram</h2>
+  <div class="outline-text-2" id="text-orgc06505f">
+    <p>
+      I didn't exactly make a UML diagram because Rust uses structs and traits instead of classes and interfaces, but I
+      created a diagram that was inspired by UML. To do this I had to add some custom symbols to correctly display Rust
+      data structures like traits and enums. I started by adding classes for each table and then created structs that
+      would work well with <a href="https://diesel.rs/">Diesel</a>. Diesel is an ORM that uses Rust structs along with
+      macros to dynamically create SQL queries that are safer from SQL injection or other attacks. It also speeds up
+      development by creating a schema of your database in Rust so that you will get compile time and language server
+      errors if you try to do something incompatible with your schema.
+    </p>
+
+    <div class="org-src-container">
+      <pre class="src src-nil">struct User {
+        + id: i32
+        + username: String
+        + email: String
+        + create(user_id: i32) Self
+        + read(user_id: i32) Self
+        + update(user: UserNew) usize
+        + destroy(user_id: i32) usize
+        }
+
+        struct UserNew {
+        + username: String
+        + email: String
+        + logo: String
+        + create(user_id: i32) Self
+        }
+
+        struct Creator {
+        + id: i32
+        + first_name: String
+        + last_name: String
+        + read(creator_id: i32) Self
+        + update(user: UserNew) usize
+        + destroy(user_id: i32) usize
+        }
+
+        struct CreatorNew {
+        + first_name: String
+        + last_name: String
+        + create(user_id: i32) Self
+        }
+
+        class AssetTrait &lt;&lt; (T,#FF7700) &gt;&gt; {
+        read(asset_id: i32) Self
+        update(self, conn) usize
+        destroy(asset_id: i32) i32
+        paginate(user_id) Page
+        }
+
+        struct Page {
+        + thumb: String
+        + display_name:String
+        + main_image: String
+        }
+
+        struct Asset {
+        + id: i32
+        + creator_id: i32
+        + title: String
+        + summary: String
+        }
+
+        UserNew o-left- User
+        CreatorNew o-right- Creator
+        User *-- Creator
+        Creator o-- Asset
+        Asset &lt;|.. AssetTrait
+        AssetTrait &lt;|.. Page
+
+      </pre>
+    </div>
+
+    <p>
+      Similar to the ERD diagram, you create classes, but instead of using <code>*</code> you would use <code>+</code>
+      to show public methods and variables. In order to display the <code>Asset</code> trait I used the <code>&lt;&lt;
+        (T,#FF7700) &gt;&gt;</code> syntax, which allows you to control the icon and the icon color for any arbitrary
+      data structure.
+    </p>
+
+
+    <div id="org5e50d73" class="figure">
+      <p><img src="blog/diesel-database/images/sample-uml.png" alt="sample-uml.png">
+      </p>
+    </div>
+  </div>
+</div>
+
+
+</div>
+
+<footer>
+  <div>
+    <a href="/">Home</a>
+    <a href="mailto: chris@chris-hughes.dev">Email</a>
+    <div>
+      <small>&copy; Chris Hughes 2025</small>
+    </div>
+  </div>
+</footer>
+
+</html>

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
 	"path/filepath"
 	"time"
@@ -20,17 +19,11 @@ var functions = template.FuncMap{
 	"humanDate": humanDate,
 }
 
-func newPagesTemplateCache(path string) (map[string]*template.Template, error) {
+func newTemplateCache(path string) (map[string]*template.Template, error) {
 	cache := map[string]*template.Template{}
 	pages, err := filepath.Glob(path)
 	if err != nil {
 		return nil, err
-	}
-
-	partials, err := filepath.Glob("./ui/html/partials/*.gotmpl")
-
-	for _, partial := range partials {
-		fmt.Printf("Partial: %s\n", partial)
 	}
 
 	for _, page := range pages {

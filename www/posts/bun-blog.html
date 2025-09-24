@@ -1,0 +1,433 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title></title>
+  <link rel="shortcut icon" type="static/image/png" href="images/favicon-16x16.png" />
+  <link rel="stylesheet" type="text/css" href="/static/css/normalize.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/styles.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Source+Sans+Pro&display=swap"
+    rel="stylesheet">
+  <link rel="alternate" type="application/rss+xml" title="" href="/rss">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description"
+    content="A Developer blog for Chris Hughes. Specializes in JavaScript, Rust, Web development, SQL" />
+  <script src="https://unpkg.com/htmx.org@1.9.10"
+    integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous" defer>
+    </script>
+  <script src="/static/js/menu.js" defer></script>
+  <script src="/static/js/colors.js" defer></script>
+</head>
+
+
+<header class="desktop">
+  <nav>
+    <a href="/about" hx-get="/cards" hx-swap="innerHTML" hx-push-url="/" hx-target="#contentDiv">
+      <h2>Chris Hughes dot Dev</h2>
+    </a>
+    <div class="social-links">
+      <a href="/about" hx-get="/resume" hx-swap="innerHTML" hx-push-url="/resume"
+        hx-target="#contentDiv">Resume</a>
+      <a href="https://github.com/naokontai" target="_blank" rel="noopener noreferrer">
+        GitHub
+      </a>
+      <a href="/about" hx-get="/about" hx-swap="innerHTML" hx-push-url="/about" hx-target="#contentDiv">About</a>
+      <a href="mailto: chris@chris-hughes.dev">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+      <a href="/rss">
+        <i class="fa-solid fa-rss"></i>
+      </a>
+      <button id="theme-toggle">
+        <i id="moon" class="fa-regular fa-moon"></i>
+        <i id="bulb" class="fa-regular fa-lightbulb"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<header class="mobile">
+  <nav>
+    <a href="/cards" hx-get="/cards" hx-swap="innerHTML" hx-push-url="/" hx-target="#contentDiv">
+      <h2>Chris Hughes.Dev</h2>
+    </a>
+    <a href="javascript:void(0);" onclick="handleSocial()">
+      <i class="fa fa-bars menu"></i>
+    </a>
+  </nav>
+</header>
+<div id="social-menu" style="display: none;">
+  <div class="mobile-social">
+    <a href="/rss">
+      <i class="fa-solid fa-rss"></i>
+    </a>
+    <a href="mailto: chris@chris-hughes.dev">
+      <i class="fa-solid fa-envelope"></i>
+    </a>
+    <a href="https://github.com/naokontai" target="_blank" rel="noopener noreferrer">
+      <i class="fa-brands fa-github"></i>
+    </a>
+    <a href="/resume" hx-get="/resume" hx-swap="innerHTML" hx-push-url="/resume" hx-target="#contentDiv">
+      <i class="fa-regular fa-address-card"></i>
+    </a>
+    <button id="theme-toggle-mobile">
+      <i id="moon-mobile" class="fa-regular fa-moon"></i>
+      <i id="bulb-mobile" class="fa-regular fa-lightbulb"></i>
+    </button>
+  </div>
+</div>
+
+<div id="contentDiv" class="contentDiv">
+
+<p>
+  <title>Bun Blog</title>
+</p>
+<summary>
+  A simple blog website I made to try out Bun JS runtime
+</summary>
+<h1>Bun Blog</h1>
+<small class="date">Published: Fri, 09 Feb 2024 01:19:54:-4:00</small>
+<br>
+<small class="tech">TypeScript | Bun</small>
+
+<p>
+  I wasn't entirely happy with my <a href="https://chris-hughes.dev/blog/emacs-CMS.html">Emacs CMS</a> blog project. It
+  felt like a bit of a disorganized prototype. I had HTML lurking around in my index.js along with all of the logic for
+  the whole app, it could only handle uploading .png files. Using a web framework like Express also felt really
+  excessive for such a simple application. I had a few people suggest that the <a href="https://bun.sh/">Bun</a>
+  JavaScript runtime as an alternative to Node that was worth checking out so I decided to take another stab at the
+  project using that, cheerio and mustache. The entire project is located <a
+    href="https://github.com/Naokotani/bun-blog">here</a> on my GitHub.
+</p>
+<div id="outline-container-org785e4e5" class="outline-2">
+  <h2 id="org785e4e5">Bun vs. Node</h2>
+  <div class="outline-text-2" id="text-org785e4e5">
+    <p>
+      Bun is a really interesting alternative to Node. It comes with a really nice <code>Bun.serve()</code> method for
+      receiving and sending HTTP requests and responses so its very easy to just make a nice REST api right out of the
+      box. It also comes with the ability to read .env files into <code>process.env</code>, which is a nice convenience.
+      It also has <code>Bun.file()</code>, which is a replacement for Nodes <code>fs.readFile()</code>, that can read
+      relative paths without the need to join a relative path with <code>__dirname</code>. A lot of these things come
+      down to convenience replacements for common tasks, but the Bun website makes some claims about being super fast.
+      Without doing a lot more research, I will take that with a grain of salt for now.
+    </p>
+  </div>
+</div>
+<div id="outline-container-org54f9345" class="outline-2">
+  <h2 id="org54f9345">Getting the data from Emacs</h2>
+  <div class="outline-text-2" id="text-org54f9345">
+    <p>
+      Similar to my other project I use the following function to get my data from Emacs and my local machine to the
+      remote server.
+    </p>
+
+    <div class="org-src-container">
+      <pre class="src src-emacs-lisp"> <span style="color: #379cf6;">(</span><span
+          style="color: #6f80ff; font-weight: bold;">defun</span> <span
+          style="color: #0dafdf;">nao/export-org-to-blog</span> <span style="color: #d0730f;">()</span>
+        <span style="color: #d0730f;">(</span><span style="color: #6f80ff; font-weight: bold;">interactive</span><span
+          style="color: #d0730f;">)</span>
+        <span style="color: #d0730f;">(</span><span style="color: #6f80ff; font-weight: bold;">setq</span>
+        org-html-doctype <span style="color: #df805f;">"html5"</span><span style="color: #d0730f;">)</span>
+        <span style="color: #d0730f;">(</span><span style="color: #6f80ff; font-weight: bold;">let</span> <span
+          style="color: #6f80ff;">(</span><span style="color: #df805f;">(</span>filename <span
+          style="color: #0dafdf;">(</span>org-html-export-to-html nil nil nil t<span
+          style="color: #0dafdf;">)</span><span style="color: #df805f;">)</span><span style="color: #6f80ff;">)</span>
+        <span style="color: #6f80ff;">(</span>copy-file <span style="color: #df805f;">(</span>concat <span
+          style="color: #0dafdf;">(</span>file-name-sans-extension filename<span style="color: #0dafdf;">)</span> <span
+          style="color: #df805f;">".png"</span><span style="color: #df805f;">)</span>
+        <span style="color: #df805f;">"/rsync:server:/path/to/images"</span> t<span style="color: #6f80ff;">)</span>
+        <span style="color: #6f80ff;">(</span>copy-file filename <span
+          style="color: #df805f;">"/rsync:server/path/to/html"</span> t<span style="color: #6f80ff;">)</span><span
+          style="color: #d0730f;">)</span><span style="color: #379cf6;">)</span>
+      </pre>
+    </div>
+
+    <p>
+      Org mode also comes with a series of publish functions that, I am assuming, accomplish a similar task. This above
+      function did almost exactly what I needed, so I haven't looked into the org publish functionality, but perhaps I
+      will look into switching to that in the future if the website becomes more complicated.
+    </p>
+  </div>
+</div>
+<div id="outline-container-org629f2ca" class="outline-2">
+  <h2 id="org629f2ca">Bun REST api</h2>
+  <div class="outline-text-2" id="text-org629f2ca">
+    <p>
+      On the server I use a very simple REST api to direct traffic to resources by making use of
+      <code>Bun.serve()</code>:
+    </p>
+
+    <div class="org-src-container">
+      <pre class="src src-javascript"> <span style="color: #6f80ff; font-weight: bold;">try</span> <span
+          style="color: #379cf6;">{</span>
+        <span style="color: #6f80ff; font-weight: bold;">if</span> <span style="color: #d0730f;">(</span><span
+          style="color: #df805f;">/\.(css|png|svg)$/</span>.test<span style="color: #6f80ff;">(</span>req.url<span
+          style="color: #6f80ff;">)</span><span style="color: #d0730f;">)</span> <span
+          style="color: #6f80ff; font-weight: bold;">return</span> <span
+          style="color: #6f80ff; font-weight: bold;">await</span> getStatic<span
+          style="color: #d0730f;">(</span>req.url<span style="color: #d0730f;">)</span>;
+        <span style="color: #6f80ff; font-weight: bold;">if</span> <span style="color: #d0730f;">(</span>url.pathname
+        === <span style="color: #df805f;">"/"</span><span style="color: #d0730f;">)</span> <span
+          style="color: #6f80ff; font-weight: bold;">return</span> <span
+          style="color: #6f80ff; font-weight: bold;">await</span> getHome<span style="color: #d0730f;">()</span>;
+        <span style="color: #6f80ff; font-weight: bold;">if</span> <span style="color: #d0730f;">(</span>url.pathname
+        === <span style="color: #df805f;">"/blog"</span><span style="color: #d0730f;">)</span> <span
+          style="color: #6f80ff; font-weight: bold;">return</span> getBlogs<span style="color: #d0730f;">()</span>;
+        <span style="color: #6f80ff; font-weight: bold;">if</span> <span style="color: #d0730f;">(</span>url.pathname
+        === <span style="color: #df805f;">"/cards"</span><span style="color: #d0730f;">)</span> <span
+          style="color: #6f80ff; font-weight: bold;">return</span> getCards<span style="color: #d0730f;">()</span>;
+        <span style="color: #6f80ff; font-weight: bold;">if</span> <span style="color: #d0730f;">(</span><span
+          style="color: #df805f;">/\/blog\/.*\.html/</span>.test<span style="color: #6f80ff;">(</span>req.url<span
+          style="color: #6f80ff;">)</span><span style="color: #d0730f;">)</span> <span style="color: #d0730f;">{</span>
+        <span style="color: #6f80ff; font-weight: bold;">const</span> <span style="color: #af85ff;">match</span> =
+        req.url.match<span style="color: #6f80ff;">(</span><span
+          style="color: #df805f;">/\/blog\/(.*\.html)/</span><span style="color: #6f80ff;">)</span>;
+        <span style="color: #6f80ff; font-weight: bold;">return</span> getPost<span style="color: #6f80ff;">(</span>
+        match!<span style="color: #df805f;">[</span>1<span style="color: #df805f;">]</span>,
+        req.headers.get<span style="color: #df805f;">(</span><span style="color: #df805f;">"hx-request"</span><span
+          style="color: #df805f;">)</span> === <span style="color: #df805f;">"true"</span>
+        <span style="color: #6f80ff;">)</span>;
+        <span style="color: #d0730f;">}</span>
+        <span style="color: #6f80ff; font-weight: bold;">return</span> <span
+          style="color: #6f80ff; font-weight: bold;">new</span> <span style="color: #029fff;">Response</span><span
+          style="color: #d0730f;">(</span><span style="color: #df805f;">"404!"</span><span
+          style="color: #d0730f;">)</span>;
+        <span style="color: #379cf6;">}</span> <span style="color: #6f80ff; font-weight: bold;">catch</span> <span
+          style="color: #379cf6;">(</span>e<span style="color: #379cf6;">)</span> <span style="color: #379cf6;">{</span>
+        console.error<span style="color: #d0730f;">(</span><span style="color: #df805f;">'Error:'</span>, e<span
+          style="color: #d0730f;">)</span>;
+        <span style="color: #6f80ff; font-weight: bold;">return</span> <span
+          style="color: #6f80ff; font-weight: bold;">new</span> <span style="color: #029fff;">Response</span><span
+          style="color: #d0730f;">(</span><span style="color: #df805f;">"500 - Internal Server Error"</span><span
+          style="color: #d0730f;">)</span>;
+        <span style="color: #379cf6;">}</span>
+      </pre>
+    </div>
+
+    <p>
+      I took the basic structure from the Bun documentation and I use Regex tests to match routes. The first route
+      matches routes with css or image filenames to server those images as they are requested and the other routes
+      direct to modules where I use Mustache templates to create the response for the client.
+      <code>req.headers.get("hx-request") === "true"</code> being based to getPost() tests to see if a request has the
+      hx-request header. I do this because I use <a href="https://htmx.org/">HTMX</a> to avoid page reloads, but I need
+      a way to determine if a resource was requested from outside the page. If the header is not present, I know the
+      user navigated from an external link so it knows whether or not it needs to serve the <code>index.html</code>.
+    </p>
+
+    <div class="org-src-container">
+      <pre class="src src-javascript"> <span style="color: #6f80ff; font-weight: bold;">if</span> <span
+          style="color: #379cf6;">(</span>hx<span style="color: #379cf6;">)</span> <span
+          style="color: #379cf6;">{</span>
+        <span style="color: #6f80ff; font-weight: bold;">return</span> <span
+          style="color: #6f80ff; font-weight: bold;">new</span> <span style="color: #029fff;">Response</span><span
+          style="color: #d0730f;">(</span>post<span style="color: #d0730f;">)</span>;
+        <span style="color: #379cf6;">}</span> <span style="color: #6f80ff; font-weight: bold;">else</span> <span
+          style="color: #379cf6;">{</span>
+        <span style="color: #6f80ff; font-weight: bold;">const</span> <span style="color: #af85ff;">view</span> = <span
+          style="color: #d0730f;">{</span>
+        API_URL: API_URL,
+        post: post,
+        <span style="color: #d0730f;">}</span>
+
+        <span style="color: #6f80ff; font-weight: bold;">const</span> <span style="color: #af85ff;">html</span> =
+        Mustache.render<span style="color: #d0730f;">(</span>index, view<span style="color: #d0730f;">)</span>;
+
+        <span style="color: #6f80ff; font-weight: bold;">return</span> <span
+          style="color: #6f80ff; font-weight: bold;">new</span> <span style="color: #029fff;">Response</span><span
+          style="color: #d0730f;">(</span>html, <span style="color: #6f80ff;">{</span>
+        headers: <span style="color: #df805f;">{</span>
+        <span style="color: #df805f;">"Content-Type"</span>: <span style="color: #df805f;">"text/html"</span>,
+        <span style="color: #df805f;">}</span>,
+        <span style="color: #6f80ff;">}</span><span style="color: #d0730f;">)</span>;
+        <span style="color: #379cf6;">}</span>
+      </pre>
+    </div>
+
+    <p>
+      inside <code>getPost()</code> if hx-request is true, I send just the HTML for the post, if its false, then I use
+      Mustache to add the post to the index.html and send it as one HTML file.
+    </p>
+  </div>
+</div>
+<div id="outline-container-org4bd888e" class="outline-2">
+  <h2 id="org4bd888e">Serving Static Files</h2>
+  <div class="outline-text-2" id="text-org4bd888e">
+    <p>
+      The module that routes to the static file resources users regex similar to the main REST api:
+    </p>
+
+    <div class="org-src-container">
+      <pre class="src src-javascript"> <span style="color: #6f80ff; font-weight: bold;">if</span> <span
+          style="color: #379cf6;">(</span><span style="color: #df805f;">/\w+\.css$/</span>.test<span
+          style="color: #d0730f;">(</span>filename<span style="color: #d0730f;">)</span><span
+          style="color: #379cf6;">)</span> <span style="color: #379cf6;">{</span>
+        <span style="color: #6f80ff; font-weight: bold;">try</span> <span style="color: #d0730f;">{</span>
+        <span style="color: #6f80ff; font-weight: bold;">const</span> <span style="color: #af85ff;">file</span> =
+        Bun.file<span style="color: #6f80ff;">(</span><span style="color: #df805f;">`static/css/${filename}`</span><span
+          style="color: #6f80ff;">)</span>;
+        <span style="color: #6f80ff; font-weight: bold;">return</span> <span
+          style="color: #6f80ff; font-weight: bold;">new</span> <span style="color: #029fff;">Response</span><span
+          style="color: #6f80ff;">(</span>file<span style="color: #6f80ff;">)</span>;
+        <span style="color: #d0730f;">}</span> <span style="color: #6f80ff; font-weight: bold;">catch</span> <span
+          style="color: #d0730f;">(</span>e<span style="color: #d0730f;">)</span> <span style="color: #d0730f;">{</span>
+        console.error<span style="color: #6f80ff;">(</span>e<span style="color: #6f80ff;">)</span>;
+        <span style="color: #6f80ff; font-weight: bold;">return</span> <span
+          style="color: #6f80ff; font-weight: bold;">new</span> <span style="color: #029fff;">Response</span><span
+          style="color: #6f80ff;">(</span><span style="color: #df805f;">"404: file not found"</span><span
+          style="color: #6f80ff;">)</span>;
+        <span style="color: #d0730f;">}</span>
+        <span style="color: #379cf6;">}</span>
+      </pre>
+    </div>
+
+    <p>
+      <code>String.match()</code> extracts the filename from the url and then I use regex to map the file extensions to
+      the appropriate directories and then return the requested file. The most likely reason for an error is that the
+      file does not exist, but regardless of the error, I log the error on the server and respond with 404.
+    </p>
+  </div>
+</div>
+<div id="outline-container-org9abbf46" class="outline-2">
+  <h2 id="org9abbf46">Generating thumbnails</h2>
+  <div class="outline-text-2" id="text-org9abbf46">
+    <p>
+      Initially to create the images for the cards I was simply taking screenshots and then uploading the results as is.
+      This meant that the files were much larger than they needed to be and slow to load. Furthermore, they were
+      inconsistent in terms of size and aspect ratio making the cards inconsistently sized. In order to solve this
+      problem, I installed <a href="https://sharp.pixelplumbing.com/">sharp</a> in order to transform the images, but I
+      wanted a way to automate it.
+    </p>
+
+    <p>
+      I created a simple module to achieve this. First I took the <a
+        href="https://bun.sh/guides/read-file/watch">example code</a> from the Bun documentation to watch my images
+      directory for changes. When I use rsync to upload a new file the watch will trigger and provide me with the
+      filename that was changed. I also add some logic to make sure that the file has appropriate extensions, in this
+      case I check for png and jpg, and isn't a thumbnail itself.
+    </p>
+
+    <p>
+      Next I check to see if I have access to the file using <code>fs.access()</code>. If an image is moved from the
+      directory, then sharp might try to transform an image that no longer exists, causing an error.
+    </p>
+
+    <div class="org-src-container">
+      <pre class="src src-javascript"><span style="color: #6f80ff; font-weight: bold;">async</span> <span
+          style="color: #6f80ff; font-weight: bold;">function</span> checkAccess<span
+          style="color: #379cf6;">(</span><span style="color: #af85ff;">filename</span>: <span
+          style="color: #af85ff;">string</span><span style="color: #379cf6;">)</span> <span
+          style="color: #379cf6;">{</span>
+        <span style="color: #6f80ff; font-weight: bold;">try</span> <span style="color: #d0730f;">{</span>
+        <span style="color: #6f80ff; font-weight: bold;">await</span> access<span style="color: #6f80ff;">(</span><span
+          style="color: #df805f;">`${imagesPath}/${filename}`</span>, constants.R_OK | constants.W_OK<span
+          style="color: #6f80ff;">)</span>;
+        resizeImage<span style="color: #6f80ff;">(</span>filename<span style="color: #6f80ff;">)</span>;
+        <span style="color: #d0730f;">}</span> <span style="color: #6f80ff; font-weight: bold;">catch</span> <span
+          style="color: #d0730f;">{</span>
+        <span style="color: #6f80ff; font-weight: bold;">return</span>;
+        <span style="color: #d0730f;">}</span>
+        <span style="color: #379cf6;">}</span>
+      </pre>
+    </div>
+
+    <p>
+      Finally after everything has been appropriately validated, I check to see if there is already a thumbnail
+      generated for that image, and if there is, I delete it so that, if the image has changed, the thumbnail will be
+      updated appropriately. In theory this might cause an issue where, if the thumbnail is requested at the exact
+      moment that I am remaking it, it would not be available. Perhaps a solution to this would be to create a separate
+      staging directory and sync the images after they are updated. I may do this in the future if I create module for
+      updating the post HTML to semantic HTML5.
+    </p>
+
+    <p>
+      I then run <code>sharp().resize()</code> with first two arguments being the width and height of the new image in
+      pixels. In the options argument, I set fit to "cover", which has a similar effect to a CSS overflow hidden, but it
+      will actually crop the image. This might cause it to be cropped in an undesirable way, but I think the best
+      solution here is to crop the image properly before I upload it.
+    </p>
+
+    <div class="org-src-container">
+      <pre class="src src-javascript"><span style="color: #6f80ff; font-weight: bold;">async</span> <span
+          style="color: #6f80ff; font-weight: bold;">function</span> resizeImage<span
+          style="color: #379cf6;">(</span><span style="color: #af85ff;">filename</span>: <span
+          style="color: #af85ff;">string</span><span style="color: #379cf6;">)</span> <span
+          style="color: #379cf6;">{</span>
+        <span style="color: #6f80ff; font-weight: bold;">const</span> <span style="color: #af85ff;">images</span> =
+        <span style="color: #6f80ff; font-weight: bold;">await</span> fs.readdir<span
+          style="color: #d0730f;">(</span>imagesPath<span style="color: #d0730f;">)</span>;
+        <span style="color: #6f80ff; font-weight: bold;">if</span> <span
+          style="color: #d0730f;">(</span>images.includes<span style="color: #6f80ff;">(</span><span
+          style="color: #df805f;">`thumb-${filename}`</span><span style="color: #6f80ff;">)</span><span
+          style="color: #d0730f;">)</span> <span style="color: #d0730f;">{</span>
+        <span style="color: #6f80ff; font-weight: bold;">try</span> <span style="color: #6f80ff;">{</span>
+        <span style="color: #6f80ff; font-weight: bold;">await</span> fs.rm<span style="color: #df805f;">(</span><span
+          style="color: #df805f;">`${imagesPath}/thumb-${filename}`</span><span style="color: #df805f;">)</span>;
+        console.log<span style="color: #df805f;">(</span><span style="color: #df805f;">`Deleted old thumb for
+          ${filename}`</span><span style="color: #df805f;">)</span>;
+        <span style="color: #6f80ff;">}</span> <span style="color: #6f80ff; font-weight: bold;">catch</span> <span
+          style="color: #6f80ff;">(</span>e<span style="color: #6f80ff;">)</span> <span style="color: #6f80ff;">{</span>
+        console.error<span style="color: #df805f;">(</span><span style="color: #df805f;">"Error deleting old thumb:
+          "</span> + e<span style="color: #df805f;">)</span>;
+        <span style="color: #6f80ff;">}</span>
+        <span style="color: #d0730f;">}</span>
+
+        <span style="color: #6f80ff; font-weight: bold;">try</span> <span style="color: #d0730f;">{</span>
+        console.log<span style="color: #6f80ff;">(</span><span style="color: #df805f;">`Processing image
+          ${filename}`</span><span style="color: #6f80ff;">)</span>;
+        sharp<span style="color: #6f80ff;">(</span><span style="color: #df805f;">`${imagesPath}/${filename}`</span><span
+          style="color: #6f80ff;">)</span>
+        .resize<span style="color: #6f80ff;">(</span>384, 185, <span style="color: #df805f;">{</span>
+        fit: <span style="color: #df805f;">"cover"</span>,
+        <span style="color: #df805f;">}</span><span style="color: #6f80ff;">)</span>
+        .toFile<span style="color: #6f80ff;">(</span><span
+          style="color: #df805f;">`${imagesPath}/thumb-${filename}`</span><span style="color: #6f80ff;">)</span>;
+        <span style="color: #d0730f;">}</span> <span style="color: #6f80ff; font-weight: bold;">catch</span> <span
+          style="color: #d0730f;">(</span>e<span style="color: #d0730f;">)</span> <span style="color: #d0730f;">{</span>
+        console.error<span style="color: #6f80ff;">(</span><span style="color: #df805f;">"File processing failed"</span>
+        + e<span style="color: #6f80ff;">)</span>;
+        <span style="color: #6f80ff; font-weight: bold;">return</span>;
+        <span style="color: #d0730f;">}</span>
+        console.log<span style="color: #d0730f;">(</span><span style="color: #df805f;">`${filename} resized
+          successfully`</span><span style="color: #d0730f;">)</span>;
+        <span style="color: #379cf6;">}</span>
+
+      </pre>
+    </div>
+  </div>
+  <div id="outline-container-org2f4255a" class="outline-3">
+    <h3 id="org2f4255a">fs.watch vs. chokidar</h3>
+    <div class="outline-text-3" id="text-org2f4255a">
+      <p>
+        Another possible solution would be to use <a href="https://www.npmjs.com/package/chokidar">chokidar</a>.
+        Chokidar still relies on <code>fs.watch()</code> and <code>fs.watchFile()</code>, but aims to resolve an issue
+        where, depending on OS, the <code>eventType</code> returned by <code>fs.watch()</code> will always be "Rename"
+        regardless of what is actually happening to the file. Since Chokidar still relies on the same fs methods as I am
+        using, it is probably using similar techniques to return more appropriate events as I am using to validate that
+        the file exists, which would indicate a move or delete event, and will add a dependency that is probably not
+        really needed for the sake of saving a few lines of code. If I later find myself doing more extensive file
+        system work that relies on <code>fs.watch()</code> I might reach for chokidar to avoid having write similar
+        methods myself.
+      </p>
+    </div>
+  </div>
+</div>
+
+
+</div>
+
+<footer>
+  <div>
+    <a href="/">Home</a>
+    <a href="mailto: chris@chris-hughes.dev">Email</a>
+    <div>
+      <small>&copy; Chris Hughes 2025</small>
+    </div>
+  </div>
+</footer>
+
+</html>

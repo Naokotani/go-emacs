@@ -1,0 +1,367 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title></title>
+  <link rel="shortcut icon" type="static/image/png" href="images/favicon-16x16.png" />
+  <link rel="stylesheet" type="text/css" href="/static/css/normalize.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/styles.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Source+Sans+Pro&display=swap"
+    rel="stylesheet">
+  <link rel="alternate" type="application/rss+xml" title="" href="/rss">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description"
+    content="A Developer blog for Chris Hughes. Specializes in JavaScript, Rust, Web development, SQL" />
+  <script src="https://unpkg.com/htmx.org@1.9.10"
+    integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous" defer>
+    </script>
+  <script src="/static/js/menu.js" defer></script>
+  <script src="/static/js/colors.js" defer></script>
+</head>
+
+
+<header class="desktop">
+  <nav>
+    <a href="/about" hx-get="/cards" hx-swap="innerHTML" hx-push-url="/" hx-target="#contentDiv">
+      <h2>Chris Hughes dot Dev</h2>
+    </a>
+    <div class="social-links">
+      <a href="/about" hx-get="/resume" hx-swap="innerHTML" hx-push-url="/resume"
+        hx-target="#contentDiv">Resume</a>
+      <a href="https://github.com/naokontai" target="_blank" rel="noopener noreferrer">
+        GitHub
+      </a>
+      <a href="/about" hx-get="/about" hx-swap="innerHTML" hx-push-url="/about" hx-target="#contentDiv">About</a>
+      <a href="mailto: chris@chris-hughes.dev">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+      <a href="/rss">
+        <i class="fa-solid fa-rss"></i>
+      </a>
+      <button id="theme-toggle">
+        <i id="moon" class="fa-regular fa-moon"></i>
+        <i id="bulb" class="fa-regular fa-lightbulb"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<header class="mobile">
+  <nav>
+    <a href="/cards" hx-get="/cards" hx-swap="innerHTML" hx-push-url="/" hx-target="#contentDiv">
+      <h2>Chris Hughes.Dev</h2>
+    </a>
+    <a href="javascript:void(0);" onclick="handleSocial()">
+      <i class="fa fa-bars menu"></i>
+    </a>
+  </nav>
+</header>
+<div id="social-menu" style="display: none;">
+  <div class="mobile-social">
+    <a href="/rss">
+      <i class="fa-solid fa-rss"></i>
+    </a>
+    <a href="mailto: chris@chris-hughes.dev">
+      <i class="fa-solid fa-envelope"></i>
+    </a>
+    <a href="https://github.com/naokontai" target="_blank" rel="noopener noreferrer">
+      <i class="fa-brands fa-github"></i>
+    </a>
+    <a href="/resume" hx-get="/resume" hx-swap="innerHTML" hx-push-url="/resume" hx-target="#contentDiv">
+      <i class="fa-regular fa-address-card"></i>
+    </a>
+    <button id="theme-toggle-mobile">
+      <i id="moon-mobile" class="fa-regular fa-moon"></i>
+      <i id="bulb-mobile" class="fa-regular fa-lightbulb"></i>
+    </button>
+  </div>
+</div>
+
+<div id="contentDiv" class="contentDiv">
+
+<p>
+  <title>Web Scraper</title>
+</p>
+<summary>
+  A Rust web scraper used to collect data for my Encounter Builder app
+</summary>
+<h1>Rust Web Scraper for Encounter Builder App</h1>
+<small class="date">Published: Thu, 08 Feb 2024 23:28:54-4:00</small>
+<br>
+<small class="tech">Rust</small>
+
+<p>
+  In order to be able to build the PF2e <a href="https://alembichead.com/encounter-builder">Encounter Builder</a> I
+  needed to collect data for the database. I wrote a web scraper in rust that used the <a
+    href="https://crates.io/crates/scraper">scraper</a> crate to collect the data from the list of monsters on <a
+    href="https://pf2.d20pfsrd.com/monster/">pf2srd.com</a>. This involved three separate but related tasks: Parsing
+  through the table in order to get the URLs for the individual monsters, scraping the data for each individual monster
+  and then working on the vector of traits created to correctly store the traits in the database.
+</p>
+<div id="outline-container-org8a949cc" class="outline-2">
+  <h2 id="org8a949cc">Testing and Validation</h2>
+  <div class="outline-text-2" id="text-org8a949cc">
+    <p>
+      This project required a bit of extra attention to testing and validation to ensure that there were as few data
+      inconsistencies entered into the database as possible. I was working with unsanitized data directly from the web
+      that was additionally entered in a very inconsistent matter. It would appear that CSS classes were entered
+      manually and inconsistently such that it was more difficult to correctly target the correct elements in a
+      consistent way. I approached validation in two steps.
+    </p>
+  </div>
+  <div id="outline-container-org34a571b" class="outline-3">
+    <h3 id="org34a571b">Validation function</h3>
+    <div class="outline-text-3" id="text-org34a571b">
+      <p>
+        At runtime the data passes through a validation function that ensure that that the data conforms to the data
+        types of the database. I initially used if statements to achieve this:
+      </p>
+
+      <div class="org-src-container">
+        <pre class="src src-rust"> <span style="color: #6f80ff; font-weight: bold;">pub</span> <span
+            style="color: #6f80ff; font-weight: bold;">fn</span> <span style="color: #0dafdf;">validate</span><span
+            style="color: #379cf6;">(</span><span style="color: #d0d0d0; background-color: #070019;">&amp;</span><span
+            style="color: #6f80ff; font-weight: bold;">self</span><span style="color: #379cf6;">)</span> -&gt; <span
+            style="color: #029fff;">bool</span> <span style="color: #379cf6;">{</span>
+
+          <span style="color: #6f80ff; font-weight: bold;">if</span> <span
+            style="color: #6f80ff; font-weight: bold;">self</span>.name.len<span style="color: #d0730f;">()</span> &gt;
+          100 || <span style="color: #6f80ff; font-weight: bold;">self</span>.name.is_empty<span
+            style="color: #d0730f;">()</span> <span style="color: #d0730f;">{</span>
+          <span style="color: #6f80ff; font-weight: bold;">return</span> <span
+            style="color: #6f80ff; font-weight: bold;">false</span>;
+          <span style="color: #d0730f;">}</span>
+          <span style="color: #6f80ff; font-weight: bold;">if</span> <span
+            style="color: #6f80ff; font-weight: bold;">self</span>.level &gt; 25 <span style="color: #d0730f;">{</span>
+          <span style="color: #6f80ff; font-weight: bold;">return</span> <span
+            style="color: #6f80ff; font-weight: bold;">false</span>;
+          <span style="color: #d0730f;">}</span>
+          <span style="color: #6f80ff; font-weight: bold;">if</span> <span
+            style="color: #6f80ff; font-weight: bold;">self</span>.alignment.len<span style="color: #d0730f;">()</span>
+          &gt; 10 || <span style="color: #6f80ff; font-weight: bold;">self</span>.name.is_empty<span
+            style="color: #d0730f;">()</span> <span style="color: #d0730f;">{</span>
+          <span style="color: #6f80ff; font-weight: bold;">return</span> <span
+            style="color: #6f80ff; font-weight: bold;">false</span>;
+          <span style="color: #d0730f;">}</span>
+          <span style="color: #6f80ff; font-weight: bold;">if</span> <span
+            style="color: #6f80ff; font-weight: bold;">self</span>.monster_type.len<span
+            style="color: #d0730f;">()</span> &gt; 100 || <span
+            style="color: #6f80ff; font-weight: bold;">self</span>.monster_type.is_empty<span
+            style="color: #d0730f;">()</span> <span style="color: #d0730f;">{</span>
+          <span style="color: #6f80ff; font-weight: bold;">return</span> <span
+            style="color: #6f80ff; font-weight: bold;">false</span>;
+          <span style="color: #d0730f;">}</span>
+          <span style="color: #6f80ff; font-weight: bold;">if</span> <span
+            style="color: #6f80ff; font-weight: bold;">self</span>.size.len<span style="color: #d0730f;">()</span> &gt;
+          20 || <span style="color: #6f80ff; font-weight: bold;">self</span>.size.is_empty<span
+            style="color: #d0730f;">()</span> <span style="color: #d0730f;">{</span>
+          <span style="color: #6f80ff; font-weight: bold;">return</span> <span
+            style="color: #6f80ff; font-weight: bold;">false</span>;
+          <span style="color: #d0730f;">}</span>
+
+          <span style="color: #6f80ff; font-weight: bold;">for</span> <span style="color: #af85ff;">t</span> <span
+            style="color: #6f80ff; font-weight: bold;">in</span> <span
+            style="color: #d0d0d0; background-color: #070019;">&amp;</span><span
+            style="color: #6f80ff; font-weight: bold;">self</span>.traits <span style="color: #d0730f;">{</span>
+          <span style="color: #6f80ff; font-weight: bold;">if</span> t.len<span style="color: #6f80ff;">()</span> &gt;
+          50 || t.is_empty<span style="color: #6f80ff;">()</span> <span style="color: #6f80ff;">{</span>
+          <span style="color: #6f80ff; font-weight: bold;">return</span> <span
+            style="color: #6f80ff; font-weight: bold;">false</span>;
+          <span style="color: #6f80ff;">}</span>
+          <span style="color: #d0730f;">}</span>
+          <span style="color: #6f80ff; font-weight: bold;">true</span>
+          <span style="color: #379cf6;">}</span>
+        </pre>
+      </div>
+
+      <p>
+        The function checks each member of the struct and ensures that it conforms to the data types. As this was my
+        first significant Rust project, I wasn't aware that this is not idiomatic Rust so when I lated returned to the
+        project and rewrote the function to use match:
+      </p>
+
+      <div class="org-src-container">
+        <pre class="src src-rust"> <span style="color: #6f80ff; font-weight: bold;">for</span> <span
+            style="color: #af85ff;">t</span> <span style="color: #6f80ff; font-weight: bold;">in</span> <span
+            style="color: #d0d0d0; background-color: #070019;">&amp;</span><span
+            style="color: #6f80ff; font-weight: bold;">self</span>.traits <span style="color: #379cf6;">{</span>
+          <span style="color: #6f80ff; font-weight: bold;">match</span> t <span style="color: #d0730f;">{</span>
+          t <span style="color: #6f80ff; font-weight: bold;">if</span> t.len<span style="color: #6f80ff;">()</span> &gt;
+          50 =&gt; <span style="color: #6f80ff; font-weight: bold;">return</span> <span
+            style="color: #6f80ff; font-weight: bold;">false</span>,
+          t <span style="color: #6f80ff; font-weight: bold;">if</span> t.is_empty<span style="color: #6f80ff;">()</span>
+          =&gt; <span style="color: #6f80ff; font-weight: bold;">return</span> <span
+            style="color: #6f80ff; font-weight: bold;">false</span>,
+          _ =&gt; <span style="color: #6f80ff;">()</span>
+          <span style="color: #d0730f;">}</span>
+          <span style="color: #379cf6;">}</span>
+        </pre>
+      </div>
+    </div>
+  </div>
+  <div id="outline-container-orgc795162" class="outline-3">
+    <h3 id="orgc795162">Testing</h3>
+    <div class="outline-text-3" id="text-orgc795162">
+      <p>
+        In order to ensure that the validation functions were working correctly, I created tests designed to make each
+        of the matches return false. For example:
+      </p>
+
+      <div class="org-src-container">
+        <pre class="src src-rust"> <span style="color: #9f8f6a; font-style: italic;">//</span><span
+            style="color: #9f8f6a; font-style: italic;">Test long size over 20</span>
+          <span style="color: #6f80ff; font-weight: bold;">let</span> <span style="color: #af85ff;">size</span> = <span
+            style="color: #029fff;">String</span>::from<span style="color: #379cf6;">(</span><span
+            style="color: #df805f;">"1234567890123456789012312"</span><span style="color: #379cf6;">)</span>;
+          <span style="color: #6f80ff; font-weight: bold;">let</span> <span style="color: #af85ff;">traits</span> =
+          <span style="color: #7fafff;">vec!</span><span style="color: #379cf6;">[</span>
+          <span style="color: #029fff;">String</span>::from<span style="color: #d0730f;">(</span><span
+            style="color: #df805f;">"Fast"</span><span style="color: #d0730f;">)</span>,
+          <span style="color: #029fff;">String</span>::from<span style="color: #d0730f;">(</span><span
+            style="color: #df805f;">"Slow"</span><span style="color: #d0730f;">)</span>,
+          <span style="color: #029fff;">String</span>::from<span style="color: #d0730f;">(</span><span
+            style="color: #df805f;">"speedy"</span><span style="color: #d0730f;">)</span>,
+          <span style="color: #379cf6;">]</span>;
+          <span style="color: #6f80ff; font-weight: bold;">let</span> <span style="color: #af85ff;">monster</span> =
+          <span style="color: #029fff;">Monster</span> <span style="color: #379cf6;">{</span>
+          <span style="color: #af85ff;">url</span>: <span style="color: #029fff;">String</span>::from<span
+            style="color: #d0730f;">(</span><span style="color: #df805f;">"www.foo.com"</span><span
+            style="color: #d0730f;">)</span>,
+          <span style="color: #af85ff;">name</span>: <span style="color: #029fff;">String</span>::from<span
+            style="color: #d0730f;">(</span><span style="color: #df805f;">"ghost"</span><span
+            style="color: #d0730f;">)</span>,
+          <span style="color: #af85ff;">level</span>: 19,
+          <span style="color: #af85ff;">alignment</span>: long_string.clone<span style="color: #d0730f;">()</span>,
+          <span style="color: #af85ff;">monster_type</span>: <span style="color: #029fff;">String</span>::from<span
+            style="color: #d0730f;">(</span><span style="color: #df805f;">"Undead"</span><span
+            style="color: #d0730f;">)</span>,
+          size,
+          traits,
+          <span style="color: #af85ff;">is_caster</span>: <span style="color: #6f80ff; font-weight: bold;">false</span>,
+          <span style="color: #af85ff;">is_ranged</span>: <span style="color: #6f80ff; font-weight: bold;">false</span>,
+          <span style="color: #af85ff;">is_aquatic</span>: <span
+            style="color: #6f80ff; font-weight: bold;">false</span>,
+          <span style="color: #379cf6;">}</span>;
+
+          <span style="color: #7fafff;">assert!</span><span style="color: #379cf6;">[</span>!monster.validate<span
+            style="color: #d0730f;">()</span><span style="color: #379cf6;">]</span>;
+        </pre>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="outline-container-orgff0c63f" class="outline-2">
+  <h2 id="orgff0c63f">Parsing the traits to for valid data</h2>
+  <div class="outline-text-2" id="text-orgff0c63f">
+    <p>
+      After scraping the traits from the web, I first ensured that the trait strings were properly trimmed:
+    </p>
+
+    <div class="org-src-container">
+      <pre class="src src-rust"> <span style="color: #6f80ff; font-weight: bold;">let</span> <span
+          style="color: #6f80ff; font-weight: bold;">mut</span> <span style="color: #af85ff;">clean_traits</span>: <span
+          style="color: #029fff;">Vec</span><span style="color: #379cf6;">&lt;</span><span
+          style="color: #029fff;">String</span><span style="color: #379cf6;">&gt;</span> = <span
+          style="color: #029fff;">Vec</span>::new<span style="color: #379cf6;">()</span>;
+        <span style="color: #6f80ff; font-weight: bold;">for</span> <span style="color: #af85ff;">t</span> <span
+          style="color: #6f80ff; font-weight: bold;">in</span> traits <span style="color: #379cf6;">{</span>
+        <span style="color: #6f80ff; font-weight: bold;">let</span> <span style="color: #af85ff;">anchor</span> = <span
+          style="color: #029fff;">Html</span>::parse_fragment<span style="color: #d0730f;">(</span><span
+          style="color: #d0d0d0; background-color: #070019;">&amp;</span>t<span style="color: #d0730f;">)</span>
+        .select<span style="color: #d0730f;">(</span><span
+          style="color: #d0d0d0; background-color: #070019;">&amp;</span>anchor_selector<span
+          style="color: #d0730f;">)</span>
+        .map<span style="color: #d0730f;">(</span>|x| x.inner_html<span style="color: #6f80ff;">()</span><span
+          style="color: #d0730f;">)</span>
+        .next<span style="color: #d0730f;">()</span>;
+        <span style="color: #6f80ff; font-weight: bold;">if</span> <span
+          style="color: #6f80ff; font-weight: bold;">let</span> <span style="color: #029fff;">Some</span><span
+          style="color: #d0730f;">(</span>s<span style="color: #d0730f;">)</span> = anchor <span
+          style="color: #d0730f;">{</span>
+        clean_traits.push<span style="color: #6f80ff;">(</span>s.trim<span
+          style="color: #df805f;">()</span>.to_string<span style="color: #df805f;">()</span><span
+          style="color: #6f80ff;">)</span>;
+        <span style="color: #d0730f;">}</span> <span style="color: #6f80ff; font-weight: bold;">else</span> <span
+          style="color: #d0730f;">{</span>
+        clean_traits.push<span style="color: #6f80ff;">(</span>t.trim<span
+          style="color: #df805f;">()</span>.to_string<span style="color: #df805f;">()</span><span
+          style="color: #6f80ff;">)</span>;
+        <span style="color: #d0730f;">}</span>
+        <span style="color: #379cf6;">}</span>
+      </pre>
+    </div>
+
+    <p>
+      In some cases the traits contained anchor tags, while in others they didn't. I removed the anchor tags by
+      retrieving the inner HTML in the cases where the string contained an anchor tag. As this function returned an
+      <code>Option&lt;String&gt;</code>, I used an if let to check if the anchor was Some or None and then trimmed the
+      remaining string.
+    </p>
+
+    <p>
+      Next I checked to see if I had successfully retrieved data for each trait in the struct. In some cases the size
+      trait was contained in a <code>&lt;span class="size"&gt;</code> with a class of <code>size</code> to correctly
+      color it, and in others it was in a <code>&lt;span&gt;</code> with no class. To handle these cases I first checked
+      if the scraper had returned <code>Some(String)</code> and in that case, extracted the string from the
+      <code>Option&lt;String&gt;</code> in the <code>else</code> of the <code>if let</code> statement I looped over the
+      traits and used and used a match to see if any of the traits matched a valid size.
+    </p>
+
+    <div class="org-src-container">
+      <pre class="src src-rust"> <span style="color: #6f80ff; font-weight: bold;">let</span> <span
+          style="color: #af85ff;">size</span>: <span style="color: #029fff;">String</span> = <span
+          style="color: #6f80ff; font-weight: bold;">if</span> <span
+          style="color: #6f80ff; font-weight: bold;">let</span> <span style="color: #029fff;">Some</span><span
+          style="color: #379cf6;">(</span>s<span style="color: #379cf6;">)</span> = size_base <span
+          style="color: #379cf6;">{</span>
+        s
+        <span style="color: #379cf6;">}</span> <span style="color: #6f80ff; font-weight: bold;">else</span> <span
+          style="color: #379cf6;">{</span>
+        <span style="color: #6f80ff; font-weight: bold;">let</span> <span
+          style="color: #6f80ff; font-weight: bold;">mut</span> <span style="color: #af85ff;">size_string</span> = <span
+          style="color: #029fff;">String</span>::from<span style="color: #d0730f;">(</span><span
+          style="color: #df805f;">"NO SIZE"</span><span style="color: #d0730f;">)</span>;
+        <span style="color: #6f80ff; font-weight: bold;">let</span> <span
+          style="color: #6f80ff; font-weight: bold;">mut</span> <span style="color: #af85ff;">new_traits</span>: <span
+          style="color: #029fff;">Vec</span><span style="color: #d0730f;">&lt;</span><span
+          style="color: #029fff;">String</span><span style="color: #d0730f;">&gt;</span> = <span
+          style="color: #029fff;">Vec</span>::new<span style="color: #d0730f;">()</span>;
+        <span style="color: #6f80ff; font-weight: bold;">for</span> <span style="color: #af85ff;">t</span> <span
+          style="color: #6f80ff; font-weight: bold;">in</span> traits <span style="color: #d0730f;">{</span>
+        <span style="color: #6f80ff; font-weight: bold;">match</span> t.as_str<span style="color: #6f80ff;">()</span>
+        <span style="color: #6f80ff;">{</span>
+        <span style="color: #df805f;">"Tiny"</span> =&gt; size_string = t,
+        <span style="color: #df805f;">"Small"</span> =&gt; size_string = t,
+        <span style="color: #df805f;">"Medium"</span> =&gt; size_string = t,
+        <span style="color: #df805f;">"Large"</span> =&gt; size_string = t,
+        <span style="color: #df805f;">"Huge"</span> =&gt; size_string = t,
+        <span style="color: #df805f;">"Gargantuan"</span> =&gt; size_string = t,
+        _ =&gt; new_traits.push<span style="color: #df805f;">(</span>t<span style="color: #df805f;">)</span>,
+        <span style="color: #6f80ff;">}</span>;
+        <span style="color: #d0730f;">}</span>
+        traits = new_traits;
+        size_string
+        <span style="color: #379cf6;">}</span>;
+      </pre>
+    </div>
+  </div>
+</div>
+
+
+</div>
+
+<footer>
+  <div>
+    <a href="/">Home</a>
+    <a href="mailto: chris@chris-hughes.dev">Email</a>
+    <div>
+      <small>&copy; Chris Hughes 2025</small>
+    </div>
+  </div>
+</footer>
+
+</html>

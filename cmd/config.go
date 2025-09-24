@@ -1,6 +1,7 @@
 package main
 
 import (
+	"html/template"
 	"os"
 	"time"
 
@@ -20,6 +21,7 @@ type Site struct {
 
 type Page struct {
 	Title string
+	Post  template.HTML
 }
 
 type Contact struct {

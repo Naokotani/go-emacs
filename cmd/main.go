@@ -17,7 +17,7 @@ type application struct {
 func main() {
 	outputPath := os.Getenv("OUTPUT_PATH")
 	configPath := os.Getenv("CONFIG_PATH")
-	pagesTemplateCache, err := newPagesTemplateCache("./ui/html/pages/*.gotmpl")
+	pagesTemplateCache, err := newTemplateCache("./ui/html/pages/*.gotmpl")
 	if err != nil {
 		fmt.Printf("%s\n", err)
 		return
@@ -38,6 +38,11 @@ func main() {
 
 	err = app.generatePages()
 	if err != nil {
-		fmt.Printf("ERROR: %s", err)
+		fmt.Printf("ERROR: %s\n", err)
+	}
+
+	err = app.generatePosts()
+	if err != nil {
+		fmt.Printf("ERROR: %s\n", err)
 	}
 }

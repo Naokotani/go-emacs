@@ -1,0 +1,198 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title></title>
+  <link rel="shortcut icon" type="static/image/png" href="images/favicon-16x16.png" />
+  <link rel="stylesheet" type="text/css" href="/static/css/normalize.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/styles.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Source+Sans+Pro&display=swap"
+    rel="stylesheet">
+  <link rel="alternate" type="application/rss+xml" title="" href="/rss">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description"
+    content="A Developer blog for Chris Hughes. Specializes in JavaScript, Rust, Web development, SQL" />
+  <script src="https://unpkg.com/htmx.org@1.9.10"
+    integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous" defer>
+    </script>
+  <script src="/static/js/menu.js" defer></script>
+  <script src="/static/js/colors.js" defer></script>
+</head>
+
+
+<header class="desktop">
+  <nav>
+    <a href="/about" hx-get="/cards" hx-swap="innerHTML" hx-push-url="/" hx-target="#contentDiv">
+      <h2>Chris Hughes dot Dev</h2>
+    </a>
+    <div class="social-links">
+      <a href="/about" hx-get="/resume" hx-swap="innerHTML" hx-push-url="/resume"
+        hx-target="#contentDiv">Resume</a>
+      <a href="https://github.com/naokontai" target="_blank" rel="noopener noreferrer">
+        GitHub
+      </a>
+      <a href="/about" hx-get="/about" hx-swap="innerHTML" hx-push-url="/about" hx-target="#contentDiv">About</a>
+      <a href="mailto: chris@chris-hughes.dev">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+      <a href="/rss">
+        <i class="fa-solid fa-rss"></i>
+      </a>
+      <button id="theme-toggle">
+        <i id="moon" class="fa-regular fa-moon"></i>
+        <i id="bulb" class="fa-regular fa-lightbulb"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<header class="mobile">
+  <nav>
+    <a href="/cards" hx-get="/cards" hx-swap="innerHTML" hx-push-url="/" hx-target="#contentDiv">
+      <h2>Chris Hughes.Dev</h2>
+    </a>
+    <a href="javascript:void(0);" onclick="handleSocial()">
+      <i class="fa fa-bars menu"></i>
+    </a>
+  </nav>
+</header>
+<div id="social-menu" style="display: none;">
+  <div class="mobile-social">
+    <a href="/rss">
+      <i class="fa-solid fa-rss"></i>
+    </a>
+    <a href="mailto: chris@chris-hughes.dev">
+      <i class="fa-solid fa-envelope"></i>
+    </a>
+    <a href="https://github.com/naokontai" target="_blank" rel="noopener noreferrer">
+      <i class="fa-brands fa-github"></i>
+    </a>
+    <a href="/resume" hx-get="/resume" hx-swap="innerHTML" hx-push-url="/resume" hx-target="#contentDiv">
+      <i class="fa-regular fa-address-card"></i>
+    </a>
+    <button id="theme-toggle-mobile">
+      <i id="moon-mobile" class="fa-regular fa-moon"></i>
+      <i id="bulb-mobile" class="fa-regular fa-lightbulb"></i>
+    </button>
+  </div>
+</div>
+
+<div id="contentDiv" class="contentDiv">
+
+<p>
+  <title>Quizbot</title>
+</p>
+<summary>
+  A discord bot for managing assignments and quizes by storing them with SQLite.
+</summary>
+<h1>Quizbot</h1>
+<small class="date">Published: Fri, 17 Nov 2023 11:13:54-4:00</small>
+<br>
+<small class="tech">JavaScript | SQLite</small>
+
+<p>
+  Quizbot is a task management bot written with <a href="https://discord.js.org/">discord.js</a> that is designed to be
+  used for students or discords that are devoted to a university or college program. The bot allows users to interact
+  with four commands, one of which is restricted to server admins.
+</p>
+<div id="outline-container-org3b45d7c" class="outline-2">
+  <h2 id="org3b45d7c">Class</h2>
+  <div class="outline-text-2" id="text-org3b45d7c">
+    <p>
+      Class is the admin only command. It allows users to create, add, remove and change the status of classes by using
+      interactive commands. Because the tasks tables have a foreign key relationship dependency on the class table a
+      class can only be removed if all of the tasks for that class have been removed. To solve this problem I decided to
+      make a column in the class table that determines whether or not the class is "active" or "inactive" and if the
+      class inactive, then no tasks will appear for that class when a user shows tasks. Once all tasks that use the
+      classes primary key as their foreign key are removed, you are free to remove the class. By default, classes are
+      set to be active when they are created.
+    </p>
+  </div>
+</div>
+<div id="outline-container-org3c3a9c0" class="outline-2">
+  <h2 id="org3c3a9c0">Task</h2>
+  <div class="outline-text-2" id="text-org3c3a9c0">
+    <p>
+      The task command is how users create the tasks themselves. Using the task gives the user a prompt with select
+      style menus with available classes and provides fields to add the date for the task. After entering this data a
+      modal allows for confirmation of the task and gives an opportunity enter additional longer form information and
+      set the time.
+    </p>
+  </div>
+</div>
+<div id="outline-container-org14f9143" class="outline-2">
+  <h2 id="org14f9143">Next and Show</h2>
+  <div class="outline-text-2" id="text-org14f9143">
+    <p>
+      The next and show commands are how users display the tasks. I decided to make these commands ephemeral to reduce
+      spam in the server, while the task command is not ephemeral to make it less likely for people to try to enter the
+      same task multiple times.
+    </p>
+  </div>
+</div>
+<div id="outline-container-org0d634c9" class="outline-2">
+  <h2 id="org0d634c9">Why SQLite?</h2>
+  <div class="outline-text-2" id="text-org0d634c9">
+    <p>
+      I decided to use SQLite for this project mainly for the sake of simplicity. For personal use it would just as easy
+      to use, for example, a PostgreSQL, but if I wanted to make the bot available for others to use SQLite has the
+      advantage of being much easier for users to install use as it can set itself up without any need for extra input
+      from the user. In this case simplicity seemed more important than scalability or efficiency of the database.
+    </p>
+  </div>
+</div>
+<div id="outline-container-org74c8694" class="outline-2">
+  <h2 id="org74c8694">What's Next?</h2>
+  <div class="outline-text-2" id="text-org74c8694">
+    <p>
+      I designed this bot so that it could be made available for others to use, but as it stands it is not robust enough
+      to be made available for others to use.
+    </p>
+  </div>
+  <div id="outline-container-orgd9c2899" class="outline-3">
+    <h3 id="orgd9c2899">Database Maintenance</h3>
+    <div class="outline-text-3" id="text-orgd9c2899">
+      <p>
+        For one thing, there is currently no good way to delete classes or tasks. Tasks need to be manually deleted and
+        deleting classes requires users to delete all tasks associated with a class. This would be incredibly cumbersome
+        for normal users. I would like to implement a solution that is a scheduled task that, perhaps once a day and
+        when the app starts, will check for classes that have no associated tasks and were created more than a several
+        months ago (perhaps four months or around the length of a normal semester). Furthermore, tasks whose due date
+        has past by more than perhaps two weeks will automatically be deleted. This way, the database should
+        automatically clean itself without getting in the way too much by deleting things in a way that isn't expected.
+        It would probably be good to create a way for admins to change these values from the defaults.
+      </p>
+    </div>
+  </div>
+  <div id="outline-container-org4e2641a" class="outline-3">
+    <h3 id="org4e2641a">Validation</h3>
+    <div class="outline-text-3" id="text-org4e2641a">
+      <p>
+        The other place the bot needs improvement is validation and testing. It made some effort to validate data, but
+        more effort is required here. I am considering rewriting the bot in typescript to ensure that the data being
+        sent to the database is in the correct type in order to prevent data inconsistency. I would also like to do more
+        work on testing and using TypeScript would reduce the complexity of the tests I would need to write by
+        elimination errors from inconsistencies in types.
+      </p>
+    </div>
+  </div>
+</div>
+
+
+</div>
+
+<footer>
+  <div>
+    <a href="/">Home</a>
+    <a href="mailto: chris@chris-hughes.dev">Email</a>
+    <div>
+      <small>&copy; Chris Hughes 2025</small>
+    </div>
+  </div>
+</footer>
+
+</html>

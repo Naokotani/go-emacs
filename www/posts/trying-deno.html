@@ -83,7 +83,48 @@
 
 <div id="contentDiv" class="contentDiv">
 
-<h1>About</h1>
+<p>
+  <title>Trying Deno</title>
+</p>
+<summary>
+  Detailing my experiences with the Deno tutorial
+</summary>
+<h1>Trying Deno</h1>
+<small class="date">Published: Tue, 18 Feb 2024 11:13:54-4:00</small>
+<br>
+<small class="tech">Deno | JavaScript</small>
+
+<p>
+  Deno, as well as Node's other competitor Bun, attempt to compete with Node by solving some of the headaches that arise
+  from the complexity of the Node ecosystem. Probably the biggest issue that Deno tries to solve is dealing with the
+  complexity of and time wasted by the need to compile TypeScript before it can be run by Node. The Deno runetime is
+  able to run TypeScript files directly without the need to compile, which vastly improves developer experience. It also
+  makes it easier to get a project started by eliminating the need to create a <code>tsconfig.json</code> file. This
+  makes tools like Deno especially good for people that are first getting started with TypeScript because it is able to
+  abstract away some of the more daunting aspects of TypeScript allowing you to be able to engage directly with the core
+  of TypeScript, which as its moniker would suggest, is its typing system.
+</p>
+
+<p>
+  Deno also attempts to fill in some gaps in the Node core libraries. One example that really stands out after spending
+  time working with Rust, is the lack of an opinionated testing framework. While Node does provide the core features
+  needed for testing in the assert functions, without an outside library, it would be necessary to write your own
+  testing library in order to be able to approach testing in a systematic and consistent way. In most cases, it is
+  probably preferable to reach for a fully featured testing library like <a href="https://jestjs.io/">Jest</a>, but
+  having more robust in-built testing functionality makes testing more consistent. The best of both worlds, in my
+  opinion, is to have a testing framework tightly integrated into the runtime itself while also leaving the door open to
+  use outside libraries in the case where the in-built functionality insufficient for the requirements of a project.
+</p>
+
+<p>
+  The other problem that Deno tries to solve is security. It is common practice with Node apps to reach for something
+  like Nginx to use as a load balancer, but also for improved security by creating a more secure layer between your app
+  and the public internet. Nginx is very good at what it does, and for larger projects the time required to configure it
+  is not prohibitive. In the case of smaller projects, the need to configure a reverse proxy can be cumbersome and they
+  generally need access to fewer resources making these security features especially useful for small projects that may
+  only require network access to function.
+</p>
+
 
 </div>
 
