@@ -3,12 +3,9 @@
 <html lang="en">
 {{template "head" .}}
 {{template "nav" .}}
-<body>
-  <div id="contentDiv" class="contentDiv" hx-on::after-swap="window.scrollTo({top: 0, behavior: 'smooth'})">
-  </div>
-  <div id="web-ring">
-  </div>
-</body>
+<div id="contentDiv" class="contentDiv">
+{{template "content" .}}
+</div>
 {{template "footer" .}}
 </html>
 {{end}}

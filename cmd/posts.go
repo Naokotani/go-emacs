@@ -5,9 +5,8 @@ import (
 	"os"
 )
 
-func (app *application) generateIndex() error {
-	path := fmt.Sprintf("%s/index.html", app.outputPath)
-	outputFile, err := os.Create(path)
+func (app *application) generatePosts() error {
+	outputFile, err := os.Create(app.outputPath + "/index.html")
 	if err != nil {
 		return err
 	}
@@ -19,6 +18,8 @@ func (app *application) generateIndex() error {
 		err := fmt.Errorf("Template does not exist in the template cache.")
 		fmt.Printf("ERROR: %s", err)
 	}
+
+	fmt.Printf("year in index.go: %d", app.config.Date.Year())
 
 	err = ts.ExecuteTemplate(outputFile, "base", app.config)
 	if err != nil {

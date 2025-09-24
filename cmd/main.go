@@ -8,18 +8,16 @@ import (
 )
 
 type application struct {
-	outputPath    string
-	configPath    string
-	templateCache map[string]*template.Template
-	config        Config
+	outputPath         string
+	configPath         string
+	pagesTemplateCache map[string]*template.Template
+	config             Config
 }
 
 func main() {
-	fmt.Println("Hello, World!")
 	outputPath := os.Getenv("OUTPUT_PATH")
 	configPath := os.Getenv("CONFIG_PATH")
-	fmt.Printf("output path: %s\n", outputPath)
-	templateCache, err := newTemplateCache()
+	pagesTemplateCache, err := newPagesTemplateCache("./ui/html/pages/*.gotmpl")
 	if err != nil {
 		fmt.Printf("%s\n", err)
 		return
@@ -30,18 +28,16 @@ func main() {
 	fmt.Printf("Year: %d", config.Date.Year())
 
 	app := &application{
-		templateCache: templateCache,
-		outputPath:    outputPath,
-		configPath:    configPath,
-		config:        config,
+		pagesTemplateCache: pagesTemplateCache,
+		outputPath:         outputPath,
+		configPath:         configPath,
+		config:             config,
 	}
 
 	app.parseConfig()
 
-	err = app.generateIndex()
+	err = app.generatePages()
 	if err != nil {
 		fmt.Printf("ERROR: %s", err)
 	}
-
-	fmt.Println("Goodbye, World!")
 }

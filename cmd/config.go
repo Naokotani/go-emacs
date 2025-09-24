@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"time"
 
@@ -36,13 +35,7 @@ func (app *application) parseConfig() error {
 		return err
 	}
 
-	config := Config{}
-
-	toml.DecodeFile(f, &config)
-
-	app.config = config
-
-	fmt.Printf("Site data title: %s\n", app.config.Contact.Name)
+	toml.DecodeFile(f, &app.config)
 
 	return nil
 }
