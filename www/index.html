@@ -4,22 +4,19 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title></title>
+  <title>Chris Hughes dot Dev</title>
   <link rel="shortcut icon" type="static/image/png" href="images/favicon-16x16.png" />
   <link rel="stylesheet" type="text/css" href="/static/css/normalize.min.css">
   <link rel="stylesheet" type="text/css" href="/static/css/styles.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Source+Sans+Pro&display=swap"
     rel="stylesheet">
-  <link rel="alternate" type="application/rss+xml" title="" href="/rss">
+  <link rel="alternate" type="application/rss+xml" title="Chris Hughes dot Dev" href="/rss">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description"
     content="A Developer blog for Chris Hughes. Specializes in JavaScript, Rust, Web development, SQL" />
-  <script src="https://unpkg.com/htmx.org@1.9.10"
-    integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous" defer>
-    </script>
   <script src="/static/js/menu.js" defer></script>
   <script src="/static/js/colors.js" defer></script>
 </head>
@@ -27,16 +24,19 @@
 
 <header class="desktop">
   <nav>
-    <a href="/about" hx-get="/cards" hx-swap="innerHTML" hx-push-url="/" hx-target="#contentDiv">
+    <a href="/">
       <h2>Chris Hughes dot Dev</h2>
     </a>
     <div class="social-links">
-      <a href="/about" hx-get="/resume" hx-swap="innerHTML" hx-push-url="/resume"
-        hx-target="#contentDiv">Resume</a>
-      <a href="https://github.com/naokontai" target="_blank" rel="noopener noreferrer">
+    
+      <a href="/resume.html">Resume</a>
+    
+    
+      <a href="/about.html">About</a>
+    
+      <a href="https://github.com/naokotani" target="_blank" rel="noopener noreferrer">
         GitHub
       </a>
-      <a href="/about" hx-get="/about" hx-swap="innerHTML" hx-push-url="/about" hx-target="#contentDiv">About</a>
       <a href="mailto: chris@chris-hughes.dev">
         <i class="fa-solid fa-envelope"></i>
       </a>
@@ -52,7 +52,7 @@
 </header>
 <header class="mobile">
   <nav>
-    <a href="/cards" hx-get="/cards" hx-swap="innerHTML" hx-push-url="/" hx-target="#contentDiv">
+    <a href="/cards">
       <h2>Chris Hughes.Dev</h2>
     </a>
     <a href="javascript:void(0);" onclick="handleSocial()">
@@ -68,10 +68,10 @@
     <a href="mailto: chris@chris-hughes.dev">
       <i class="fa-solid fa-envelope"></i>
     </a>
-    <a href="https://github.com/naokontai" target="_blank" rel="noopener noreferrer">
+    <a href="https://github.com/naokotani" target="_blank" rel="noopener noreferrer">
       <i class="fa-brands fa-github"></i>
     </a>
-    <a href="/resume" hx-get="/resume" hx-swap="innerHTML" hx-push-url="/resume" hx-target="#contentDiv">
+    <a href="/resume">
       <i class="fa-regular fa-address-card"></i>
     </a>
     <button id="theme-toggle-mobile">
@@ -83,7 +83,153 @@
 
 <div id="contentDiv" class="contentDiv">
 
-<h1>Home</h1>
+<div class="intro">
+  
+<div class="intro">
+  <h2 class="underline home-header">Web development - Database Administration - DevOps</h2>
+  <h3 class="skills-list">Java | TypeScript | React | Docker | PostgreSQL | AWS | Emacs</h3>
+  <a class="h3" href="/resume">
+    <i class="fa-solid fa-address-card"></i>
+  </a>
+  <a class="h3" href="mailto: chris@chris-hughes.dev">
+    <i class="fa-solid fa-envelope"></i>
+  </a>
+  <a class="h3" href="https://github.com/naokotani" target="_blank" rel="noopenr noreffer">
+    <i class="fa-brands fa-github"></i>
+  </a>
+  <a class="h3" href="/rss">
+    <i class="fa-solid fa-rss"></i>
+  </a>
+  <a class="h3" href="https://www.linkedin.com/in/chris-hughes-a06867235/" target="_blank" rel="noopenr noreffer">
+    <i class="fa-brands fa-linkedin"></i>
+  </a>
+</div>
+
+</div>
+<div class="cards">
+  
+  <div class="card">
+    <a href="/posts/bun-SQLite.html">
+      <img alt="Bun Sqlite! picture" src="/images/bun-SQLite.png" />
+      <div class="card-content">
+        <h2>Bun Sqlite!</h2>
+        <h3>Bun | JavaScript | Sqlite</h3>
+        <p>This is a cool bun thing man</p>
+      </div>
+    </a>
+  </div>
+  
+  <div class="card">
+    <a href="/posts/bun-blog.html">
+      <img alt=" picture" src="/images/bun-blog.png" />
+      <div class="card-content">
+        <h2></h2>
+        <h3></h3>
+        <p></p>
+      </div>
+    </a>
+  </div>
+  
+  <div class="card">
+    <a href="/posts/diesel-database.html">
+      <img alt=" picture" src="/images/diesel-database.png" />
+      <div class="card-content">
+        <h2></h2>
+        <h3></h3>
+        <p></p>
+      </div>
+    </a>
+  </div>
+  
+  <div class="card">
+    <a href="/posts/emacs-CMS.html">
+      <img alt=" picture" src="/images/emacs-CMS.png" />
+      <div class="card-content">
+        <h2></h2>
+        <h3></h3>
+        <p></p>
+      </div>
+    </a>
+  </div>
+  
+  <div class="card">
+    <a href="/posts/emmet-react.html">
+      <img alt=" picture" src="/images/emmet-react.png" />
+      <div class="card-content">
+        <h2></h2>
+        <h3></h3>
+        <p></p>
+      </div>
+    </a>
+  </div>
+  
+  <div class="card">
+    <a href="/posts/encounter-builder.html">
+      <img alt=" picture" src="/images/encounter-builder.png" />
+      <div class="card-content">
+        <h2></h2>
+        <h3></h3>
+        <p></p>
+      </div>
+    </a>
+  </div>
+  
+  <div class="card">
+    <a href="/posts/paper-picker.html">
+      <img alt=" picture" src="/images/paper-picker.png" />
+      <div class="card-content">
+        <h2></h2>
+        <h3></h3>
+        <p></p>
+      </div>
+    </a>
+  </div>
+  
+  <div class="card">
+    <a href="/posts/quizbot.html">
+      <img alt=" picture" src="/images/quizbot.png" />
+      <div class="card-content">
+        <h2></h2>
+        <h3></h3>
+        <p></p>
+      </div>
+    </a>
+  </div>
+  
+  <div class="card">
+    <a href="/posts/reagent.html">
+      <img alt=" picture" src="/images/reagent.png" />
+      <div class="card-content">
+        <h2></h2>
+        <h3></h3>
+        <p></p>
+      </div>
+    </a>
+  </div>
+  
+  <div class="card">
+    <a href="/posts/trying-deno.html">
+      <img alt=" picture" src="/images/trying-deno.png" />
+      <div class="card-content">
+        <h2></h2>
+        <h3></h3>
+        <p></p>
+      </div>
+    </a>
+  </div>
+  
+  <div class="card">
+    <a href="/posts/web-scraper.html">
+      <img alt=" picture" src="/images/web-scraper.png" />
+      <div class="card-content">
+        <h2></h2>
+        <h3></h3>
+        <p></p>
+      </div>
+    </a>
+  </div>
+  
+</div>
 
 </div>
 

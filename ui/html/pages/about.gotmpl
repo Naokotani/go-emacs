@@ -1,3 +1,6 @@
 {{define "content"}}
-<h1>About</h1>
+{{if .About.Image}}
+<img src="/images/{{.About.Image}}" alt="A Self portrait of {{.Contact.Name}}">
+{{end}}
+{{.Content}}
 {{end}}

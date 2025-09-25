@@ -1,0 +1,21 @@
+{{define "intro"}}
+<div class="intro">
+  <h2 class="underline home-header">{{.Site.SubHeader}}</h2>
+  <h3 class="skills-list">{{.Site.SkillTags}}</h3>
+  <a class="h3" href="/resume">
+    <i class="fa-solid fa-address-card"></i>
+  </a>
+  <a class="h3" href="mailto: {{.Contact.Email}}">
+    <i class="fa-solid fa-envelope"></i>
+  </a>
+  <a class="h3" href="{{.Contact.Git}}" target="_blank" rel="noopenr noreffer">
+    <i class="fa-brands fa-github"></i>
+  </a>
+  <a class="h3" href="/rss">
+    <i class="fa-solid fa-rss"></i>
+  </a>
+  <a class="h3" href="{{.Contact.LinkedIn}}" target="_blank" rel="noopenr noreffer">
+    <i class="fa-brands fa-linkedin"></i>
+  </a>
+</div>
+{{end}}

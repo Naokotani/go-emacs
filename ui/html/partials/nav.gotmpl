@@ -1,16 +1,19 @@
 {{define "nav"}}
 <header class="desktop">
   <nav>
-    <a href="/about" hx-get="/cards" hx-swap="innerHTML" hx-push-url="/" hx-target="#contentDiv">
+    <a href="/">
       <h2>Chris Hughes dot Dev</h2>
     </a>
     <div class="social-links">
-      <a href="/about" hx-get="/resume" hx-swap="innerHTML" hx-push-url="/resume"
-        hx-target="#contentDiv">Resume</a>
+    {{if .Resume.Html}}
+      <a href="/resume.html">Resume</a>
+    {{end}}
+    {{if .About.Html}}
+      <a href="/about.html">About</a>
+    {{end}}
       <a href="{{.Contact.Git}}" target="_blank" rel="noopener noreferrer">
         GitHub
       </a>
-      <a href="/about" hx-get="/about" hx-swap="innerHTML" hx-push-url="/about" hx-target="#contentDiv">About</a>
       <a href="mailto: {{.Contact.Email}}">
         <i class="fa-solid fa-envelope"></i>
       </a>
@@ -26,7 +29,7 @@
 </header>
 <header class="mobile">
   <nav>
-    <a href="/cards" hx-get="/cards" hx-swap="innerHTML" hx-push-url="/" hx-target="#contentDiv">
+    <a href="/cards">
       <h2>Chris Hughes.Dev</h2>
     </a>
     <a href="javascript:void(0);" onclick="handleSocial()">
@@ -45,7 +48,7 @@
     <a href="{{.Contact.Git}}" target="_blank" rel="noopener noreferrer">
       <i class="fa-brands fa-github"></i>
     </a>
-    <a href="/resume" hx-get="/resume" hx-swap="innerHTML" hx-push-url="/resume" hx-target="#contentDiv">
+    <a href="/resume">
       <i class="fa-regular fa-address-card"></i>
     </a>
     <button id="theme-toggle-mobile">

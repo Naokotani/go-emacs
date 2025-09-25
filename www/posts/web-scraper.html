@@ -16,10 +16,7 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description"
-    content="A Developer blog for Chris Hughes. Specializes in JavaScript, Rust, Web development, SQL" />
-  <script src="https://unpkg.com/htmx.org@1.9.10"
-    integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous" defer>
-    </script>
+    content="" />
   <script src="/static/js/menu.js" defer></script>
   <script src="/static/js/colors.js" defer></script>
 </head>
@@ -27,16 +24,19 @@
 
 <header class="desktop">
   <nav>
-    <a href="/about" hx-get="/cards" hx-swap="innerHTML" hx-push-url="/" hx-target="#contentDiv">
+    <a href="/">
       <h2>Chris Hughes dot Dev</h2>
     </a>
     <div class="social-links">
-      <a href="/about" hx-get="/resume" hx-swap="innerHTML" hx-push-url="/resume"
-        hx-target="#contentDiv">Resume</a>
-      <a href="https://github.com/naokontai" target="_blank" rel="noopener noreferrer">
+    
+      <a href="/resume.html">Resume</a>
+    
+    
+      <a href="/about.html">About</a>
+    
+      <a href="https://github.com/naokotani" target="_blank" rel="noopener noreferrer">
         GitHub
       </a>
-      <a href="/about" hx-get="/about" hx-swap="innerHTML" hx-push-url="/about" hx-target="#contentDiv">About</a>
       <a href="mailto: chris@chris-hughes.dev">
         <i class="fa-solid fa-envelope"></i>
       </a>
@@ -52,7 +52,7 @@
 </header>
 <header class="mobile">
   <nav>
-    <a href="/cards" hx-get="/cards" hx-swap="innerHTML" hx-push-url="/" hx-target="#contentDiv">
+    <a href="/cards">
       <h2>Chris Hughes.Dev</h2>
     </a>
     <a href="javascript:void(0);" onclick="handleSocial()">
@@ -68,10 +68,10 @@
     <a href="mailto: chris@chris-hughes.dev">
       <i class="fa-solid fa-envelope"></i>
     </a>
-    <a href="https://github.com/naokontai" target="_blank" rel="noopener noreferrer">
+    <a href="https://github.com/naokotani" target="_blank" rel="noopener noreferrer">
       <i class="fa-brands fa-github"></i>
     </a>
-    <a href="/resume" hx-get="/resume" hx-swap="innerHTML" hx-push-url="/resume" hx-target="#contentDiv">
+    <a href="/resume">
       <i class="fa-regular fa-address-card"></i>
     </a>
     <button id="theme-toggle-mobile">
@@ -83,6 +83,12 @@
 
 <div id="contentDiv" class="contentDiv">
 
+<summary>
+  
+</summary>
+<h1></h1>
+<p><small class="date">Published: 25 Sep 2025 at 12:54 ADT</small></p>
+<p><small class="tech"></small></p>
 <p>
   <title>Web Scraper</title>
 </p>

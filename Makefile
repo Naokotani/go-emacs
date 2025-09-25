@@ -1,12 +1,11 @@
 SRC_PATH=cmd
 BIN_PATH=bin
+PORT=8080
 BIN=go-emacs
-export OUTPUT_PATH=./www
 export CONFIG_PATH=./config.toml
 
 build:
 	@mkdir -p ${SRC_PATH} ${BIN_PATH}
-	@mkdir -p ${OUTPUT_PATH}
 	@go build -C ./${SRC_PATH} -o ../${BIN_PATH}/${BIN}
 
 run: build
@@ -15,3 +14,7 @@ run: build
 clean:
 	@rm -rf ./${BIN_PATH}/${BIN}
 	@rm ./${OUTPUT_PATH}/*
+
+serve: run
+	@echo "Starting test server on port ${PORT}"
+	@python3 -m http.server ${PORT} --directory www

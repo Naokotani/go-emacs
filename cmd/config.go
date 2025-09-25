@@ -1,27 +1,35 @@
 package main
 
 import (
-	"html/template"
 	"os"
-	"time"
 
 	"github.com/BurntSushi/toml"
 )
 
 type Config struct {
-	Site    Site
-	Page    Page
+	Output  string
 	Contact Contact
-	Date    time.Time
+	Site    Site
+	Resume  Resume
+	About   About
 }
 
 type Site struct {
-	Meta string
+	Meta      string
+	Title     string
+	SubHeader string
+	SkillTags string
+	Posts     []Post
 }
 
-type Page struct {
-	Title string
-	Post  template.HTML
+type Resume struct {
+	Html string
+	Pdf  string
+}
+
+type About struct {
+	Html  string
+	Image string
 }
 
 type Contact struct {
@@ -29,6 +37,7 @@ type Contact struct {
 	Git      string
 	Email    string
 	LinkedIn string
+	Pfp      string
 }
 
 func (app *application) parseConfig() error {
@@ -38,6 +47,24 @@ func (app *application) parseConfig() error {
 	}
 
 	toml.DecodeFile(f, &app.config)
+
+	postsDir := "./ui/html/pages/posts/"
+
+	enteries, err := os.ReadDir(postsDir)
+	var posts []Post
+	if err != nil {
+		return err
+	}
+	for _, e := range enteries {
+		if e.IsDir() {
+			posts = append(posts, Post{
+				dir:      postsDir + e.Name() + "/",
+				filename: e.Name() + ".html",
+			})
+		}
+	}
+
+	app.config.Site.Posts = posts
 
 	return nil
 }

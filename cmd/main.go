@@ -4,18 +4,15 @@ import (
 	"fmt"
 	"html/template"
 	"os"
-	"time"
 )
 
 type application struct {
-	outputPath         string
 	configPath         string
 	pagesTemplateCache map[string]*template.Template
 	config             Config
 }
 
 func main() {
-	outputPath := os.Getenv("OUTPUT_PATH")
 	configPath := os.Getenv("CONFIG_PATH")
 	pagesTemplateCache, err := newTemplateCache("./ui/html/pages/*.gotmpl")
 	if err != nil {
@@ -23,26 +20,17 @@ func main() {
 		return
 	}
 
-	config := Config{}
-	config.Date = time.Now()
-	fmt.Printf("Year: %d", config.Date.Year())
-
 	app := &application{
 		pagesTemplateCache: pagesTemplateCache,
-		outputPath:         outputPath,
 		configPath:         configPath,
-		config:             config,
+		config:             Config{},
 	}
 
 	app.parseConfig()
 
 	err = app.generatePages()
 	if err != nil {
-		fmt.Printf("ERROR: %s\n", err)
+		fmt.Printf("ERROR: %s", err)
 	}
 
-	err = app.generatePosts()
-	if err != nil {
-		fmt.Printf("ERROR: %s\n", err)
-	}
 }
