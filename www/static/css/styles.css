@@ -10,21 +10,9 @@
   --cardTransition: box-shadow 200ms;
 
   /* Fonts */
-  --headingFont: 'Source Sans Pro', sans-serif;
-  --bodyFont: 'Libre Baskerville', serif;
-  --baseFontSize: 130%;
-  --h1: 3.052rem;
-  --h2: 2.441rem;
-  --h3: 1.953rem;
-  --h4: 1.563rem;
-  --h5: 1.25rem;
-  --smallText: 0.8rem;
-
   --cardWidth: 20rem;
   --cardGap: 5rem;
   --cardCols: 1;
-
-  --contentDivWidth: 20rem;
 }
 
 *,
@@ -33,77 +21,7 @@
   box-sizing: inherit;
 }
 
-/* Color Themes */
-
-.dark {
-  /*dark mode pallette*/
-  --white: #fefefe;
-  --lightGrey: #bfbfbf;
-  --grey: #404040;
-  --darkGrey: #2b2b2b;
-  --black: #141414;
-  --blacker: #101010;
-  --darkRed: #dd0000;
-  --red: #ff0000;
-  --purple: #230631;
-  --bluePurple: #060630;
-  --deepPurple: #140630;
-  --lightPink: #E8DEFC;
-
-  /*Color intentions*/
-  --background: var(--black);
-  --textColor: var(--white);
-  --lineColor: var(--purple);
-  --headerText: var(--white);
-  --cardBg: var(--darkGrey);
-  --cardText: var(--white);
-  --anchorColor: var(--darkRed);
-  --navColor: var(--deepPurple);
-  --navText: var(--lightPink);
-  --navHover: var(--white);
-  --headerColor: var(--deepPurple);
-  --codeBlocks: var(--purple);
-  --code: var(--lightGrey);
-  --borderColor: var(--purple);
-  --linkColor: var(--lightPink);
-  --linkHover: var(--white);
-  --footerColor: var(--deepPurple);
-}
-
-.light {
-  /*light mode pallette*/
-  --white: #fefefe;
-  --lightGrey: #bfbfbf;
-  --grey: #404040;
-  --darkGrey: #2b2b2b;
-  --black: #343434;
-  --blacker: #131313;
-  --darkRed: #dd0000;
-  --red: #ff0000;
-  --lightBlue: #addfff;
-  --darkBlue: #addfff;
-
-  /*Color intentions*/
-  --background: var(--white);
-  --textColor: var(--black);
-  --lineColor: var(--grey);
-  --headerText: var(--black);
-  --cardBg: var(--white);
-  --cardText: var(--black);
-  --anchorColor: var(--darkRed);
-  --navColor: var(--white);
-  --navText: var(--darkGrey);
-  --navHover: var(--blacker);
-  --headerColor: var(--lightBlue);
-  --codeBlocks: var(--purple);
-  --code: var(--grey);
-  --borderColor: var(--lightGrey);
-  --linkHover: var(--lightGrey);
-  --footerColor: var(--lightBlue);
-}
-
 /* Content Containers */
-
 .pdf-link {
   margin: auto;
   width: var(--contentDivWidth);

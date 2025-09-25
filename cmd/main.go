@@ -32,5 +32,9 @@ func main() {
 	if err != nil {
 		fmt.Printf("ERROR: %s", err)
 	}
+	err = app.generateCssVarsFile()
+	if err != nil {
+		fmt.Printf("ERROR: %s", err)
+	}
 
 }

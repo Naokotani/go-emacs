@@ -7,11 +7,12 @@ import (
 )
 
 type Config struct {
-	Output  string
-	Contact Contact
-	Site    Site
-	Resume  Resume
-	About   About
+	Output       string
+	Contact      Contact
+	StylesConfig string
+	Site         Site
+	Resume       Resume
+	About        About
 }
 
 type Site struct {

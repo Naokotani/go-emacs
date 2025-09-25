@@ -1,4 +1,5 @@
 output="./www/"
+stylesconfig="styles.toml"
 
 [contact]
 name = "Chris Hughes"
