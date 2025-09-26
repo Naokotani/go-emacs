@@ -28,11 +28,12 @@ func main() {
 
 	app.parseConfig()
 
-	err = app.generatePages()
+	css, err := app.generateCssVarsFile()
 	if err != nil {
 		fmt.Printf("ERROR: %s", err)
 	}
-	err = app.generateCssVarsFile()
+
+	err = app.generatePages(css)
 	if err != nil {
 		fmt.Printf("ERROR: %s", err)
 	}

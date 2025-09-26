@@ -23,6 +23,7 @@ type Page struct {
 	Date      time.Time
 	Resume    Resume
 	About     About
+	Css       Css
 }
 
 type Post struct {
@@ -38,27 +39,7 @@ type Post struct {
 	Date       time.Time
 }
 
-func (app *application) generatePages() error {
-	err := generatePosts(app)
-	if err != nil {
-		return err
-	}
-	err = generateAbout(app)
-	if err != nil {
-		return err
-	}
-	err = generateResume(app)
-	if err != nil {
-		return err
-	}
-	err = generateIndex(app)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func generateIndex(app *application) error {
+func (app *application) generatePages(css Css) error {
 	page := Page{
 		Title:     app.config.Site.Title,
 		SubHeader: app.config.Site.SubHeader,
@@ -67,7 +48,31 @@ func generateIndex(app *application) error {
 		Site:      app.config.Site,
 		Resume:    app.config.Resume,
 		About:     app.config.About,
+		Css:       css,
 	}
+
+	err := generatePosts(app, page)
+	if err != nil {
+		return err
+	}
+	err = generateAbout(app, page)
+	if err != nil {
+		return err
+	}
+	err = generateResume(app, page)
+	if err != nil {
+		return err
+	}
+
+	err = generateIndex(app, page)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func generateIndex(app *application, page Page) error {
+	page.Site.Posts = app.config.Site.Posts
 
 	output, err := os.Create(app.config.Output + "index.html")
 	if err != nil {
@@ -85,23 +90,13 @@ func generateIndex(app *application) error {
 	return nil
 }
 
-func generateResume(app *application) error {
+func generateResume(app *application, page Page) error {
 	resume := app.config.Resume.Html
 	if resume == "" {
 		fmt.Println("Resume string empty, skipping page. Add to config.toml to generate resume.")
 		return nil
 	}
 	fmt.Printf("Generating resume from %s\n", resume)
-
-	page := Page{
-		Title:     app.config.Site.Title,
-		SubHeader: app.config.Site.SubHeader,
-		Contact:   app.config.Contact,
-		Date:      time.Now(),
-		Site:      app.config.Site,
-		Resume:    app.config.Resume,
-		About:     app.config.About,
-	}
 
 	output, err := os.Create(app.config.Output + "resume.html")
 	if err != nil {
@@ -125,23 +120,13 @@ func generateResume(app *application) error {
 	return nil
 }
 
-func generateAbout(app *application) error {
+func generateAbout(app *application, page Page) error {
 	about := app.config.About.Html
 	if about == "" {
 		fmt.Println("About page intro string empty, skipping page. Add to config.toml to generate about page.")
 		return nil
 	}
 	fmt.Printf("Generating about from %s\n", about)
-
-	page := Page{
-		Title:     app.config.Site.Title,
-		SubHeader: app.config.Site.SubHeader,
-		Contact:   app.config.Contact,
-		Date:      time.Now(),
-		Site:      app.config.Site,
-		Resume:    app.config.Resume,
-		About:     app.config.About,
-	}
 
 	output, err := os.Create(app.config.Output + "about.html")
 	if err != nil {
@@ -166,7 +151,7 @@ func generateAbout(app *application) error {
 	return nil
 }
 
-func generatePosts(app *application) error {
+func generatePosts(app *application, page Page) error {
 	_, err := os.Stat(app.config.Output + "posts")
 
 	if errors.Is(err, os.ErrNotExist) {
@@ -182,14 +167,14 @@ func generatePosts(app *application) error {
 			return err
 		}
 
-		page := Page{
-			Title:   post.Title,
-			Contact: app.config.Contact,
-			Date:    time.Now(),
-			Post:    post,
-			Resume:  app.config.Resume,
-			About:   app.config.About,
-		}
+		page.Title = post.Title
+		page.Post = post
+
+		fmt.Printf("Genearting post for file: %s\n", post.filename)
+		fmt.Printf("title: %s\n", page.Post.Title)
+		fmt.Printf("image: %s\n", page.Post.Thumb)
+		fmt.Printf("summary: %s\n", page.Post.Summary)
+		fmt.Printf("date: %s\n\n", page.Post.DateString)
 
 		output, err := os.Create(app.config.Output + "posts/" + post.filename)
 		if err != nil {
@@ -228,7 +213,6 @@ func getPostMetadata(post Post) (Post, error) {
 	}
 
 	toml.DecodeFile(f, &post)
-	fmt.Printf("post title: %s\n", post.Title)
 
 	post.Tags = strings.Split(post.TagString, " ")
 	post.TagString = strings.ReplaceAll(post.TagString, " ", " | ")
@@ -239,7 +223,7 @@ func getPostMetadata(post Post) (Post, error) {
 	if err == nil {
 		post.Date = t
 	} else {
-		fmt.Printf("Could not parse time for %s with time string: %s\n", post.filename, post.DateString)
+		//fmt.Printf("Could not parse time for %s with time string: %s\n", post.filename, post.DateString)
 	}
 
 	return post, nil

@@ -14,6 +14,7 @@ type Css struct {
 }
 
 type Font struct {
+	FontUrl         string
 	HeadingFont     string
 	BodyFont        string
 	BaseFontSize    string
@@ -64,10 +65,10 @@ type Light struct {
 	FooterColor string
 }
 
-func (app *application) generateCssVarsFile() error {
+func (app *application) generateCssVarsFile() (Css, error) {
 	output, err := os.Create(app.config.Output + "/static/css/vars.css")
 	if err != nil {
-		return err
+		return Css{}, err
 	}
 	defer output.Close()
 	writer := bufio.NewWriter(output)
@@ -75,7 +76,7 @@ func (app *application) generateCssVarsFile() error {
 
 	css, err := parseStylesConfig(app.config.StylesConfig)
 	if err != nil {
-		return err
+		return Css{}, err
 	}
 
 	lines := []string{
@@ -91,7 +92,7 @@ func (app *application) generateCssVarsFile() error {
 		buildVarString("smallText", css.Font.SmallText),
 		buildVarString("contentDivWidth", css.Font.ContentDivWidth),
 		"}",
-		".dark {",
+		"body.dark {",
 		buildVarString("background", css.Dark.Background),
 		buildVarString("textColor", css.Dark.TextColor),
 		buildVarString("lineColor", css.Dark.LineColor),
@@ -110,7 +111,7 @@ func (app *application) generateCssVarsFile() error {
 		buildVarString("linkHover", css.Dark.LinkHover),
 		buildVarString("footerColor", css.Dark.FooterColor),
 		"}",
-		".light {",
+		"body.light {",
 		buildVarString("background", css.Light.Background),
 		buildVarString("textColor", css.Light.TextColor),
 		buildVarString("lineColor", css.Light.LineColor),
@@ -134,11 +135,11 @@ func (app *application) generateCssVarsFile() error {
 	for _, line := range lines {
 		_, err := writer.WriteString(line + "\n")
 		if err != nil {
-			return err
+			return Css{}, err
 		}
 	}
 
-	return nil
+	return css, nil
 }
 
 func buildVarString(variable, value string) string {

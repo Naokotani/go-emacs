@@ -1,4 +1,7 @@
+# Font Variables
+# Ensure that the correct font url is added to config.toml 'fonturl'
 [font]
+fonturl="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Source+Sans+Pro&display=swap"
 headingFont="'Source Sans Pro', sans-serif"
 bodyFont="'Libre Baskerville', serif"
 baseFontSize="130%"
@@ -10,6 +13,7 @@ h5="1.25rem"
 smallText="0.8rem"
 contentDivWidth="20rem"
 
+# Dark mode colours
 [dark]
 background ="#141414"
 textColor="#fefefe"
@@ -21,7 +25,7 @@ anchorColor="#dd0000"
 navColor="#060630"
 navText="#e8defc"
 navHover= "#fefefe"
-headerColor="#060630"
+headerColor="#140630"
 codeBlocks="#230631"
 code="#bfbfbf"
 borderColor="#230631"
@@ -29,6 +33,7 @@ linkColor="#e8defc"
 linkHover="#fefefe"
 footerColor="#060630"
 
+# Light mode colours
 [light]
 background="#fefefe"
 textColor="#343434"

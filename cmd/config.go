@@ -21,6 +21,7 @@ type Site struct {
 	SubHeader string
 	SkillTags string
 	Posts     []Post
+	FontUrl   string
 }
 
 type Resume struct {

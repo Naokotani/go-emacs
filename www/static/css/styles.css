@@ -27,6 +27,15 @@
   width: var(--contentDivWidth);
 }
 
+.nav-icon {
+  height: var(--h5);
+  vertical-align: middle;
+}
+
+.intro svg {
+  height: var(--h3);
+}
+
 .pdf-link a {
   color: var(--anchorColor);
   font-size: var(--h4);

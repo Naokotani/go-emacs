@@ -10,18 +10,18 @@
  --smallText: 0.8rem;
  --contentDivWidth: 20rem;
 }
-.dark {
+body.dark {
  --background: #141414;
  --textColor: #fefefe;
  --lineColor: #230631;
- --headerText: #060630;
+ --headerText: #140630;
  --cardBg: #2b2b2b;
  --cardText: #fefefe;
  --anchorColor: #dd0000;
  --navColor: #060630;
  --navText: #e8defc;
  --navHover: #fefefe;
- --headerColor: #060630;
+ --headerColor: #140630;
  --codeBlocks: #230631;
  --code: #bfbfbf;
  --borderColor: #230631;
@@ -29,7 +29,7 @@
  --linkHover: #fefefe;
  --footerColor: #060630;
 }
-.light {
+body.light {
  --background: #fefefe;
  --textColor: #343434;
  --lineColor: #404040;
