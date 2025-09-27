@@ -1,41 +1,40 @@
 package main
 
 import (
-	"fmt"
+	"github.com/naokotani/go-emacs/internal/logger"
 	"html/template"
+	"log"
 	"os"
 )
 
 type application struct {
-	configPath         string
-	pagesTemplateCache map[string]*template.Template
-	config             Config
+	configPath    string
+	templateCache map[string]*template.Template
+	config        Config
+	infoLog       *log.Logger
+	errorLog      *log.Logger
+	warnLog       *log.Logger
 }
 
 func main() {
-	configPath := os.Getenv("CONFIG_PATH")
-	pagesTemplateCache, err := newTemplateCache("./ui/html/pages/*.gotmpl")
-	if err != nil {
-		fmt.Printf("%s\n", err)
-		return
-	}
+	logger := logger.NewLogger()
 
 	app := &application{
-		pagesTemplateCache: pagesTemplateCache,
-		configPath:         configPath,
-		config:             Config{},
+		config:   Config{},
+		infoLog:  logger.InfoLog,
+		errorLog: logger.ErrorLog,
+		warnLog:  logger.WarnLog,
 	}
+
+	app.configPath = os.Getenv("CONFIG_PATH")
+	templateCache, err := newTemplateCache("./ui/html/templates/*.gotmpl")
+	if err != nil {
+		logger.ErrorLog.Fatal(err)
+		return
+	}
+	app.templateCache = templateCache
 
 	app.parseConfig()
-
-	css, err := app.generateCssVarsFile()
-	if err != nil {
-		fmt.Printf("ERROR: %s", err)
-	}
-
-	err = app.generatePages(css)
-	if err != nil {
-		fmt.Printf("ERROR: %s", err)
-	}
-
+	css := app.generateCssVarsFile()
+	app.generatePages(css)
 }

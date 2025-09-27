@@ -2,13 +2,14 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"html/template"
 	"os"
 	"strings"
 	"time"
 
 	"github.com/BurntSushi/toml"
+	"github.com/naokotani/go-emacs/internal/images"
+	_ "github.com/naokotani/go-emacs/internal/images"
 )
 
 type Page struct {
@@ -24,6 +25,7 @@ type Page struct {
 	Resume    Resume
 	About     About
 	Css       Css
+	Tags      map[string][]Post
 }
 
 type Post struct {
@@ -39,7 +41,7 @@ type Post struct {
 	Date       time.Time
 }
 
-func (app *application) generatePages(css Css) error {
+func (app *application) generatePages(css Css) {
 	page := Page{
 		Title:     app.config.Site.Title,
 		SubHeader: app.config.Site.SubHeader,
@@ -51,165 +53,171 @@ func (app *application) generatePages(css Css) error {
 		Css:       css,
 	}
 
-	err := generatePosts(app, page)
-	if err != nil {
-		return err
-	}
-	err = generateAbout(app, page)
-	if err != nil {
-		return err
-	}
-	err = generateResume(app, page)
-	if err != nil {
-		return err
-	}
+	generatePosts(app, page)
+	generateAbout(app, page)
+	generateResume(app, page)
+	page.Tags = app.config.Site.Tags
+	generateIndex(app, page)
 
-	err = generateIndex(app, page)
-	if err != nil {
-		return err
+	for tag, posts := range page.Tags {
+		page.Site.Posts = posts
+		generateTagHome(app, page, tag)
 	}
-	return nil
 }
 
-func generateIndex(app *application, page Page) error {
+func generateIndex(app *application, page Page) {
 	page.Site.Posts = app.config.Site.Posts
 
 	output, err := os.Create(app.config.Output + "index.html")
 	if err != nil {
-		return err
+		app.errorLog.Fatal(err)
 	}
 	defer output.Close()
 
-	ts, ok := app.pagesTemplateCache["index.gotmpl"]
+	ts, ok := app.templateCache["index.gotmpl"]
 	if !ok {
-		err := fmt.Errorf("Template index.html does not exist in the cache")
-		return err
+		app.errorLog.Fatal("Template index.html does not exist in the cache")
 	}
 
 	err = ts.ExecuteTemplate(output, "base", page)
-	return nil
+	if err != nil {
+		app.errorLog.Fatal(err)
+	}
 }
 
-func generateResume(app *application, page Page) error {
+func generateTagHome(app *application, page Page, tag string) {
+	app.makeOutputDir("tags")
+
+	output, err := os.Create(app.config.Output + "tags/" + tag + ".html")
+	if err != nil {
+		app.errorLog.Fatal(err)
+	}
+	defer output.Close()
+
+	ts, ok := app.templateCache["index.gotmpl"]
+	if !ok {
+		app.errorLog.Fatal("Template index.html does not exist in the cache")
+	}
+
+	err = ts.ExecuteTemplate(output, "base", page)
+
+	for k := range page.Tags {
+		app.infoLog.Printf("Generating tag pages: %s ", k)
+	}
+}
+
+func generateResume(app *application, page Page) {
 	resume := app.config.Resume.Html
 	if resume == "" {
-		fmt.Println("Resume string empty, skipping page. Add to config.toml to generate resume.")
-		return nil
+		app.warnLog.Printf("Resume string empty, skipping page. Add to config.toml to generate resume.\n")
+		return
 	}
-	fmt.Printf("Generating resume from %s\n", resume)
+	app.infoLog.Printf("Generating resume from %s\n", resume)
 
 	output, err := os.Create(app.config.Output + "resume.html")
 	if err != nil {
-		return err
+		app.errorLog.Fatal(err)
 	}
 	defer output.Close()
 
 	html, err := os.ReadFile(resume)
 	if err != nil {
-		return err
+		app.errorLog.Fatal(err)
 	}
 	page.Content = template.HTML(html)
 
-	ts, ok := app.pagesTemplateCache["resume.gotmpl"]
+	ts, ok := app.templateCache["resume.gotmpl"]
 	if !ok {
-		err := fmt.Errorf("Template resume.gotmpl does not exist in the cache")
-		return err
+		app.errorLog.Fatal("Template resume.gotmpl does not exist in the cache")
 	}
 
 	err = ts.ExecuteTemplate(output, "base", page)
-	return nil
+	if err != nil {
+		app.errorLog.Fatal(err)
+	}
 }
 
-func generateAbout(app *application, page Page) error {
+func generateAbout(app *application, page Page) {
 	about := app.config.About.Html
 	if about == "" {
-		fmt.Println("About page intro string empty, skipping page. Add to config.toml to generate about page.")
-		return nil
+		app.warnLog.Printf("About page intro string empty, skipping page. Add to config.toml to generate about page.\n")
+		return
 	}
-	fmt.Printf("Generating about from %s\n", about)
+	app.infoLog.Printf("Generating about from %s\n", about)
 
 	output, err := os.Create(app.config.Output + "about.html")
 	if err != nil {
-		return err
+		app.errorLog.Fatal(err)
 	}
 	defer output.Close()
 
 	html, err := os.ReadFile(about)
 	if err != nil {
-		return err
+		app.errorLog.Fatal(err)
 	}
 	page.Content = template.HTML(html)
-	fmt.Printf("%s\n", page.Content)
 
-	ts, ok := app.pagesTemplateCache["about.gotmpl"]
+	ts, ok := app.templateCache["about.gotmpl"]
 	if !ok {
-		err := fmt.Errorf("Template resume.gotmpl does not exist in the cache")
-		return err
+		app.errorLog.Fatal("Template resume.gotmpl does not exist in the cache")
 	}
 
 	err = ts.ExecuteTemplate(output, "base", page)
-	return nil
 }
 
-func generatePosts(app *application, page Page) error {
-	_, err := os.Stat(app.config.Output + "posts")
-
-	if errors.Is(err, os.ErrNotExist) {
-		if err := os.Mkdir(app.config.Output+"posts", os.ModePerm); err != nil {
-			return err
-		}
-	}
+func generatePosts(app *application, page Page) {
+	app.makeOutputDir("posts")
+	app.makeOutputDir("images/thumbs")
 
 	var posts []Post
 	for _, post := range app.config.Site.Posts {
-		post, err = getPostMetadata(post)
-		if err != nil {
-			return err
-		}
+		post := getPostMetadata(app, post)
+		post = app.createThumb(post)
 
 		page.Title = post.Title
 		page.Post = post
 
-		fmt.Printf("Genearting post for file: %s\n", post.filename)
-		fmt.Printf("title: %s\n", page.Post.Title)
-		fmt.Printf("image: %s\n", page.Post.Thumb)
-		fmt.Printf("summary: %s\n", page.Post.Summary)
-		fmt.Printf("date: %s\n\n", page.Post.DateString)
-
 		output, err := os.Create(app.config.Output + "posts/" + post.filename)
 		if err != nil {
-			return err
+			app.errorLog.Fatal(err)
 		}
 		defer output.Close()
 
 		html, err := os.ReadFile(post.dir + post.filename)
 		if err != nil {
-			return err
+			app.errorLog.Fatal(err)
 		}
 		page.Content = template.HTML(html)
 
-		ts, ok := app.pagesTemplateCache["post.gotmpl"]
+		postFile := "post.gotmpl"
+		ts, ok := app.templateCache[postFile]
 		if !ok {
-			err := fmt.Errorf("Template post.gotmpl does not exist in the cache")
-			return err
+			app.errorLog.Fatalf("Template %s does not exist in the cache", postFile)
 		}
 
 		err = ts.ExecuteTemplate(output, "base", page)
 		if err != nil {
-			return err
+			app.errorLog.Fatal(err)
 		}
 		posts = append(posts, post)
 	}
 
+	app.config.Site.Tags = make(map[string][]Post)
 	app.config.Site.Posts = posts
-
-	return nil
+	for _, p := range posts {
+		for _, t := range p.Tags {
+			if t != "" {
+				app.config.Site.Tags[t] = append(app.config.Site.Tags[t], p)
+			}
+		}
+	}
 }
 
-func getPostMetadata(post Post) (Post, error) {
+func getPostMetadata(app *application, post Post) Post {
 	f := post.dir + "metadata.toml"
-	if _, err := os.Stat(f); err != nil {
-		return post, err
+	if !fileExists(f) {
+		app.errorLog.Fatalf("Metadata file does not exist in %s", post.dir)
+		return post
 	}
 
 	toml.DecodeFile(f, &post)
@@ -217,14 +225,67 @@ func getPostMetadata(post Post) (Post, error) {
 	post.Tags = strings.Split(post.TagString, " ")
 	post.TagString = strings.ReplaceAll(post.TagString, " ", " | ")
 	post.Slug = "/posts/" + post.filename
-	post.Thumb = "/images/" + strings.Split(post.filename, ".")[0] + ".png"
 	layout := "Mon, 02 Jan 2006 15:04:05-07:00"
 	t, err := time.Parse(layout, post.DateString)
+	post.Thumb = ""
+
+	app.infoLog.Printf("Reading post for file: %s\n", post.filename)
+	app.logPostdata("title", post.Title, post.filename)
+	app.logPostdata("image", post.Title, post.filename)
+	app.logPostdata("summary", post.Title, post.filename)
+
 	if err == nil {
 		post.Date = t
+		app.logPostdata("date", post.Title, post.filename)
 	} else {
-		//fmt.Printf("Could not parse time for %s with time string: %s\n", post.filename, post.DateString)
+		app.warnLog.Printf("Could not parse time for %s with time string: %s\n", post.filename, post.DateString)
 	}
 
-	return post, nil
+	return post
+}
+
+func (app *application) createThumb(post Post) Post {
+	output := app.config.Output + "images/thumbs/" + strings.Split(post.filename, ".")[0] + ".png"
+	switch {
+	case fileExists(post.dir + "thumb.png"):
+		if images.IsThumbTooWide(post.dir+"thumb.png", 200) {
+			images.ResizePng(post.dir+"thumb.png", output, 0, 200)
+		} else {
+			err := CopyFile(post.dir+"thumb.png", output)
+			if err != nil {
+				app.errorLog.Fatalf("Failed to copy image %s\n%s\n", post.filename, err)
+			}
+		}
+		//TODO test
+	case fileExists(post.dir + "thumb.jpg"):
+		images.ResizeJpegToPng(post.dir+"thumb.jpg", output, 0, 200)
+		app.infoLog.Printf("Created thumb %s", output)
+	case fileExists(post.dir + "thumb.jpeg"):
+		images.ResizeJpegToPng(post.dir+"thumb.jpeg", output, 0, 200)
+		app.infoLog.Printf("Created thumb %s", output)
+	default:
+		app.errorLog.Printf("Failed to open image for %s", post.filename)
+		return post
+	}
+	app.infoLog.Printf("Created thumb %s", output)
+	post.Thumb = "/images/thumbs/" + strings.Split(post.filename, ".")[0] + ".png"
+	return post
+}
+
+func (app *application) logPostdata(field, data, filename string) {
+	if data == "" {
+		app.warnLog.Printf("No %s data for %s", field, filename)
+	} else {
+		app.infoLog.Printf("%s %s: %s", filename, field, data)
+	}
+}
+
+func (app *application) makeOutputDir(dir string) {
+	_, err := os.Stat(app.config.Output + dir)
+
+	if errors.Is(err, os.ErrNotExist) {
+		if err := os.Mkdir(app.config.Output+dir, os.ModePerm); err != nil {
+			app.errorLog.Fatalf("Failed to create uput dir %s\n%s", dir, err)
+		}
+	}
 }

@@ -65,10 +65,10 @@ type Light struct {
 	FooterColor string
 }
 
-func (app *application) generateCssVarsFile() (Css, error) {
+func (app *application) generateCssVarsFile() Css {
 	output, err := os.Create(app.config.Output + "/static/css/vars.css")
 	if err != nil {
-		return Css{}, err
+		app.errorLog.Fatal(err)
 	}
 	defer output.Close()
 	writer := bufio.NewWriter(output)
@@ -76,7 +76,7 @@ func (app *application) generateCssVarsFile() (Css, error) {
 
 	css, err := parseStylesConfig(app.config.StylesConfig)
 	if err != nil {
-		return Css{}, err
+		app.errorLog.Fatal(err)
 	}
 
 	lines := []string{
@@ -135,11 +135,11 @@ func (app *application) generateCssVarsFile() (Css, error) {
 	for _, line := range lines {
 		_, err := writer.WriteString(line + "\n")
 		if err != nil {
-			return Css{}, err
+			app.errorLog.Fatal(err)
 		}
 	}
 
-	return css, nil
+	return css
 }
 
 func buildVarString(variable, value string) string {

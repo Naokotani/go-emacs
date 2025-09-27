@@ -6,7 +6,7 @@ export CONFIG_PATH=./config.toml
 
 build:
 	@mkdir -p ${SRC_PATH} ${BIN_PATH}
-	@go build -C ./${SRC_PATH} -o ../${BIN_PATH}/${BIN}
+	@go build -C ./${SRC_PATH} -o ../${BIN_PATH}/${BIN} 2>&1
 
 run: build
 	@./${BIN_PATH}/${BIN}

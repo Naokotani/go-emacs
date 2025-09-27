@@ -1,2 +1,4 @@
 github.com/BurntSushi/toml v1.5.0 h1:W5quZX/G/csjUnuI8SUYlsHs9M38FC7znL0lIO+DvMg=
 github.com/BurntSushi/toml v1.5.0/go.mod h1:ukJfTF/6rtPPRCnwkur4qwRxa8vTRFBF0uk2lLoLwho=
+github.com/Naokotani/resize v0.0.0-20250927135436-df4e1a9caa3d h1:Jz6M40TJfUyR0EUA6A8cWj6VlA3Hq2x2CSAC4W4beDI=
+github.com/Naokotani/resize v0.0.0-20250927135436-df4e1a9caa3d/go.mod h1:88HwE9Zvn2AxF6yeWzW/2gxzjrf25emivA6+BSBbo00=

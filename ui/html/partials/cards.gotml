@@ -1,0 +1,16 @@
+{{define "cards" .}}
+<div class="cards">
+  {{range .Site.Posts}}
+  <div class="card">
+    <a href="{{.Slug}}">
+      <img alt="{{.Title}} picture" loading="lazy" src="{{.Thumb}}" />
+      <div class="card-content">
+        <h2>{{.Title}}</h2>
+        <h3>{{.TagString}}</h3>
+        <p>{{.Summary}}</p>
+      </div>
+    </a>
+  </div>
+  {{end}}
+</div>
+{{end}}

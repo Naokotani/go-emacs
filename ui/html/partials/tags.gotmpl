@@ -1,0 +1,8 @@
+{{define "tags"}}
+<p>
+<a href="/">All</a> |&nbsp;
+{{range $k, $v := .Tags}}
+<a href="/tags/{{$k}}.html">{{$k}}</a> |&nbsp;
+{{end}}
+</p>
+{{end}}

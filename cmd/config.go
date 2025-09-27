@@ -21,6 +21,7 @@ type Site struct {
 	SubHeader string
 	SkillTags string
 	Posts     []Post
+	Tags      map[string][]Post
 	FontUrl   string
 }
 
