@@ -27,7 +27,7 @@ func main() {
 	}
 
 	app.configPath = os.Getenv("CONFIG_PATH")
-	templateCache, err := newTemplateCache("./ui/html/templates/*.gotmpl")
+	templateCache, err := newTemplateCache("./ui/templates/*.gotmpl")
 	if err != nil {
 		logger.ErrorLog.Fatal(err)
 		return

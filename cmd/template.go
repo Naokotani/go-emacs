@@ -29,7 +29,7 @@ func newTemplateCache(path string) (map[string]*template.Template, error) {
 	for _, page := range pages {
 		name := filepath.Base(page)
 
-		ts, err := template.New(name).Funcs(functions).ParseFiles("./ui/html/base.gotmpl")
+		ts, err := template.New(name).Funcs(functions).ParseFiles("./ui/base.gotmpl")
 		if err != nil {
 			return nil, err
 		}
@@ -39,7 +39,7 @@ func newTemplateCache(path string) (map[string]*template.Template, error) {
 			return nil, err
 		}
 
-		ts, err = ts.ParseGlob("./ui/html/partials/*.gotmpl")
+		ts, err = ts.ParseGlob("./ui/partials/*.gotmpl")
 		if err != nil {
 			return nil, err
 		}

@@ -9,7 +9,11 @@ linkedin = "https://www.linkedin.com/in/chris-hughes-a06867235/"
 
 [about]
 image = "pfp.jpg"
-html = "./ui/html/pages/about.html"
+html = "./ui/pages/about.html"
+
+[resume]
+html="./ui/pages/resume.html"
+pdf="chris_hughes_resume.pdf"
 
 [site]
 meta = "A Developer blog for Chris Hughes. Specializes in JavaScript, Rust, Web development, SQL"
@@ -17,6 +21,3 @@ title = "Chris Hughes dot Dev"
 subheader="Web development - Database Administration - DevOps"
 skilltags="Java | TypeScript | React | Docker | PostgreSQL | AWS | Emacs"
 
-[resume]
-html="./ui/html/pages/resume.html"
-pdf="chris_hughes_resume.pdf"

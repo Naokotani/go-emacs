@@ -4,6 +4,7 @@ import (
 	"errors"
 	"html/template"
 	"os"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -61,6 +62,7 @@ func (app *application) generatePages(css Css) {
 
 	for tag, posts := range page.Tags {
 		page.Site.Posts = posts
+		app.infoLog.Printf("Generating tag page for: %s ", tag)
 		generateTagHome(app, page, tag)
 	}
 }
@@ -100,10 +102,6 @@ func generateTagHome(app *application, page Page, tag string) {
 	}
 
 	err = ts.ExecuteTemplate(output, "base", page)
-
-	for k := range page.Tags {
-		app.infoLog.Printf("Generating tag pages: %s ", k)
-	}
 }
 
 func generateResume(app *application, page Page) {
@@ -169,6 +167,59 @@ func generatePosts(app *application, page Page) {
 	app.makeOutputDir("posts")
 	app.makeOutputDir("images/thumbs")
 
+	posts := writePostHtml(app, page)
+
+	app.config.Site.Tags = make(map[string][]Post)
+	app.config.Site.Posts = posts
+	var emptyTags []string
+	app.config.Site.Tags, emptyTags = buildTagMap(posts)
+	app.warnLog.Printf("Posts with empty tag string: %s", emptyTags)
+	err := copyPostImages(posts, app.config.Output+"posts/images/")
+	if err != nil {
+		app.errorLog.Fatalf("Posts images failed to copy.\n%s\n", err)
+	}
+
+}
+
+func copyPostImages(posts []Post, dstDir string) error {
+	if !fileExists(dstDir) {
+		if err := os.Mkdir(dstDir, os.ModePerm); err != nil {
+			return err
+		}
+	}
+	for _, post := range posts {
+		files, err := getDirectoryFiles(post.dir + "images")
+		if err != nil {
+			return err
+		}
+		for _, f := range files {
+			dst := dstDir + filepath.Base(f)
+			err := CopyFile(f, dst)
+			if err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
+}
+
+func buildTagMap(posts []Post) (map[string][]Post, []string) {
+	var emptyTags []string
+	pMap := make(map[string][]Post)
+	for _, p := range posts {
+		for _, t := range p.Tags {
+			if t != "" {
+				pMap[t] = append(pMap[t], p)
+			} else {
+				emptyTags = append(emptyTags, p.filename)
+			}
+		}
+	}
+	return pMap, emptyTags
+}
+
+func writePostHtml(app *application, page Page) []Post {
 	var posts []Post
 	for _, post := range app.config.Site.Posts {
 		post := getPostMetadata(app, post)
@@ -201,16 +252,7 @@ func generatePosts(app *application, page Page) {
 		}
 		posts = append(posts, post)
 	}
-
-	app.config.Site.Tags = make(map[string][]Post)
-	app.config.Site.Posts = posts
-	for _, p := range posts {
-		for _, t := range p.Tags {
-			if t != "" {
-				app.config.Site.Tags[t] = append(app.config.Site.Tags[t], p)
-			}
-		}
-	}
+	return posts
 }
 
 func getPostMetadata(app *application, post Post) Post {

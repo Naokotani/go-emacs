@@ -51,7 +51,7 @@ func (app *application) parseConfig() error {
 
 	toml.DecodeFile(f, &app.config)
 
-	postsDir := "./ui/html/pages/posts/"
+	postsDir := "./posts/"
 
 	enteries, err := os.ReadDir(postsDir)
 	var posts []Post
