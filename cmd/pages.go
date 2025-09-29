@@ -78,8 +78,8 @@ func (app *application) generateViews(css Css) {
 	}
 }
 
-func generateIndex(app *application, page View) {
-	page.Site.Posts = app.config.Site.Posts
+func generateIndex(app *application, view View) {
+	view.Site.Posts = app.config.Site.Posts
 
 	output, err := os.Create(app.config.Output + "index.html")
 	if err != nil {
@@ -92,13 +92,13 @@ func generateIndex(app *application, page View) {
 		app.errorLog.Fatal("Template index.html does not exist in the cache")
 	}
 
-	err = ts.ExecuteTemplate(output, "base", page)
+	err = ts.ExecuteTemplate(output, "base", view)
 	if err != nil {
 		app.errorLog.Fatal(err)
 	}
 }
 
-func generateTagHome(app *application, page View, tag string) {
+func generateTagHome(app *application, view View, tag string) {
 	app.makeOutputDir("tags")
 
 	output, err := os.Create(app.config.Output + "tags/" + tag + ".html")
@@ -112,10 +112,10 @@ func generateTagHome(app *application, page View, tag string) {
 		app.errorLog.Fatal("Template index.html does not exist in the cache")
 	}
 
-	err = ts.ExecuteTemplate(output, "base", page)
+	err = ts.ExecuteTemplate(output, "base", view)
 }
 
-func generateResume(app *application, page View) {
+func generateResume(app *application, view View) {
 	resume := app.config.Resume.Html
 	if resume == "" {
 		app.warnLog.Printf("Resume string empty, skipping page. Add to config.toml to generate resume.\n")
@@ -134,14 +134,14 @@ func generateResume(app *application, page View) {
 	if err != nil {
 		app.errorLog.Fatal(err)
 	}
-	page.Content = template.HTML(html)
+	view.Content = template.HTML(html)
 
 	ts, ok := app.templateCache["resume.gotmpl"]
 	if !ok {
 		app.errorLog.Fatal("Template resume.gotmpl does not exist in the cache")
 	}
 
-	err = ts.ExecuteTemplate(output, "base", page)
+	err = ts.ExecuteTemplate(output, "base", view)
 	if err != nil {
 		app.errorLog.Fatal(err)
 	}
@@ -205,8 +205,8 @@ func writePage(app *application, view View, dst, srcFile string) {
 
 }
 
-func generatePosts(app *application, page View) {
-	posts := writePostHtml(app, page)
+func generatePosts(app *application, view View) {
+	posts := writePostHtml(app, view)
 
 	app.config.Site.Tags = make(map[string][]Post)
 	app.config.Site.Posts = posts
@@ -237,14 +237,14 @@ func buildTagMap(posts []Post) (map[string][]Post, []string) {
 	return pMap, emptyTags
 }
 
-func writePostHtml(app *application, page View) []Post {
+func writePostHtml(app *application, view View) []Post {
 	var posts []Post
 	for _, post := range app.config.Site.Posts {
 		post := getPostMetadata(app, post)
 		post = app.createThumb(post)
 
-		page.Title = post.Title
-		page.Post = post
+		view.Title = post.Title
+		view.Post = post
 
 		output, err := os.Create(app.config.Output + "posts/" + post.filename)
 		if err != nil {
@@ -256,7 +256,7 @@ func writePostHtml(app *application, page View) []Post {
 		if err != nil {
 			app.errorLog.Fatal(err)
 		}
-		page.Content = template.HTML(html)
+		view.Content = template.HTML(html)
 
 		postFile := "post.gotmpl"
 		ts, ok := app.templateCache[postFile]
@@ -264,7 +264,7 @@ func writePostHtml(app *application, page View) []Post {
 			app.errorLog.Fatalf("Template %s does not exist in the cache", postFile)
 		}
 
-		err = ts.ExecuteTemplate(output, "base", page)
+		err = ts.ExecuteTemplate(output, "base", view)
 		if err != nil {
 			app.errorLog.Fatal(err)
 		}

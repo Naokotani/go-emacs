@@ -22,11 +22,54 @@
 ;;; Code:
 
 
-(defun go-emacs-publish-blog ())
 
 (setq go-emacs-blog-root-dir "/home/naokotani/code/go/go-emacs/")
+(setq go-emacs-blog-output-dir "/home/naokotani/code/go/go-emacs/site/")
+(setq go-emacs-blog-binary "/home/naokotani/code/go/go-emacs/bin/go-emacs")
 
-(defun go-emacs-create-post ())
+(defun go-emacs-publish-blog ()
+  "Run the go-emacs binary asynchronously to publish the blog."
+  (interactive)
+  (start-process "go-emacs-publish-blog"
+                 "*Go Emacs Blog*"
+                 go-emacs-blog-binary)
+  (message "Publishing blog..."))
+
+(defun go-emacs-create-post (dirname)
+  "Create a new blog post in posts/DIRNAME with an .org file and images/ subdir."
+  (interactive "sPost directory name: ")
+  (let* ((posts-dir (expand-file-name "posts/" go-emacs-blog-root-dir))
+         (post-dir (expand-file-name dirname posts-dir))
+         (images-dir (expand-file-name "images" post-dir))
+         (org-file (expand-file-name (concat dirname ".org") post-dir))
+         (timestamp (format-time-string "[%Y-%m-%d %a %H:%M]")))
+    (unless (file-exists-p posts-dir)
+      (make-directory posts-dir t))
+    (make-directory post-dir t)
+    (make-directory images-dir t)
+    (unless (file-exists-p org-file)
+      (with-temp-file org-file
+        (insert (format "#+title:\n#+date: %s\n#+filetags: :post:\n#+tags:\n#+summary:\n"
+                        timestamp))))
+    (find-file org-file)))
+
+(defun go-emacs-create-page (dirname)
+  "Create a new blog post in posts/DIRNAME with an .org file and images/ subdir."
+  (interactive "sPage directory name: ")
+  (let* ((pages-dir (expand-file-name "pages/" go-emacs-blog-root-dir))
+         (page-dir (expand-file-name dirname pages-dir))
+         (images-dir (expand-file-name "images" page-dir))
+         (org-file (expand-file-name (concat dirname ".org") page-dir))
+         (timestamp (format-time-string "[%Y-%m-%d %a %H:%M]")))
+    (unless (file-exists-p pages-dir)
+      (make-directory pages-dir t))
+    (make-directory page-dir t)
+    (make-directory images-dir t)
+    (unless (file-exists-p org-file)
+      (with-temp-file org-file
+        (insert (format "#+title:\n#+date: %s\n#+filetags: :page:\n"
+                        timestamp))))
+    (find-file org-file)))
 
 (defun go-emacs-publish-post ()
   (interactive)
