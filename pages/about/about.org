@@ -1,0 +1,9 @@
+#+title: About
+#+date:       [2024-03-03 Sun 11:16]
+#+filetags:   :post:
+#+identifier: 20240303T111629
+
+[[file:images/pfp.jpg]]
+
+* About Me
+I am a software developer from Cape Breton, Nova Scotia. I specialize in back-end web development including database administration, system administration and devOps. I am familiar with a variety of programming languages including Java, JavaScript, C, C++, Rust, Clojure and Python. I am always experimenting and learning new technologies, so I can find the right tool for the job. For more about me and my projects check out my [[https://github.com/Naokotani][GitHub]].

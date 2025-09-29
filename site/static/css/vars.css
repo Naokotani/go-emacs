@@ -1,0 +1,50 @@
+:root {
+ --headingFont: 'Source Sans Pro', sans-serif;
+ --bodyFont: 'Libre Baskerville', serif;
+ --baseFontSize: 130%;
+ --h1: 3.052rem;
+ --h2: 2.441rem;
+ --h3: 1.953rem;
+ --h4: 1.563rem;
+ --h5: 1.25rem;
+ --smallText: 0.8rem;
+ --contentDivWidth: 20rem;
+}
+body.dark {
+ --background: #141414;
+ --textColor: #fefefe;
+ --lineColor: #230631;
+ --headerText: #140630;
+ --cardBg: #2b2b2b;
+ --cardText: #fefefe;
+ --anchorColor: #dd0000;
+ --navColor: #060630;
+ --navText: #e8defc;
+ --navHover: #fefefe;
+ --headerColor: #140630;
+ --codeBlocks: #230631;
+ --code: #bfbfbf;
+ --borderColor: #230631;
+ --linkColor: #e8defc;
+ --linkHover: #fefefe;
+ --footerColor: #060630;
+}
+body.light {
+ --background: #fefefe;
+ --textColor: #343434;
+ --lineColor: #404040;
+ --headerText: #addfff;
+ --cardBg: #fefefe;
+ --cardText: #343434;
+ --anchorColor: #dd0000;
+ --navColor: #fefefe;
+ --navText: #2b2b2b;
+ --navHover: #131313;
+ --headerColor: #addfff;
+ --codeBlocks: #fefefe;
+ --code: #404040;
+ --borderColor: #bfbfbf;
+ --linkColor: #e8defc;
+ --linkHover: #bfbfbf;
+ --footerColor: #addfff;
+}

@@ -17,4 +17,4 @@ clean:
 
 serve: run
 	@echo "Starting test server on port ${PORT}"
-	@python3 -m http.server ${PORT} --directory www
+	@python3 -m http.server ${PORT} --directory site

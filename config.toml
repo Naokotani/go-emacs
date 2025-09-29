@@ -1,4 +1,4 @@
-output="./www/"
+  output="./site/"
 stylesconfig="styles.toml"
 
 [contact]

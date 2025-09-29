@@ -7,7 +7,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/BurntSushi/toml"
 	"github.com/naokotani/go-emacs/internal/images"
 )
 
@@ -160,11 +159,12 @@ func (app *application) getPagesData() []Page {
 	for _, dir := range dirs {
 		page := Page{
 			Title:   dir.Name(),
-			Slug:    dir.Name() + "/" + dir.Name() + ".html",
+			Slug:    "/" + dir.Name() + "/" + dir.Name() + ".html",
 			src:     app.config.Pages.Dir + dir.Name() + "/" + dir.Name(),
 			dst:     app.config.Output + dir.Name() + "/" + dir.Name(),
 			dirName: dir.Name(),
 		}
+		page = getPageMetadata(app, page, app.config.Pages.Dir+dir.Name()+"/metadata.toml")
 		pages = append(pages, page)
 	}
 	return pages
@@ -206,9 +206,6 @@ func writePage(app *application, view View, dst, srcFile string) {
 }
 
 func generatePosts(app *application, page View) {
-	app.makeOutputDir("posts")
-	app.makeOutputDir("images/thumbs")
-
 	posts := writePostHtml(app, page)
 
 	app.config.Site.Tags = make(map[string][]Post)
@@ -276,37 +273,6 @@ func writePostHtml(app *application, page View) []Post {
 	return posts
 }
 
-func getPostMetadata(app *application, post Post) Post {
-	f := post.dir + "metadata.toml"
-	if !fileExists(f) {
-		app.errorLog.Fatalf("Metadata file does not exist in %s", post.dir)
-		return post
-	}
-
-	toml.DecodeFile(f, &post)
-
-	post.Tags = strings.Split(post.TagString, " ")
-	post.TagString = strings.ReplaceAll(post.TagString, " ", " | ")
-	post.Slug = "/posts/" + post.filename
-	layout := "Mon, 02 Jan 2006 15:04:05-07:00"
-	t, err := time.Parse(layout, post.DateString)
-	post.Thumb = ""
-
-	app.infoLog.Printf("Reading post for file: %s\n", post.filename)
-	app.logPostdata("title", post.Title, post.filename)
-	app.logPostdata("image", post.Title, post.filename)
-	app.logPostdata("summary", post.Title, post.filename)
-
-	if err == nil {
-		post.Date = t
-		app.logPostdata("date", post.Title, post.filename)
-	} else {
-		app.warnLog.Printf("Could not parse time for %s with time string: %s\n", post.filename, post.DateString)
-	}
-
-	return post
-}
-
 func (app *application) createThumb(post Post) Post {
 	output := app.config.Output + "images/thumbs/" + strings.Split(post.filename, ".")[0] + ".png"
 	switch {
@@ -333,14 +299,6 @@ func (app *application) createThumb(post Post) Post {
 	app.infoLog.Printf("Created thumb %s", output)
 	post.Thumb = "/images/thumbs/" + strings.Split(post.filename, ".")[0] + ".png"
 	return post
-}
-
-func (app *application) logPostdata(field, data, filename string) {
-	if data == "" {
-		app.warnLog.Printf("No %s data for %s", field, filename)
-	} else {
-		app.infoLog.Printf("%s %s: %s", filename, field, data)
-	}
 }
 
 func (app *application) makeOutputDir(dir string) {

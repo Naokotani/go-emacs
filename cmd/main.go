@@ -35,6 +35,8 @@ func main() {
 	app.templateCache = templateCache
 
 	app.parseConfig()
+	app.buildOutputDirs()
+	app.copySiteFiles()
 	css := app.generateCssVarsFile()
 	app.generateViews(css)
 }

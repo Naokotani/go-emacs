@@ -1,6 +1,6 @@
 #+title:      Diesel Database
 #+date:       [2024-03-03 Sun 11:16]
-#+filetags:   :blog:
+#+filetags:   :post:
 #+identifier: 20240303T111629
 #+tags: Rust Diesel PostgreSQ
 #+summary: This is a post about Diesel and Rust.

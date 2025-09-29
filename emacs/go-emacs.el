@@ -21,24 +21,10 @@
 ;;
 ;;; Code:
 
-;; (defun go-emacs-publish-post ()
-;;   (interactive)
-;;   (setq org-html-doctype "html5")
-;;   (let ((filename (org-html-export-to-html nil nil nil t)))
-;;     (copy-file (concat (file-name-sans-extension filename) ".png")
-;;                "/rsync:quizbot:/home/naokotani/bun-blog/posts/images/" t)
-;;     (copy-file filename "/rsync:quizbot:/home/naokotani/bun-blog/posts/html/" t)))
 
-;; (defun go-emacs-publish ()
-;;   (interactive)
-;;   (let ((copy-location "/rsync:quizbot:/home/naokotani/bun-blog/posts/resume/" ))
-;;         (copy-file "/home/naokotani/Documents/denote/blog/resume/chris_hughes_resume.pdf" copy-location t)
-;;         (setq org-html-doctype "html5")
-;;         (let ((filename (org-html-export-to-html nil nil nil t)))
-;;                 (copy-file filename copy-location t))))
-
-(defun go-emacs-create-blog ())
 (defun go-emacs-publish-blog ())
+
+(setq go-emacs-blog-root-dir "/home/naokotani/code/go/go-emacs/")
 
 (defun go-emacs-create-post ())
 
@@ -48,9 +34,10 @@
         (org-html-html5-fancy t)
         (org-export-with-toc nil)
         (org-export-with-section-numbers nil))
-    (org-html-export-to-html nil nil nil t)))
+    (org-html-export-to-html nil nil nil t))
+  (go-emacs-publish-post-metadata))
 
-(defun go-emacs-publish-metadata ()
+(defun go-emacs-publish-post-metadata ()
   (interactive)
   (let* ((keywords (org-collect-keywords '("TITLE" "DATE" "TAGS" "SUMMARY")))
          (title   (car (alist-get "TITLE" keywords nil nil #'string=)))
@@ -62,6 +49,22 @@
       (insert (format "tagString=\"%s\"\n" tags))
       (insert (format "summary=\"%s\"\n" summary))
       (insert (format "datestring=\"%s\"\n" date)))))
+
+(defun go-emacs-publish-page ()
+  (interactive)
+  (let ((org-html-doctype "html5")
+        (org-html-html5-fancy t)
+        (org-export-with-toc nil)
+        (org-export-with-section-numbers nil))
+    (org-html-export-to-html nil nil nil t))
+  (go-emacs-publish-page-metadata))
+
+(defun go-emacs-publish-page-metadata ()
+  (interactive)
+  (let* ((keywords (org-collect-keywords '("TITLE" "DATE" "TAGS" "SUMMARY")))
+         (title   (car (alist-get "TITLE" keywords nil nil #'string=))))
+    (with-temp-file "metadata.toml"
+      (insert (format "title=\"%s\"\n" title)))))
 
 (provide 'go-emacs)
 ;;; go-emacs.el ends here
