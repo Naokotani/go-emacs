@@ -7,12 +7,12 @@ email = "chris@chris-hughes.dev"
 git = "https://github.com/naokotani"
 linkedin = "https://www.linkedin.com/in/chris-hughes-a06867235/"
 
-[about]
-image = "pfp.jpg"
-html = "./ui/pages/about.html"
+[pages]
+dir = "./pages/"
 
 [resume]
-html="./ui/pages/resume.html"
+dir="./resume/"
+html="./resume/resume.html"
 pdf="chris_hughes_resume.pdf"
 
 [site]

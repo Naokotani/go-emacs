@@ -36,5 +36,5 @@ func main() {
 
 	app.parseConfig()
 	css := app.generateCssVarsFile()
-	app.generatePages(css)
+	app.generateViews(css)
 }

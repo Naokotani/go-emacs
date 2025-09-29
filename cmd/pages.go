@@ -4,16 +4,14 @@ import (
 	"errors"
 	"html/template"
 	"os"
-	"path/filepath"
 	"strings"
 	"time"
 
 	"github.com/BurntSushi/toml"
 	"github.com/naokotani/go-emacs/internal/images"
-	_ "github.com/naokotani/go-emacs/internal/images"
 )
 
-type Page struct {
+type View struct {
 	Title     string
 	Content   template.HTML
 	SubHeader string
@@ -24,9 +22,17 @@ type Page struct {
 	Contact   Contact
 	Date      time.Time
 	Resume    Resume
-	About     About
 	Css       Css
+	Pages     []Page
 	Tags      map[string][]Post
+}
+
+type Page struct {
+	Title   string
+	Slug    string
+	src     string
+	dst     string
+	dirName string
 }
 
 type Post struct {
@@ -42,20 +48,26 @@ type Post struct {
 	Date       time.Time
 }
 
-func (app *application) generatePages(css Css) {
-	page := Page{
+func (app *application) generateViews(css Css) {
+	pages := app.getPagesData()
+
+	for _, page := range pages {
+		app.infoLog.Printf("Loaded page data for %s\n", page.Title)
+	}
+
+	page := View{
 		Title:     app.config.Site.Title,
 		SubHeader: app.config.Site.SubHeader,
 		Contact:   app.config.Contact,
 		Date:      time.Now(),
 		Site:      app.config.Site,
 		Resume:    app.config.Resume,
-		About:     app.config.About,
+		Pages:     pages,
 		Css:       css,
 	}
 
 	generatePosts(app, page)
-	generateAbout(app, page)
+	generatePages(app, page)
 	generateResume(app, page)
 	page.Tags = app.config.Site.Tags
 	generateIndex(app, page)
@@ -67,7 +79,7 @@ func (app *application) generatePages(css Css) {
 	}
 }
 
-func generateIndex(app *application, page Page) {
+func generateIndex(app *application, page View) {
 	page.Site.Posts = app.config.Site.Posts
 
 	output, err := os.Create(app.config.Output + "index.html")
@@ -87,7 +99,7 @@ func generateIndex(app *application, page Page) {
 	}
 }
 
-func generateTagHome(app *application, page Page, tag string) {
+func generateTagHome(app *application, page View, tag string) {
 	app.makeOutputDir("tags")
 
 	output, err := os.Create(app.config.Output + "tags/" + tag + ".html")
@@ -104,7 +116,7 @@ func generateTagHome(app *application, page Page, tag string) {
 	err = ts.ExecuteTemplate(output, "base", page)
 }
 
-func generateResume(app *application, page Page) {
+func generateResume(app *application, page View) {
 	resume := app.config.Resume.Html
 	if resume == "" {
 		app.warnLog.Printf("Resume string empty, skipping page. Add to config.toml to generate resume.\n")
@@ -112,7 +124,8 @@ func generateResume(app *application, page Page) {
 	}
 	app.infoLog.Printf("Generating resume from %s\n", resume)
 
-	output, err := os.Create(app.config.Output + "resume.html")
+	app.makeOutputDir("resume")
+	output, err := os.Create(app.config.Output + "resume/resume.html")
 	if err != nil {
 		app.errorLog.Fatal(err)
 	}
@@ -135,35 +148,64 @@ func generateResume(app *application, page Page) {
 	}
 }
 
-func generateAbout(app *application, page Page) {
-	about := app.config.About.Html
-	if about == "" {
-		app.warnLog.Printf("About page intro string empty, skipping page. Add to config.toml to generate about page.\n")
-		return
-	}
-	app.infoLog.Printf("Generating about from %s\n", about)
+func (app *application) getPagesData() []Page {
+	dirs, err := os.ReadDir(app.config.Pages.Dir)
 
-	output, err := os.Create(app.config.Output + "about.html")
+	if err != nil {
+		app.errorLog.Fatalf("Failed to read pages directory: %s\n", app.config.Pages.Dir)
+	}
+
+	var pages []Page
+
+	for _, dir := range dirs {
+		page := Page{
+			Title:   dir.Name(),
+			Slug:    dir.Name() + "/" + dir.Name() + ".html",
+			src:     app.config.Pages.Dir + dir.Name() + "/" + dir.Name(),
+			dst:     app.config.Output + dir.Name() + "/" + dir.Name(),
+			dirName: dir.Name(),
+		}
+		pages = append(pages, page)
+	}
+	return pages
+}
+
+func generatePages(app *application, view View) {
+	for _, page := range view.Pages {
+		app.makeOutputDir(page.dirName)
+		writePage(app, view, page.dst+".html", page.src+".html")
+		err := copyDirectory(app.config.Pages.Dir+page.dirName+"/images/", app.config.Output+page.dirName+"/images/")
+		if err != nil {
+			app.errorLog.Fatalf("Failed to copy images for page: %s\n%s\n", page.dirName, err)
+		}
+	}
+
+}
+
+func writePage(app *application, view View, dst, srcFile string) {
+	output, err := os.Create(dst)
 	if err != nil {
 		app.errorLog.Fatal(err)
 	}
 	defer output.Close()
 
-	html, err := os.ReadFile(about)
+	html, err := os.ReadFile(srcFile)
 	if err != nil {
 		app.errorLog.Fatal(err)
 	}
-	page.Content = template.HTML(html)
+	view.Content = template.HTML(html)
 
-	ts, ok := app.templateCache["about.gotmpl"]
+	ts, ok := app.templateCache["page.gotmpl"]
 	if !ok {
-		app.errorLog.Fatal("Template resume.gotmpl does not exist in the cache")
+		app.errorLog.Fatal("Template page.gotmpl does not exist in the cache")
 	}
 
-	err = ts.ExecuteTemplate(output, "base", page)
+	err = ts.ExecuteTemplate(output, "base", view)
+	app.infoLog.Printf("Page %s written", srcFile)
+
 }
 
-func generatePosts(app *application, page Page) {
+func generatePosts(app *application, page View) {
 	app.makeOutputDir("posts")
 	app.makeOutputDir("images/thumbs")
 
@@ -174,34 +216,13 @@ func generatePosts(app *application, page Page) {
 	var emptyTags []string
 	app.config.Site.Tags, emptyTags = buildTagMap(posts)
 	app.warnLog.Printf("Posts with empty tag string: %s", emptyTags)
-	err := copyPostImages(posts, app.config.Output+"posts/images/")
-	if err != nil {
-		app.errorLog.Fatalf("Posts images failed to copy.\n%s\n", err)
-	}
 
-}
-
-func copyPostImages(posts []Post, dstDir string) error {
-	if !fileExists(dstDir) {
-		if err := os.Mkdir(dstDir, os.ModePerm); err != nil {
-			return err
-		}
-	}
 	for _, post := range posts {
-		files, err := getDirectoryFiles(post.dir + "images")
+		err := copyDirectory(post.dir+"/images", app.config.Output+"posts/images/")
 		if err != nil {
-			return err
-		}
-		for _, f := range files {
-			dst := dstDir + filepath.Base(f)
-			err := CopyFile(f, dst)
-			if err != nil {
-				return err
-			}
+			app.errorLog.Fatalf("Posts images failed to copy for: %s\n%s\n", post.filename, err)
 		}
 	}
-
-	return nil
 }
 
 func buildTagMap(posts []Post) (map[string][]Post, []string) {
@@ -219,7 +240,7 @@ func buildTagMap(posts []Post) (map[string][]Post, []string) {
 	return pMap, emptyTags
 }
 
-func writePostHtml(app *application, page Page) []Post {
+func writePostHtml(app *application, page View) []Post {
 	var posts []Post
 	for _, post := range app.config.Site.Posts {
 		post := getPostMetadata(app, post)

@@ -12,7 +12,7 @@ type Config struct {
 	StylesConfig string
 	Site         Site
 	Resume       Resume
-	About        About
+	Pages        Pages
 }
 
 type Site struct {
@@ -21,18 +21,19 @@ type Site struct {
 	SubHeader string
 	SkillTags string
 	Posts     []Post
+	Pages     []Page
 	Tags      map[string][]Post
 	FontUrl   string
 }
 
 type Resume struct {
+	Dir  string
 	Html string
 	Pdf  string
 }
 
-type About struct {
-	Html  string
-	Image string
+type Pages struct {
+	Dir string
 }
 
 type Contact struct {

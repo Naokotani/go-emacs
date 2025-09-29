@@ -37,6 +37,7 @@ func CopyFile(src, dst string) error {
 func getDirectoryFiles(path string) ([]string, error) {
 	var files []string
 
+	//TODO should this be an error?
 	if !fileExists(path) {
 		return files, nil
 	}
@@ -57,5 +58,25 @@ func getDirectoryFiles(path string) ([]string, error) {
 		return []string{}, err
 	}
 	return files, nil
+}
 
+func copyDirectory(srcDir, dstDir string) error {
+	if !fileExists(dstDir) {
+		if err := os.Mkdir(dstDir, os.ModePerm); err != nil {
+			return err
+		}
+	}
+	files, err := getDirectoryFiles(srcDir)
+	if err != nil {
+		return err
+	}
+	for _, f := range files {
+		dst := dstDir + filepath.Base(f)
+		err := CopyFile(f, dst)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
