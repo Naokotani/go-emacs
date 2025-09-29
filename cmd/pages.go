@@ -306,7 +306,8 @@ func (app *application) makeOutputDir(dir string) {
 
 	if errors.Is(err, os.ErrNotExist) {
 		if err := os.Mkdir(app.config.Output+dir, os.ModePerm); err != nil {
-			app.errorLog.Fatalf("Failed to create uput dir %s\n%s", dir, err)
+			app.errorLog.Printf("Output dir %s\n", app.config.Output)
+			app.errorLog.Fatalf("Failed to create ouput dir %s\n%s", dir, err)
 		}
 	}
 }

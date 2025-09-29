@@ -27,6 +27,9 @@ func main() {
 	}
 
 	app.configPath = os.Getenv("CONFIG_PATH")
+	if app.configPath == "" {
+		app.errorLog.Fatal("Failed to read CONFIG_PATH env variable.")
+	}
 	templateCache, err := newTemplateCache("./ui/templates/*.gotmpl")
 	if err != nil {
 		logger.ErrorLog.Fatal(err)
