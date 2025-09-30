@@ -4,11 +4,9 @@ import (
 	"github.com/naokotani/go-emacs/internal/logger"
 	"html/template"
 	"log"
-	"os"
 )
 
 type application struct {
-	configPath    string
 	templateCache map[string]*template.Template
 	config        Config
 	infoLog       *log.Logger
@@ -20,24 +18,23 @@ func main() {
 	logger := logger.NewLogger()
 
 	app := &application{
-		config:   Config{},
 		infoLog:  logger.InfoLog,
 		errorLog: logger.ErrorLog,
 		warnLog:  logger.WarnLog,
 	}
 
-	app.configPath = os.Getenv("CONFIG_PATH")
-	if app.configPath == "" {
-		app.errorLog.Fatal("Failed to read CONFIG_PATH env variable.")
-	}
-	templateCache, err := newTemplateCache("./ui/templates/*.gotmpl")
+	app.parseConfig()
+	app.getPostDirs()
+	app.getResumeFiles()
+	app.infoLog.Printf("Loading templates in %s\n", app.config.TemplateDir)
+	templateCache, err := newTemplateCache(app.config.TemplateDir)
 	if err != nil {
 		logger.ErrorLog.Fatal(err)
 		return
 	}
+
 	app.templateCache = templateCache
 
-	app.parseConfig()
 	app.buildOutputDirs()
 	app.copySiteFiles()
 	css := app.generateCssVarsFile()

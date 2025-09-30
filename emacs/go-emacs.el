@@ -21,11 +21,19 @@
 ;;
 ;;; Code:
 
+(require 'xdg)
 
+(defvar go-emacs-blog-root-dir
+  (expand-file-name "go-emacs/" (xdg-user-dir "DOCUMENTS"))
+  "Root directory of the go-emacs blog project.")
 
-(setq go-emacs-blog-root-dir "/home/naokotani/code/go/go-emacs/")
-(setq go-emacs-blog-output-dir "/home/naokotani/code/go/go-emacs/site/")
-(setq go-emacs-blog-binary "/home/naokotani/code/go/go-emacs/bin/go-emacs")
+(defvar go-emacs-blog-output-dir
+  (expand-file-name "site/" go-emacs-blog-root-dir)
+  "Output directory for the go-emacs blog site.")
+
+(defvar go-emacs-blog-binary
+  (expand-file-name "go-emacs" go-emacs-blog-root-dir)
+  "Path to the go-emacs blog binary.")
 
 (defun go-emacs-publish-blog ()
   "Run the go-emacs binary asynchronously to publish the blog."

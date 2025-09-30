@@ -1,4 +1,5 @@
-output="/home/naokotani/code/go/go-emacs/site/"
+#output="/home/naokotani/code/go/go-emacs/site/"
+output=""
 stylesconfig="styles.toml"
 
 [contact]
@@ -8,7 +9,8 @@ git = "https://github.com/naokotani"
 linkedin = "https://www.linkedin.com/in/chris-hughes-a06867235/"
 
 [pages]
-dir = "/home/naokotani/code/go/go-emacs/pages/"
+dir = ""
+#dir = "/home/naokotani/code/go/go-emacs/pages/"
 
 [resume]
 dir="/home/naokotani/code/go/go-emacs/resume/"

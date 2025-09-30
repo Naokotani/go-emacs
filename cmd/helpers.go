@@ -71,7 +71,8 @@ func copyDirectory(srcDir, dstDir string) error {
 		return err
 	}
 	for _, f := range files {
-		dst := dstDir + filepath.Base(f)
+
+		dst := filepath.Join(dstDir, filepath.Base(f))
 		err := CopyFile(f, dst)
 		if err != nil {
 			return err

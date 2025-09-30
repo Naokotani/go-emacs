@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"path/filepath"
 
 	"github.com/BurntSushi/toml"
 )
@@ -9,10 +10,13 @@ import (
 type Config struct {
 	Output       string
 	Contact      Contact
+	StaticDir    string
 	StylesConfig string
+	TemplateDir  string
 	Site         Site
 	Resume       Resume
 	Pages        Pages
+	Posts        Posts
 }
 
 type Site struct {
@@ -27,12 +31,16 @@ type Site struct {
 }
 
 type Resume struct {
-	Dir  string
-	Html string
-	Pdf  string
+	IsResume bool
+	Dir      string
+	Pdf      string
 }
 
 type Pages struct {
+	Dir string
+}
+
+type Posts struct {
 	Dir string
 }
 
@@ -45,30 +53,76 @@ type Contact struct {
 }
 
 func (app *application) parseConfig() error {
-	f := app.configPath
+	f := getConfigLocation(app, "CONFIG_PATH")
 	if _, err := os.Stat(f); err != nil {
 		return err
 	}
 
 	toml.DecodeFile(f, &app.config)
 
-	postsDir := "./posts/"
-
-	enteries, err := os.ReadDir(postsDir)
-	var posts []Post
-	if err != nil {
-		return err
-	}
-	for _, e := range enteries {
-		if e.IsDir() {
-			posts = append(posts, Post{
-				dir:      postsDir + e.Name() + "/",
-				filename: e.Name() + ".html",
-			})
-		}
-	}
-
-	app.config.Site.Posts = posts
+	setDefaultLocations(app)
 
 	return nil
+}
+
+func setDefaultLocations(app *application) {
+	if app.config.Output == "" {
+		app.config.Output = filepath.Join(getXDGGoEmacsDir(), "www")
+		app.infoLog.Printf("Output directory not set. setting to XDG default: %s\n", app.config.Output)
+	}
+
+	if app.config.Posts.Dir == "" {
+		app.config.Posts.Dir = filepath.Join(getXDGGoEmacsDir(), "posts")
+		app.infoLog.Printf("posts directory not set. setting to XDG default: %s\n", app.config.Posts.Dir)
+	}
+
+	if app.config.Pages.Dir == "" {
+		app.config.Pages.Dir = filepath.Join(getXDGGoEmacsDir(), "pages")
+		app.infoLog.Printf("Pages directory not set. setting to XDG default: %s\n", app.config.Pages.Dir)
+	}
+
+	if app.config.Resume.Dir == "" {
+		app.config.Resume.Dir = filepath.Join(getXDGGoEmacsDir(), "resume")
+		app.infoLog.Printf("Resume directory not set. setting to XDG default: %s\n", app.config.Resume.Dir)
+	}
+
+	if app.config.StylesConfig == "" {
+		app.config.StylesConfig = filepath.Join(getXDGGoEmacsDir(), "styles.toml")
+		app.infoLog.Printf("styles.toml not set, setting to XDG default: %s\n", app.config.StylesConfig)
+	}
+
+	if app.config.TemplateDir == "" {
+		app.config.TemplateDir = filepath.Join(getXDGGoEmacsDir(), "ui")
+		app.infoLog.Printf("styles.toml not set, setting to XDG default: %s\n", app.config.StylesConfig)
+	}
+
+	if app.config.StaticDir == "" {
+		app.config.StaticDir = filepath.Join(getXDGGoEmacsDir(), "static")
+		app.infoLog.Printf("styles.toml not set, setting to XDG default: %s\n", app.config.StaticDir)
+	}
+
+}
+
+func getConfigLocation(app *application, envVar string) string {
+	if v := os.Getenv(envVar); v != "" {
+		app.infoLog.Printf("Conig env var set, setting to %s", v)
+		return v
+	}
+
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return "~/Documents/go-emacs/config.toml"
+	}
+
+	configPath := filepath.Join(home, "Documents", "go-emacs", "config.toml")
+	app.infoLog.Printf("Config env var not provided, setting to XDG default: %s\n", configPath)
+	return configPath
+}
+
+func getXDGGoEmacsDir() string {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return "~/Documents/go-emacs"
+	}
+	return filepath.Join(home, "Documents/go-emacs")
 }

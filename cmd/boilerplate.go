@@ -14,7 +14,7 @@ func (app *application) buildOutputDirs() {
 }
 
 func (app *application) copySiteFiles() {
-	copyDirectory("./static/css", app.config.Output+"static/css")
-	copyDirectory("./static/icons", app.config.Output+"static/icons")
-	copyDirectory("./static/js", app.config.Output+"static/js")
+	copyDirectory(app.config.StaticDir+"/css", app.config.Output+"/static/css")
+	copyDirectory(app.config.StaticDir+"/icons", app.config.Output+"/static/icons")
+	copyDirectory(app.config.StaticDir+"/js", app.config.Output+"/static/js")
 }

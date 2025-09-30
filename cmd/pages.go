@@ -4,6 +4,8 @@ import (
 	"errors"
 	"html/template"
 	"os"
+	"path/filepath"
+	"sort"
 	"strings"
 	"time"
 
@@ -54,7 +56,7 @@ func (app *application) generateViews(css Css) {
 		app.infoLog.Printf("Loaded page data for %s\n", page.Title)
 	}
 
-	page := View{
+	view := View{
 		Title:     app.config.Site.Title,
 		SubHeader: app.config.Site.SubHeader,
 		Contact:   app.config.Contact,
@@ -65,23 +67,25 @@ func (app *application) generateViews(css Css) {
 		Css:       css,
 	}
 
-	generatePosts(app, page)
-	generatePages(app, page)
-	generateResume(app, page)
-	page.Tags = app.config.Site.Tags
-	generateIndex(app, page)
+	generatePosts(app, view)
+	generatePages(app, view)
+	if app.config.Resume.IsResume {
+		generateResume(app, view)
+	}
+	view.Tags = app.config.Site.Tags
+	generateIndex(app, view)
 
-	for tag, posts := range page.Tags {
-		page.Site.Posts = posts
+	for tag, posts := range view.Tags {
+		view.Site.Posts = posts
 		app.infoLog.Printf("Generating tag page for: %s ", tag)
-		generateTagHome(app, page, tag)
+		generateTagHome(app, view, tag)
 	}
 }
 
 func generateIndex(app *application, view View) {
 	view.Site.Posts = app.config.Site.Posts
 
-	output, err := os.Create(app.config.Output + "index.html")
+	output, err := os.Create(app.config.Output + "/index.html")
 	if err != nil {
 		app.errorLog.Fatal(err)
 	}
@@ -101,7 +105,7 @@ func generateIndex(app *application, view View) {
 func generateTagHome(app *application, view View, tag string) {
 	app.makeOutputDir("tags")
 
-	output, err := os.Create(app.config.Output + "tags/" + tag + ".html")
+	output, err := os.Create(filepath.Join(app.config.Output, "tags", tag+".html"))
 	if err != nil {
 		app.errorLog.Fatal(err)
 	}
@@ -116,21 +120,30 @@ func generateTagHome(app *application, view View, tag string) {
 }
 
 func generateResume(app *application, view View) {
-	resume := app.config.Resume.Html
-	if resume == "" {
-		app.warnLog.Printf("Resume string empty, skipping page. Add to config.toml to generate resume.\n")
-		return
+	resumeDir := app.config.Resume.Dir
+	resumeHtml := filepath.Join(resumeDir, "resume.html")
+
+	if fileExists(filepath.Join(resumeDir, app.config.Resume.Pdf)) {
+		resumeSrc := filepath.Join(resumeDir, app.config.Resume.Pdf)
+		resumeDst := filepath.Join(app.config.Output, "resume", app.config.Resume.Pdf)
+		err := CopyFile(resumeSrc, resumeDst)
+		if err != nil {
+			app.errorLog.Fatalf("Failed to copy resume file from %s to %s\n", resumeSrc, resumeDst)
+		}
+		view.Resume.Pdf = filepath.Base(app.config.Resume.Pdf)
+		app.infoLog.Printf("Pdf file: %s\n", view.Resume.Pdf)
 	}
-	app.infoLog.Printf("Generating resume from %s\n", resume)
+
+	app.infoLog.Printf("Generating resume from %s\n", resumeHtml)
 
 	app.makeOutputDir("resume")
-	output, err := os.Create(app.config.Output + "resume/resume.html")
+	output, err := os.Create(filepath.Join(app.config.Output, "resume/resume.html"))
 	if err != nil {
 		app.errorLog.Fatal(err)
 	}
 	defer output.Close()
 
-	html, err := os.ReadFile(resume)
+	html, err := os.ReadFile(resumeHtml)
 	if err != nil {
 		app.errorLog.Fatal(err)
 	}
@@ -160,11 +173,12 @@ func (app *application) getPagesData() []Page {
 		page := Page{
 			Title:   dir.Name(),
 			Slug:    "/" + dir.Name() + "/" + dir.Name() + ".html",
-			src:     app.config.Pages.Dir + dir.Name() + "/" + dir.Name(),
-			dst:     app.config.Output + dir.Name() + "/" + dir.Name(),
+			src:     filepath.Join(app.config.Pages.Dir, dir.Name(), dir.Name()),
+			dst:     filepath.Join(app.config.Output, dir.Name(), dir.Name()),
 			dirName: dir.Name(),
 		}
-		page = getPageMetadata(app, page, app.config.Pages.Dir+dir.Name()+"/metadata.toml")
+		metadataFile := filepath.Join(app.config.Pages.Dir, dir.Name(), "metadata.toml")
+		page = getPageMetadata(app, page, metadataFile)
 		pages = append(pages, page)
 	}
 	return pages
@@ -174,7 +188,7 @@ func generatePages(app *application, view View) {
 	for _, page := range view.Pages {
 		app.makeOutputDir(page.dirName)
 		writePage(app, view, page.dst+".html", page.src+".html")
-		err := copyDirectory(app.config.Pages.Dir+page.dirName+"/images/", app.config.Output+page.dirName+"/images/")
+		err := copyDirectory(filepath.Join(app.config.Pages.Dir, page.dirName, "images"), filepath.Join(app.config.Output, page.dirName, "images"))
 		if err != nil {
 			app.errorLog.Fatalf("Failed to copy images for page: %s\n%s\n", page.dirName, err)
 		}
@@ -215,7 +229,7 @@ func generatePosts(app *application, view View) {
 	app.warnLog.Printf("Posts with empty tag string: %s", emptyTags)
 
 	for _, post := range posts {
-		err := copyDirectory(post.dir+"/images", app.config.Output+"posts/images/")
+		err := copyDirectory(post.dir+"/images", app.config.Output+"/posts/images/")
 		if err != nil {
 			app.errorLog.Fatalf("Posts images failed to copy for: %s\n%s\n", post.filename, err)
 		}
@@ -241,12 +255,13 @@ func writePostHtml(app *application, view View) []Post {
 	var posts []Post
 	for _, post := range app.config.Site.Posts {
 		post := getPostMetadata(app, post)
+
 		post = app.createThumb(post)
 
 		view.Title = post.Title
 		view.Post = post
 
-		output, err := os.Create(app.config.Output + "posts/" + post.filename)
+		output, err := os.Create(filepath.Join(app.config.Output, "posts", post.filename))
 		if err != nil {
 			app.errorLog.Fatal(err)
 		}
@@ -270,17 +285,22 @@ func writePostHtml(app *application, view View) []Post {
 		}
 		posts = append(posts, post)
 	}
+
+	sort.Slice(posts, func(i, j int) bool {
+		return posts[i].Date.After(posts[j].Date)
+	})
+
 	return posts
 }
 
 func (app *application) createThumb(post Post) Post {
-	output := app.config.Output + "images/thumbs/" + strings.Split(post.filename, ".")[0] + ".png"
+	output := app.config.Output + "/images/thumbs/" + strings.Split(post.filename, ".")[0] + ".png"
 	switch {
-	case fileExists(post.dir + "thumb.png"):
-		if images.IsThumbTooWide(post.dir+"thumb.png", 200) {
-			images.ResizePng(post.dir+"thumb.png", output, 0, 200)
+	case fileExists(post.dir + "/thumb.png"):
+		if images.IsThumbTooWide(post.dir+"/thumb.png", 200) {
+			images.ResizePng(post.dir+"/thumb.png", output, 0, 200)
 		} else {
-			err := CopyFile(post.dir+"thumb.png", output)
+			err := CopyFile(post.dir+"/thumb.png", output)
 			if err != nil {
 				app.errorLog.Fatalf("Failed to copy image %s\n%s\n", post.filename, err)
 			}
@@ -302,10 +322,15 @@ func (app *application) createThumb(post Post) Post {
 }
 
 func (app *application) makeOutputDir(dir string) {
-	_, err := os.Stat(app.config.Output + dir)
+	if !fileExists(app.config.Output) {
+		if err := os.Mkdir(app.config.Output, os.ModePerm); err != nil {
+			app.errorLog.Fatalf("Failed to create ouput directory %s\n%s", app.config.Output, err)
+		}
+	}
+	_, err := os.Stat(filepath.Join(app.config.Output, dir))
 
 	if errors.Is(err, os.ErrNotExist) {
-		if err := os.Mkdir(app.config.Output+dir, os.ModePerm); err != nil {
+		if err := os.Mkdir(filepath.Join(app.config.Output, dir), os.ModePerm); err != nil {
 			app.errorLog.Printf("Output dir %s\n", app.config.Output)
 			app.errorLog.Fatalf("Failed to create ouput dir %s\n%s", dir, err)
 		}
