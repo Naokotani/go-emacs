@@ -1,8 +1,0 @@
-#+title: Fiends are great.
-#+date:       [2025-09-29 Mon 11:41]
-#+filetags:   :post:
-#+tags: Fun
-#+summary: Its a post alright!
-
-* This is a post
-This post is a test. I hope it works

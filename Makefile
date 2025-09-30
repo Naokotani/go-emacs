@@ -2,7 +2,7 @@ SRC_PATH=cmd
 BIN_PATH=bin
 PORT=8080
 BIN=go-emacs
-export CONFIG_PATH=./config.toml
+export CONFIG_PATH=/home/naokotani/code/go/go-emacs/config.toml
 
 build:
 	@mkdir -p ${SRC_PATH} ${BIN_PATH}

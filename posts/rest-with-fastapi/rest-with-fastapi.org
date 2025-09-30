@@ -1,0 +1,14 @@
+#+title:      Building REST APIs with FastAPI
+#+date:       [2024-05-22 Wed 16:37]
+#+filetags:   :post:
+#+identifier: 20240522T163701
+#+tags: Python FastAPI REST
+#+summary: FastAPI makes it easy to build performant REST APIs in Python.
+
+FastAPI is a modern Python framework designed for speed and developer productivity. In this post, we will walk through the basics of creating and serving a simple API.
+
+* Defining Routes
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec viverra purus ac lectus maximus, at laoreet ligula tempor.
+
+* Automatic Documentation
+Mauris commodo, eros sit amet pulvinar consequat, lorem risus vestibulum neque, sed imperdiet odio turpis id velit.

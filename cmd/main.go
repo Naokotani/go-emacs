@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/naokotani/go-emacs/internal/logger"
 	"html/template"
 	"log"
+
+	"github.com/naokotani/go-emacs/internal/logger"
 )
 
 type application struct {
@@ -24,6 +25,8 @@ func main() {
 	}
 
 	app.parseConfig()
+	app.removeAllOutDirs()
+	app.buildOutputDirs()
 	app.getPostDirs()
 	app.getResumeFiles()
 	app.infoLog.Printf("Loading templates in %s\n", app.config.TemplateDir)
@@ -35,7 +38,6 @@ func main() {
 
 	app.templateCache = templateCache
 
-	app.buildOutputDirs()
 	app.copySiteFiles()
 	css := app.generateCssVarsFile()
 	app.generateViews(css)

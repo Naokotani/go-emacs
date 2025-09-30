@@ -3,7 +3,7 @@
 #+filetags:   :post:
 #+identifier: 20240303T111629
 
-[[file:images/pfp.jpg]]
+[[file:images/me.png]]
 
 * About Me
-I am a software developer from Cape Breton, Nova Scotia. I specialize in back-end web development including database administration, system administration and devOps. I am familiar with a variety of programming languages including Java, JavaScript, C, C++, Rust, Clojure and Python. I am always experimenting and learning new technologies, so I can find the right tool for the job. For more about me and my projects check out my [[https://github.com/Naokotani][GitHub]].
+I am a software developer based in Portland, Oregon. My focus is on full-stack web development, with experience in server administration, cloud infrastructure, and API design. I work with a range of programming languages including Python, Go, TypeScript, Ruby, and Kotlin. I enjoy exploring new frameworks and tools to stay current with evolving technologies and to choose the best solution for each project. For more information and examples of my work, feel free to check out my GitHub.

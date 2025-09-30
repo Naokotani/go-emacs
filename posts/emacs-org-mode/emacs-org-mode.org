@@ -1,0 +1,14 @@
+#+title:      Getting Started with Emacs Org Mode
+#+date:       [2024-04-10 Wed 14:25]
+#+filetags:   :post:
+#+identifier: 20240410T142559
+#+tags: Emacs OrgMode Productivity
+#+summary: A beginner’s guide to organizing notes and tasks with Emacs Org Mode.
+
+Org mode is one of the most powerful tools for keeping track of notes, tasks, and projects. Here we take a look at its basic structure and capabilities.
+
+* Headings and Subheadings
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Sed sed lacus nec nisi dignissim vulputate.
+
+* Scheduling and Deadlines
+Donec sit amet risus sit amet risus tristique blandit. Proin bibendum, erat nec dapibus luctus, est felis viverra orci, vel fermentum urna elit non magna.

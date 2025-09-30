@@ -1,0 +1,14 @@
+#+title:      Understanding Git Branching
+#+date:       [2024-07-07 Sun 19:55]
+#+filetags:   :post:
+#+identifier: 20240707T195520
+#+tags: Git VersionControl Branching
+#+summary: Git branching allows flexible workflows in software development.
+
+Branching in Git is lightweight and powerful. This post explains the basics of creating, switching, and merging branches in everyday development.
+
+* Creating Branches
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed a posuere urna. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+[[file:images/1759235906_grim.png]]
+* Merging Branches
+Nam porta, magna nec fringilla malesuada, justo arcu varius neque, eget tempor massa erat sed justo.

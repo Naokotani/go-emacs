@@ -1,25 +1,42 @@
-#output="/home/naokotani/code/go/go-emacs/site/"
-output=""
-stylesconfig="styles.toml"
+# The location of this config can be changed by setting the eviroment varaible CONFIG_PATH
+# to the an absolute path to a config.toml in this format.
+#
+#Absolute path to output directory. Defaults to ~/Documents/go-emacs/static
+output="/home/naokotani/code/go/go-emacs/www"
+#Absolute path to styles.toml file. Defaults to ~/Documents/go-emacs/styles.toml
+stylesconfig="/home/naokotani/code/go/go-emacs/styles.toml"
+#Absolute path to styles.toml file. Defaults to ~/Documents/go-emacs/styles.toml
+templateDir="/home/naokotani/code/go/go-emacs/ui"
+#Absolute path to styles.toml file. Defaults to ~/Documents/go-emacs/styles.toml
+staticDir="/home/naokotani/code/go/go-emacs/static"
+
 
 [contact]
-name = "Chris Hughes"
-email = "chris@chris-hughes.dev"
-git = "https://github.com/naokotani"
-linkedin = "https://www.linkedin.com/in/chris-hughes-a06867235/"
+name = "Joe Dev"
+email = "joe@oregon.io"
+git = "https://github.com/joedev"
+linkedin = "https://www.linkedin.com/in/joe-dev-123456/"
 
 [pages]
-dir = ""
-#dir = "/home/naokotani/code/go/go-emacs/pages/"
+#Absolute path to pages directory. Defaults to ~/Documents/go-emacs/pages
+dir = "/home/naokotani/code/go/go-emacs/pages"
+
+[posts]
+#Absolute path to post directory. Defaults to ~/Documents/go-emacs/posts
+dir = "/home/naokotani/code/go/go-emacs/posts"
 
 [resume]
-dir="/home/naokotani/code/go/go-emacs/resume/"
-html="/home/naokotani/code/go/go-emacs/resume/resume.html"
+#Absolute path to resume directory. Defaults to ~/Documents/go-emacs/resume
+isResume=true
+dir="/home/naokotani/code/go/go-emacs/resume"
 pdf="chris_hughes_resume.pdf"
 
 [site]
-meta = "A Developer blog for Chris Hughes. Specializes in JavaScript, Rust, Web development, SQL"
-title = "Chris Hughes dot Dev"
-subheader="Web development - Database Administration - DevOps"
-skilltags="Java | TypeScript | React | Docker | PostgreSQL | AWS | Emacs"
-
+meta = "A developer blog sharing insights on full-stack web development, API design, cloud infrastructure, and modern programming languages."
+title = "Joe Dev Zone"
+subheader="Web development - Stuff - DevOps"
+skilltags="Haskell | C# | Angular | Docker | MongoDB | AWS | VScode"
+# Set to false to skip generation of rss
+rss=true
+# Site public URL. Used for Rss. If rss=false, no need to set this.
+url="https://chris-huhges.dev/"

@@ -25,6 +25,7 @@ type View struct {
 	Resume    Resume
 	Css       Css
 	Pages     []Page
+	Posts     []Post
 	Tags      map[string][]Post
 }
 
@@ -47,6 +48,7 @@ type Post struct {
 	Tags       []string
 	DateString string
 	Date       time.Time
+	Content    template.HTML
 }
 
 func (app *application) generateViews(css Css) {
@@ -54,6 +56,13 @@ func (app *application) generateViews(css Css) {
 
 	for _, page := range pages {
 		app.infoLog.Printf("Loaded page data for %s\n", page.Title)
+	}
+
+	if app.config.Site.Rss {
+		if app.config.Site.Url == "" {
+			app.errorLog.Printf("Rss is set to true, but no URL is provided. Skipping Rss genreation")
+			app.config.Site.Rss = false
+		}
 	}
 
 	view := View{
@@ -80,6 +89,10 @@ func (app *application) generateViews(css Css) {
 		app.infoLog.Printf("Generating tag page for: %s ", tag)
 		generateTagHome(app, view, tag)
 	}
+
+	if app.config.Site.Rss {
+		generateRss(app, view)
+	}
 }
 
 func generateIndex(app *application, view View) {
@@ -103,8 +116,6 @@ func generateIndex(app *application, view View) {
 }
 
 func generateTagHome(app *application, view View, tag string) {
-	app.makeOutputDir("tags")
-
 	output, err := os.Create(filepath.Join(app.config.Output, "tags", tag+".html"))
 	if err != nil {
 		app.errorLog.Fatal(err)
@@ -117,6 +128,22 @@ func generateTagHome(app *application, view View, tag string) {
 	}
 
 	err = ts.ExecuteTemplate(output, "base", view)
+}
+
+func generateRss(app *application, view View) {
+	view.Posts = app.config.Site.Posts
+	output, err := os.Create(filepath.Join(app.config.Output, "rss.xml"))
+	if err != nil {
+		app.errorLog.Fatalf("Failed to create RSS output file %s\n", err)
+	}
+	defer output.Close()
+
+	ts := app.getRssTemplate()
+
+	err = ts.ExecuteTemplate(output, "rss.gotmpl", view)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func generateResume(app *application, view View) {
@@ -226,7 +253,9 @@ func generatePosts(app *application, view View) {
 	app.config.Site.Posts = posts
 	var emptyTags []string
 	app.config.Site.Tags, emptyTags = buildTagMap(posts)
-	app.warnLog.Printf("Posts with empty tag string: %s", emptyTags)
+	if len(emptyTags) > 0 {
+		app.warnLog.Printf("Posts with empty tag string: %s", emptyTags)
+	}
 
 	for _, post := range posts {
 		err := copyDirectory(post.dir+"/images", app.config.Output+"/posts/images/")
@@ -271,7 +300,8 @@ func writePostHtml(app *application, view View) []Post {
 		if err != nil {
 			app.errorLog.Fatal(err)
 		}
-		view.Content = template.HTML(html)
+		post.Content = template.HTML(html)
+		view.Content = post.Content
 
 		postFile := "post.gotmpl"
 		ts, ok := app.templateCache[postFile]
@@ -313,7 +343,7 @@ func (app *application) createThumb(post Post) Post {
 		images.ResizeJpegToPng(post.dir+"thumb.jpeg", output, 0, 200)
 		app.infoLog.Printf("Created thumb %s", output)
 	default:
-		app.errorLog.Printf("Failed to open image for %s", post.filename)
+		app.warnLog.Printf("Failed to open image for %s", post.filename)
 		return post
 	}
 	app.infoLog.Printf("Created thumb %s", output)

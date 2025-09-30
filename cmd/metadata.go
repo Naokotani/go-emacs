@@ -32,7 +32,7 @@ func getPostMetadata(app *application, post Post) Post {
 
 	if err == nil {
 		post.Date = t
-		app.logPostdata("date", post.Title, post.filename)
+		app.logPostdata("date", post.DateString, post.filename)
 	} else {
 		app.warnLog.Printf("Could not parse time for %s with time string: %s\n", post.filename, post.DateString)
 	}
@@ -49,15 +49,12 @@ func (app *application) logPostdata(field, data, filename string) {
 }
 
 func getPageMetadata(app *application, page Page, file string) Page {
-	app.infoLog.Printf("Reading page metadata for %s in %s\n", page.dirName, page.dst)
 	if !fileExists(file) {
 		app.errorLog.Fatalf("Metadata file does not exist in %s", page.dirName)
 		return page
 	}
 
 	toml.DecodeFile(file, &page)
-
-	app.infoLog.Printf("Page metadata for %s loaded. Title: %s", page.dirName, page.Title)
 
 	return page
 }

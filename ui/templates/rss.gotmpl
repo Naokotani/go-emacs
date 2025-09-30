@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>{{.Site.Title}}</title>
+    <link>{{.Site.Url}}</link>
+    <category>Web Development</category> 
+    <description>
+      A Developer blog for Chris Hughes. Specializes in JavaScript, Rust, Web development, SQL
+    </description>
+    {{range .Posts}}
+    <item>
+      <title>{{.Title}}</title>
+      <pubDate>{{rssDate .Date}}</pubDate>
+      <guid>{{.Slug}}</guid>
+      <link>{{.Slug}}</link>
+    <description><![CDATA[
+    <html><head></head><body>
+    {{.Content}}
+    </body></html>
+    ]]></description>
+    </item>
+    {{end}}
+  </channel>
+</rss> 

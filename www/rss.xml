@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Joe Dev Zone</title>
+    <link>https://chris-huhges.dev/</link>
+    <category>Web Development</category> 
+    <description>
+      A Developer blog for Chris Hughes. Specializes in JavaScript, Rust, Web development, SQL
+    </description>
+    
+    <item>
+      <title>Understanding Git Branching</title>
+      <pubDate>Sun, 07 Jul 2024 16:55:00 -0300</pubDate>
+      <guid>/posts/git-branching.html</guid>
+      <link>/posts/git-branching.html</link>
+    <description><![CDATA[
+    <html><head></head><body>
+    <p>
+Branching in Git is lightweight and powerful. This post explains the basics of creating, switching, and merging branches in everyday development.
+</p>
+<div id="outline-container-org6885413" class="outline-2">
+<h2 id="org6885413">Creating Branches</h2>
+<div class="outline-text-2" id="text-org6885413">
+<p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed a posuere urna. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+<img src="images/1759235906_grim.png" alt="1759235906_grim.png">
+</p>
+</div>
+</div>
+<div id="outline-container-org145fc80" class="outline-2">
+<h2 id="org145fc80">Merging Branches</h2>
+<div class="outline-text-2" id="text-org145fc80">
+<p>
+Nam porta, magna nec fringilla malesuada, justo arcu varius neque, eget tempor massa erat sed justo.
+</p>
+</div>
+</div>
+
+    </body></html>
+    ]]></description>
+    </item>
+    
+    <item>
+      <title>Docker Basics for Developers</title>
+      <pubDate>Wed, 12 Jun 2024 07:11:00 -0300</pubDate>
+      <guid>/posts/docker-basics.html</guid>
+      <link>/posts/docker-basics.html</link>
+    <description><![CDATA[
+    <html><head></head><body>
+    <p>
+Docker simplifies application deployment by containerizing your code and dependencies. Let’s look at the essential concepts that every developer should know.
+</p>
+<div id="outline-container-orgd945f67" class="outline-2">
+<h2 id="orgd945f67">Images and Containers</h2>
+<div class="outline-text-2" id="text-orgd945f67">
+<p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse potenti. Fusce ullamcorper blandit diam vitae fermentum.
+</p>
+</div>
+</div>
+<div id="outline-container-org09505cf" class="outline-2">
+<h2 id="org09505cf">Volumes and Networking</h2>
+<div class="outline-text-2" id="text-org09505cf">
+<p>
+Aliquam erat volutpat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+</p>
+</div>
+</div>
+
+    </body></html>
+    ]]></description>
+    </item>
+    
+    <item>
+      <title>Building REST APIs with FastAPI</title>
+      <pubDate>Wed, 22 May 2024 13:37:00 -0300</pubDate>
+      <guid>/posts/rest-with-fastapi.html</guid>
+      <link>/posts/rest-with-fastapi.html</link>
+    <description><![CDATA[
+    <html><head></head><body>
+    <p>
+FastAPI is a modern Python framework designed for speed and developer productivity. In this post, we will walk through the basics of creating and serving a simple API.
+</p>
+<div id="outline-container-org23d32de" class="outline-2">
+<h2 id="org23d32de">Defining Routes</h2>
+<div class="outline-text-2" id="text-org23d32de">
+<p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec viverra purus ac lectus maximus, at laoreet ligula tempor.
+</p>
+</div>
+</div>
+<div id="outline-container-org7fc8beb" class="outline-2">
+<h2 id="org7fc8beb">Automatic Documentation</h2>
+<div class="outline-text-2" id="text-org7fc8beb">
+<p>
+Mauris commodo, eros sit amet pulvinar consequat, lorem risus vestibulum neque, sed imperdiet odio turpis id velit.
+</p>
+</div>
+</div>
+
+    </body></html>
+    ]]></description>
+    </item>
+    
+    <item>
+      <title>Getting Started with Emacs Org Mode</title>
+      <pubDate>Wed, 10 Apr 2024 11:25:00 -0300</pubDate>
+      <guid>/posts/emacs-org-mode.html</guid>
+      <link>/posts/emacs-org-mode.html</link>
+    <description><![CDATA[
+    <html><head></head><body>
+    <p>
+Org mode is one of the most powerful tools for keeping track of notes, tasks, and projects. Here we take a look at its basic structure and capabilities.
+</p>
+<div id="outline-container-org021027d" class="outline-2">
+<h2 id="org021027d">Headings and Subheadings</h2>
+<div class="outline-text-2" id="text-org021027d">
+<p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Sed sed lacus nec nisi dignissim vulputate.
+</p>
+</div>
+</div>
+<div id="outline-container-orgf2d15c7" class="outline-2">
+<h2 id="orgf2d15c7">Scheduling and Deadlines</h2>
+<div class="outline-text-2" id="text-orgf2d15c7">
+<p>
+Donec sit amet risus sit amet risus tristique blandit. Proin bibendum, erat nec dapibus luctus, est felis viverra orci, vel fermentum urna elit non magna.
+</p>
+</div>
+</div>
+
+    </body></html>
+    ]]></description>
+    </item>
+    
+    <item>
+      <title>Learning Go Concurrency</title>
+      <pubDate>Thu, 15 Feb 2024 05:42:00 -0400</pubDate>
+      <guid>/posts/go-concurrency.html</guid>
+      <link>/posts/go-concurrency.html</link>
+    <description><![CDATA[
+    <html><head></head><body>
+    <p>
+Go makes concurrency easy with goroutines and channels. In this post we explore the basic building blocks of concurrent programming in Go, using simple examples and patterns.
+</p>
+<div id="outline-container-org38fb806" class="outline-2">
+<h2 id="org38fb806">Spawning Goroutines</h2>
+<div class="outline-text-2" id="text-org38fb806">
+<p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam erat volutpat. Suspendisse vehicula mauris vitae nulla viverra, et feugiat sapien varius.
+</p>
+</div>
+</div>
+<div id="outline-container-org0e28ca9" class="outline-2">
+<h2 id="org0e28ca9">Communicating with Channels</h2>
+<div class="outline-text-2" id="text-org0e28ca9">
+<p>
+Curabitur sit amet metus mi. Integer feugiat congue magna, sed facilisis purus pellentesque eget. In consequat efficitur nunc.
+</p>
+</div>
+</div>
+
+    </body></html>
+    ]]></description>
+    </item>
+    
+  </channel>
+</rss> 

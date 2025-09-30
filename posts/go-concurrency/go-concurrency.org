@@ -1,0 +1,14 @@
+#+title:      Learning Go Concurrency
+#+date:       [2024-02-15 Thu 09:42]
+#+filetags:   :post:
+#+identifier: 20240215T094243
+#+tags: Go Concurrency Goroutines Channels
+#+summary: An introduction to concurrency in Go with goroutines and channels.
+
+Go makes concurrency easy with goroutines and channels. In this post we explore the basic building blocks of concurrent programming in Go, using simple examples and patterns.
+
+* Spawning Goroutines
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam erat volutpat. Suspendisse vehicula mauris vitae nulla viverra, et feugiat sapien varius.
+
+* Communicating with Channels
+Curabitur sit amet metus mi. Integer feugiat congue magna, sed facilisis purus pellentesque eget. In consequat efficitur nunc.
