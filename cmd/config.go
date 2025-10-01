@@ -100,6 +100,13 @@ func setDefaultLocations(app *application) {
 
 	if app.config.TemplateDir == "" {
 		app.config.TemplateDir = filepath.Join(getXDGGoEmacsDir(), "ui")
+		app.infoLog.Printf("Template directory not set, setting to XDG default: %s\n", app.config.TemplateDir)
+	} else {
+		app.infoLog.Printf("Template directory set to %s\n", app.config.TemplateDir)
+	}
+
+	if app.config.StylesConfig == "" {
+		app.config.StylesConfig = filepath.Join(getXDGGoEmacsDir(), "styles.toml")
 		app.infoLog.Printf("styles.toml not set, setting to XDG default: %s\n", app.config.StylesConfig)
 	} else {
 		app.infoLog.Printf("styles.toml set to %s\n", app.config.StylesConfig)
