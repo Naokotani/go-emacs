@@ -1,4 +1,8 @@
+# Go Emacs
 go-emacs is a static site generator that leverages the Emacs' `org-html-export-to-html` and Go html templating to produce a Static blog site. Includes `go-emacs.el`, which provide functions to create and publish posts and pages that will be included in the blog. It depends on a go binary, but is designed to be a provide a seamless blogging experience inside Emacs via org-mode.
+
+# Example website
+To see a sample website genenerated from these files, see [This Sample](https://naokotani.github.io/)
 
 # Setup
 go-emacs depends on a  Go binary, `go-emacs`, that can be build from the provided source code. The `Makefile` provides three commands `build`, `run` and `serve`. Build will build the binary from the provided source code and put it in the root directory. `run` will build and run the binary, creating an output directory and building the website. `serve` depends on both `build` and `run` and will create a simple testing web server using Python. The Python dependency is not required, and any web server that can server a static website from a directory will suffice.
