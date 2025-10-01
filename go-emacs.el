@@ -44,10 +44,8 @@
   "Path to the go-emacs blog binary.")
 
 (defvar go-emacs-config-path
-  "/home/naokotani/code/go/go-emacs/config.toml"
+  ""
   "Path to the go-emacs config.toml file.")
-
-(setq go-emacs-blog-binary "/home/naokotani/code/go/go-emacs/bin/go-emacs")
 
 
 (defun go-emacs-publish-blog ()
