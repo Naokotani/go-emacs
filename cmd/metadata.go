@@ -90,6 +90,10 @@ func (app *application) getResumeFiles() {
 		app.config.Resume.IsResume = true
 	}
 
+	if app.config.Resume.Pdf == "" {
+		return
+	}
+
 	if fileExists(filepath.Join(resumeDir, app.config.Resume.Pdf)) {
 		resumeSrc := filepath.Join(resumeDir, app.config.Resume.Pdf)
 		resumeDst := filepath.Join(app.config.Output, "resume", app.config.Resume.Pdf)

@@ -27,8 +27,16 @@
   (expand-file-name "go-emacs/" (xdg-user-dir "DOCUMENTS"))
   "Root directory of the go-emacs blog project.")
 
-(defvar go-emacs-blog-output-dir
-  (expand-file-name "site/" go-emacs-blog-root-dir)
+(defvar go-emacs-blog-post-dir
+  (expand-file-name "posts/" go-emacs-blog-root-dir)
+  "Output directory for the go-emacs blog site.")
+
+(defvar go-emacs-blog-page-dir
+  (expand-file-name "pages/" go-emacs-blog-root-dir)
+  "Output directory for the go-emacs blog site.")
+
+(defvar go-emacs-blog-resume-dir
+  (expand-file-name "resume/" go-emacs-blog-root-dir)
   "Output directory for the go-emacs blog site.")
 
 (defvar go-emacs-blog-binary
@@ -61,10 +69,28 @@
                         timestamp))))
     (find-file org-file)))
 
+;; (defun go-emacs-create-post (dirname)
+;;   "Create a new blog post in posts/DIRNAME with an .org file and images/ subdir."
+;;   (interactive "sPost directory name: ")
+;;   (let* ((posts-dir (expand-file-name "posts/" go-emacs-blog-root-dir))
+;;          (post-dir (expand-file-name dirname posts-dir))
+;;          (images-dir (expand-file-name "images" post-dir))
+;;          (org-file (expand-file-name (concat dirname ".org") post-dir))
+;;          (timestamp (format-time-string "[%Y-%m-%d %a %H:%M]")))
+;;     (unless (file-exists-p posts-dir)
+;;       (make-directory posts-dir t))
+;;     (make-directory post-dir t)
+;;     (make-directory images-dir t)
+;;     (unless (file-exists-p org-file)
+;;       (with-temp-file org-file
+;;         (insert (format "#+title:\n#+date: %s\n#+filetags: :post:\n#+tags:\n#+summary:\n"
+;;                         timestamp))))
+;;     (find-file org-file)))
+
 (defun go-emacs-create-page (dirname)
   "Create a new blog post in posts/DIRNAME with an .org file and images/ subdir."
   (interactive "sPage directory name: ")
-  (let* ((pages-dir (expand-file-name "pages/" go-emacs-blog-root-dir))
+  (let* (pages-dir  (expand-file-name go-emacs-blog-page-dir))
          (page-dir (expand-file-name dirname pages-dir))
          (images-dir (expand-file-name "images" page-dir))
          (org-file (expand-file-name (concat dirname ".org") page-dir))
@@ -78,6 +104,24 @@
         (insert (format "#+title:\n#+date: %s\n#+filetags: :page:\n"
                         timestamp))))
     (find-file org-file)))
+
+;; (defun go-emacs-create-page (dirname)
+;;   "Create a new blog post in posts/DIRNAME with an .org file and images/ subdir."
+;;   (interactive "sPage directory name: ")
+;;   (let* ((pages-dir (expand-file-name "pages/" go-emacs-blog-root-dir))
+;;          (page-dir (expand-file-name dirname pages-dir))
+;;          (images-dir (expand-file-name "images" page-dir))
+;;          (org-file (expand-file-name (concat dirname ".org") page-dir))
+;;          (timestamp (format-time-string "[%Y-%m-%d %a %H:%M]")))
+;;     (unless (file-exists-p pages-dir)
+;;       (make-directory pages-dir t))
+;;     (make-directory page-dir t)
+;;     (make-directory images-dir t)
+;;     (unless (file-exists-p org-file)
+;;       (with-temp-file org-file
+;;         (insert (format "#+title:\n#+date: %s\n#+filetags: :page:\n"
+;;                         timestamp))))
+;;     (find-file org-file)))
 
 (defun go-emacs-publish-post ()
   (interactive)
@@ -116,6 +160,14 @@
          (title   (car (alist-get "TITLE" keywords nil nil #'string=))))
     (with-temp-file "metadata.toml"
       (insert (format "title=\"%s\"\n" title)))))
+
+(defun go-emacs-publish-resume ()
+  (interactive)
+  (let ((org-html-doctype "html5")
+        (org-html-html5-fancy t)
+        (org-export-with-toc nil)
+        (org-export-with-section-numbers nil))
+    (org-html-export-to-html nil nil nil t)))
 
 (provide 'go-emacs)
 ;;; go-emacs.el ends here

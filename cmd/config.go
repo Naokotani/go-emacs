@@ -24,6 +24,7 @@ type Site struct {
 	Title     string
 	Url       string
 	Rss       bool
+	Cards     bool
 	SubHeader string
 	SkillTags string
 	Posts     []Post

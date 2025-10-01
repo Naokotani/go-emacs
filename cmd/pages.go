@@ -150,17 +150,6 @@ func generateResume(app *application, view View) {
 	resumeDir := app.config.Resume.Dir
 	resumeHtml := filepath.Join(resumeDir, "resume.html")
 
-	if fileExists(filepath.Join(resumeDir, app.config.Resume.Pdf)) {
-		resumeSrc := filepath.Join(resumeDir, app.config.Resume.Pdf)
-		resumeDst := filepath.Join(app.config.Output, "resume", app.config.Resume.Pdf)
-		err := CopyFile(resumeSrc, resumeDst)
-		if err != nil {
-			app.errorLog.Fatalf("Failed to copy resume file from %s to %s\n", resumeSrc, resumeDst)
-		}
-		view.Resume.Pdf = filepath.Base(app.config.Resume.Pdf)
-		app.infoLog.Printf("Pdf file: %s\n", view.Resume.Pdf)
-	}
-
 	app.infoLog.Printf("Generating resume from %s\n", resumeHtml)
 
 	app.makeOutputDir("resume")

@@ -10,7 +10,7 @@ templateDir="/home/naokotani/code/go/go-emacs/ui"
 #Absolute path to styles.toml file. Defaults to ~/Documents/go-emacs/styles.toml
 staticDir="/home/naokotani/code/go/go-emacs/static"
 
-
+# The name should be filled in, but the others can be left blank to remove
 [contact]
 name = "Joe Dev"
 email = "joe@oregon.io"
@@ -26,15 +26,23 @@ dir = "/home/naokotani/code/go/go-emacs/pages"
 dir = "/home/naokotani/code/go/go-emacs/posts"
 
 [resume]
-#Absolute path to resume directory. Defaults to ~/Documents/go-emacs/resume
+# Set to true to include a resume page with a "download pdf" link.
 isResume=true
+#Absolute path to resume directory. Defaults to ~/Documents/go-emacs/resume
 dir="/home/naokotani/code/go/go-emacs/resume"
-pdf="chris_hughes_resume.pdf"
+# Leave blank for no resume pdf, add the filename of the resume found in the resume folder
+pdf=""
 
 [site]
+# This will be the meta tag for the website.
 meta = "A developer blog sharing insights on full-stack web development, API design, cloud infrastructure, and modern programming languages."
+# This will be the title for the Nav and the <title> for the home page.
 title = "Joe Dev Zone"
+#Sub header on the home page. Leave blank to remove
 subheader="Web development - Stuff - DevOps"
+#Set to true for card with thumbnail style, false for a list style
+cards=true
+#This can be any string and will appear below the sub header. Leave blank to remove
 skilltags="Haskell | C# | Angular | Docker | MongoDB | AWS | VScode"
 # Set to false to skip generation of rss
 rss=true

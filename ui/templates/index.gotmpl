@@ -2,6 +2,10 @@
 <div class="intro">
   {{template "intro" .}}
   {{template "tags" .}}
+  {{if .Site.Cards}}
   {{template "cards" .}}
+  {{else}}
+  {{template "list" .}}
+  {{end}}
 </div>
 {{end}}

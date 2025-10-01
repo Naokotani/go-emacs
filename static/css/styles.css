@@ -131,6 +131,7 @@ h5 {
 
 .skills-list {
   margin-top: 0;
+  font-family: var(--headingFont);
 }
 
 .intro {
@@ -140,6 +141,7 @@ h5 {
 
 .home-header {
   display: none;
+  font-family: var(--headingFont);
 }
 
 small,
@@ -496,6 +498,48 @@ footer a+a {
   padding-left: 1.8rem;
 }
 
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin: 2rem 0;
+  padding: 0;
+  color: var(--textColor)
+}
+
+.list-item {
+  display: flex;
+  align-items: flex-start;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 1rem;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+.list-content {
+  flex: 1;
+}
+
+.list-content h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.25rem;
+  color: var(--anchorColor);
+}
+
+.list-content h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  color: var(--textColor);
+}
+
+.list-content p {
+  margin: 0;
+  line-height: 1.4;
+  color: var(--textColor);
+}
+
 
 @media (min-width: 1000px) {
   .home-header {
@@ -517,7 +561,7 @@ footer a+a {
   }
 
   .skills-list {
-    font-size: var(--h3);
+    font-size: var(--h4);
   }
 
   :root {
