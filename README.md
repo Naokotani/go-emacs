@@ -60,10 +60,12 @@ go-emacs uses a config.toml file to control many variables used in site generati
 
 # Config
 The `config.toml` file is required to build the blog and is located in the root directory. By default, `go-emacs` will look for it in `~/Documents/go-emacs`, but the location can be changed by running `go-emacs` by setting the `CONFIG_PATH` variable to an absolute path to the `config.toml` file. Further documentation is provided within the file itself to explain the various settings, but at a minimum the file locations must be set if go-emacs is not located in `~/Documents/go-emacs`.
+
 ## Some Options of Note
+The resume page is optional, and setting `isResume=true/false` to false will cause the build process to skip it when the site is built. The `pdf` option is blank by default and the 'download pdf' button won't be generated, putting in an absolute path to a pdf file will cause it to be copied to the resume folder when the site builds. There are two versions of the home page. A 'card' style and a more old school list style. By default, `cards=true/false` is set to true and the home page will generate in this cards style, but when set to false the list style will generated. Try 'em both! When the site builds  `rss=true/false` is set to true, meaning RSS icons and an RSS XML page will be generated. If you aren't interested in RSS, you can set it to false to skip building it.
 
 # Styles
-Included in the `static/css` directory are two files `normalize.css`, which is a css reset and `styles.css`, which provides the base styles for the blog. A third file `vars.css` is created when the website is built based on the values set in the `styles.toml` file. This provides a simple way to change the fonts, font sizes, and colours for the blog. Of course, further customization can be achieved by editing `styles.css` itself, which is recopied each time the website is built. 
+Included in the `static/css` directory are two files `normalize.css`, which is a CSS reset and `styles.css`, which provides the base styles for the blog. A third file `vars.css` is created when the website is built based on the values set in the `styles.toml` file. This provides a simple way to change the fonts, font sizes, and colours for the blog. Of course, further customization can be achieved by editing `styles.css` itself, which is recopied each time the website is built. 
 
 # Post and Page Images
 Both 'posts' and 'pages' can have linked images in them. To link an image, place the image in the `images/` directory for that post/page and then link the file normally in the org document with `file:/images/image.png`. When the site builds the images will be copied to an image folder for that post/page.
