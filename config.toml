@@ -2,13 +2,13 @@
 # to the an absolute path to a config.toml in this format.
 #
 #Absolute path to output directory. Defaults to ~/Documents/go-emacs/static
-output="/home/naokotani/code/go/go-emacs/www"
+output=""
 #Absolute path to styles.toml file. Defaults to ~/Documents/go-emacs/styles.toml
-stylesconfig="/home/naokotani/code/go/go-emacs/styles.toml"
+stylesconfig=""
 #Absolute path to styles.toml file. Defaults to ~/Documents/go-emacs/styles.toml
-templateDir="/home/naokotani/code/go/go-emacs/ui"
+templateDir=""
 #Absolute path to styles.toml file. Defaults to ~/Documents/go-emacs/styles.toml
-staticDir="/home/naokotani/code/go/go-emacs/static"
+staticDir=""
 
 # The name should be filled in, but the others can be left blank to remove
 [contact]
@@ -19,17 +19,17 @@ linkedin = "https://www.linkedin.com/in/joe-dev-123456/"
 
 [pages]
 #Absolute path to pages directory. Defaults to ~/Documents/go-emacs/pages
-dir = "/home/naokotani/code/go/go-emacs/pages"
+dir = ""
 
 [posts]
 #Absolute path to post directory. Defaults to ~/Documents/go-emacs/posts
-dir = "/home/naokotani/code/go/go-emacs/posts"
+dir = ""
 
 [resume]
 # Set to true to include a resume page with a "download pdf" link.
 isResume=true
 #Absolute path to resume directory. Defaults to ~/Documents/go-emacs/resume
-dir="/home/naokotani/code/go/go-emacs/resume"
+dir=""
 # Leave blank for no resume pdf, add the filename of the resume found in the resume folder
 pdf=""
 
@@ -47,4 +47,4 @@ skilltags="Haskell | C# | Angular | Docker | MongoDB | AWS | VScode"
 # Set to false to skip generation of rss
 rss=true
 # Site public URL. Used for Rss. If rss=false, no need to set this.
-url="https://chris-huhges.dev/"
+url="https://joe-dev.com/"
