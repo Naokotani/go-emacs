@@ -3,7 +3,7 @@
 #+filetags:   :post:
 #+identifier: 20240707T195520
 #+tags: Git VersionControl Branching
-#+summary: Git branching allows flexible workflows in software development.
+#+summary: If you don't like these cards, set cards to false in the config.toml
 
 Branching in Git is lightweight and powerful. This post explains the basics of creating, switching, and merging branches in everyday development.
 

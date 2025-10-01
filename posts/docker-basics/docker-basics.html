@@ -1,17 +1,38 @@
 <p>
 Docker simplifies application deployment by containerizing your code and dependencies. Let’s look at the essential concepts that every developer should know.
 </p>
-<div id="outline-container-orgd945f67" class="outline-2">
-<h2 id="orgd945f67">Images and Containers</h2>
-<div class="outline-text-2" id="text-orgd945f67">
-<p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse potenti. Fusce ullamcorper blandit diam vitae fermentum.
-</p>
+<div id="outline-container-org52454eb" class="outline-2">
+<h2 id="org52454eb">Add Source code in Org!</h2>
+<div class="outline-text-2" id="text-org52454eb">
+<div class="org-src-container">
+<pre class="src src-c"><span style="color: #7dcfff; font-weight: bold;">#include</span> <span style="color: #a9b1d6;">&lt;</span><span style="color: #9ece6a;">stdio.h</span><span style="color: #a9b1d6;">&gt;</span>
+<span style="color: #7dcfff; font-weight: bold;">#include</span> <span style="color: #a9b1d6;">&lt;</span><span style="color: #9ece6a;">stdlib.h</span><span style="color: #a9b1d6;">&gt;</span>
+<span style="color: #7dcfff; font-weight: bold;">#include</span> <span style="color: #a9b1d6;">&lt;</span><span style="color: #9ece6a;">time.h</span><span style="color: #a9b1d6;">&gt;</span>
+
+<span style="color: #c0caf5;">int</span> <span style="color: #7aa2f7;">meaning_of_life</span><span style="color: #a9b1d6;">(</span><span style="color: #c0caf5;">void</span><span style="color: #a9b1d6;">)</span> <span style="color: #a9b1d6;">{</span>
+    srand<span style="color: #7aa2f7;">(</span><span style="color: #ff9e64;">(</span><span style="color: #c0caf5;">unsigned</span><span style="color: #ff9e64;">)</span> time<span style="color: #ff9e64;">(</span><span style="color: #ff9e64;">NULL</span><span style="color: #ff9e64;">)</span><span style="color: #7aa2f7;">)</span>;
+    <span style="color: #c0caf5;">int</span> <span style="color: #c0caf5;">tries</span> = <span style="color: #ff9e64; font-weight: bold;">0</span>;
+    <span style="color: #c0caf5;">int</span> <span style="color: #c0caf5;">n</span>;
+    <span style="color: #bb9af7;">do</span> <span style="color: #7aa2f7;">{</span>
+        n = rand<span style="color: #ff9e64;">()</span> % <span style="color: #ff9e64; font-weight: bold;">100</span>;  <span style="color: #51587a;">// </span><span style="color: #51587a;">random number 0&#8211;99</span>
+        tries++;
+    <span style="color: #7aa2f7;">}</span> <span style="color: #bb9af7;">while</span> <span style="color: #7aa2f7;">(</span>n != <span style="color: #ff9e64; font-weight: bold;">42</span><span style="color: #7aa2f7;">)</span>;
+
+    printf<span style="color: #7aa2f7;">(</span><span style="color: #9ece6a;">"Found the meaning of life (%d) after %d tries!\n"</span>, n, tries<span style="color: #7aa2f7;">)</span>;
+    <span style="color: #bb9af7;">return</span> n;
+<span style="color: #a9b1d6;">}</span>
+
+<span style="color: #c0caf5;">int</span> <span style="color: #7aa2f7;">main</span><span style="color: #a9b1d6;">(</span><span style="color: #c0caf5;">void</span><span style="color: #a9b1d6;">)</span> <span style="color: #a9b1d6;">{</span>
+    meaning_of_life<span style="color: #7aa2f7;">()</span>;
+    <span style="color: #bb9af7;">return</span> <span style="color: #ff9e64; font-weight: bold;">0</span>;
+<span style="color: #a9b1d6;">}</span>
+</pre>
 </div>
 </div>
-<div id="outline-container-org09505cf" class="outline-2">
-<h2 id="org09505cf">Volumes and Networking</h2>
-<div class="outline-text-2" id="text-org09505cf">
+</div>
+<div id="outline-container-org3fc3c8b" class="outline-2">
+<h2 id="org3fc3c8b">Volumes and Networking</h2>
+<div class="outline-text-2" id="text-org3fc3c8b">
 <p>
 Aliquam erat volutpat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
 </p>

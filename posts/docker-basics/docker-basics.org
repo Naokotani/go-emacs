@@ -7,8 +7,29 @@
 
 Docker simplifies application deployment by containerizing your code and dependencies. Let’s look at the essential concepts that every developer should know.
 
-* Images and Containers
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse potenti. Fusce ullamcorper blandit diam vitae fermentum.
+* Add Source code in Org!
+#+begin_src  c
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
+int meaning_of_life(void) {
+    srand((unsigned) time(NULL));
+    int tries = 0;
+    int n;
+    do {
+        n = rand() % 100;  // random number 0–99
+        tries++;
+    } while (n != 42);
+
+    printf("Found the meaning of life (%d) after %d tries!\n", n, tries);
+    return n;
+}
+
+int main(void) {
+    meaning_of_life();
+    return 0;
+}
+#+end_src
 * Volumes and Networking
 Aliquam erat volutpat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
