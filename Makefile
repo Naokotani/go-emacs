@@ -1,5 +1,5 @@
 SRC_PATH=cmd
-BIN_PATH=bin
+BIN_PATH=./
 PORT=8080
 BIN=go-emacs
 export CONFIG_PATH=
