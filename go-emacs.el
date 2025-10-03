@@ -22,7 +22,6 @@
 ;;; Code:
 
 (require 'xdg)
-
 (defvar go-emacs-root-dir
   (expand-file-name "go-emacs/" (xdg-user-dir "DOCUMENTS"))
   "Root directory of the go-emacs blog project.")
@@ -49,6 +48,7 @@
 
 (defun go-emacs-refresh-paths (root-path)
   "Refesh all directory paths based on `ROOT-PATH'."
+  (interactive)
   (setq go-emacs-root-dir   (expand-file-name root-path)
         go-emacs-post-dir   (expand-file-name "posts/" go-emacs-root-dir)
         go-emacs-page-dir   (expand-file-name "pages/" go-emacs-root-dir)
@@ -104,11 +104,11 @@
 
 (defun go-emacs-publish-post ()
   (interactive)
-  (let ((org-html-doctype "html5")
-        (org-html-html5-fancy t)
-        (org-export-with-toc nil)
-        (org-export-with-section-numbers nil))
-    (org-html-export-to-html nil nil nil t))
+  (setq org-html-doctype "html5"
+        org-html-html5-fancy t
+        org-export-with-toc nil
+        org-export-with-section-numbers nil)
+  (org-html-export-to-html nil nil nil t)
   (go-emacs-publish-post-metadata))
 
 (defun go-emacs-publish-post-metadata ()
@@ -126,11 +126,11 @@
 
 (defun go-emacs-publish-page ()
   (interactive)
-  (let ((org-html-doctype "html5")
-        (org-html-html5-fancy t)
-        (org-export-with-toc nil)
-        (org-export-with-section-numbers nil))
-    (org-html-export-to-html nil nil nil t))
+  (setq org-html-doctype "html5"
+        org-html-html5-fancy t
+        org-export-with-toc nil
+        org-export-with-section-numbers nil)
+  (org-html-export-to-html nil nil nil t)
   (go-emacs-publish-page-metadata))
 
 (defun go-emacs-publish-page-metadata ()
@@ -142,11 +142,11 @@
 
 (defun go-emacs-publish-resume ()
   (interactive)
-  (let ((org-html-doctype "html5")
-        (org-html-html5-fancy t)
-        (org-export-with-toc nil)
-        (org-export-with-section-numbers nil))
-    (org-html-export-to-html nil nil nil t)))
+  (setq org-html-doctype "html5"
+        org-html-html5-fancy t
+        org-export-with-toc nil
+        org-export-with-section-numbers nil)
+  (org-html-export-to-html nil nil nil t))
 
 (provide 'go-emacs)
 ;;; go-emacs.el ends here
