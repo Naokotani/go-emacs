@@ -194,8 +194,16 @@ func (app *application) getPagesData() []Page {
 			dirName: dir.Name(),
 		}
 		metadataFile := filepath.Join(app.config.Pages.Dir, dir.Name(), "metadata.toml")
-		page = getPageMetadata(app, page, metadataFile)
-		pages = append(pages, page)
+		if _, err := os.Stat(page.src + ".html"); err == nil {
+			page, err = getPageMetadata(page, metadataFile)
+			if err == nil {
+				pages = append(pages, page)
+			} else {
+				app.warnLog.Printf("Metadata inaccessible for %s. Skipping page.\n", page.Title)
+			}
+		} else {
+			app.warnLog.Printf("No html for %s. Skipping page.\n", page.Title)
+		}
 	}
 	return pages
 }
@@ -209,7 +217,6 @@ func generatePages(app *application, view View) {
 			app.errorLog.Fatalf("Failed to copy images for page: %s\n%s\n", page.dirName, err)
 		}
 	}
-
 }
 
 func writePage(app *application, view View, dst, srcFile string) {
@@ -272,7 +279,11 @@ func buildTagMap(posts []Post) (map[string][]Post, []string) {
 func writePostHtml(app *application, view View) []Post {
 	var posts []Post
 	for _, post := range app.config.Site.Posts {
-		post := getPostMetadata(app, post)
+		post, err := getPostMetadata(app, post)
+		if err != nil {
+			app.warnLog.Print(err)
+			break
+		}
 
 		post = app.createThumb(post)
 

@@ -7,10 +7,8 @@ import (
 )
 
 func fileExists(f string) bool {
-	if _, err := os.Stat(f); err == nil {
-		return true
-	}
-	return false
+	_, err := os.Stat(f)
+	return err == nil
 }
 
 func CopyFile(src, dst string) error {

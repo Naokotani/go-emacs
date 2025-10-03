@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -9,11 +10,10 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
-func getPostMetadata(app *application, post Post) Post {
+func getPostMetadata(app *application, post Post) (Post, error) {
 	f := filepath.Join(post.dir, "metadata.toml")
 	if !fileExists(f) {
-		app.errorLog.Fatalf("Metadata file does not exist in %s", post.dir)
-		return post
+		return post, fmt.Errorf("Metadata file does not exist in %s. Skipping post", post.dir)
 	}
 
 	toml.DecodeFile(f, &post)
@@ -37,7 +37,7 @@ func getPostMetadata(app *application, post Post) Post {
 		app.warnLog.Printf("Could not parse time for %s with time string: %s\n", post.filename, post.DateString)
 	}
 
-	return post
+	return post, nil
 }
 
 func (app *application) logPostdata(field, data, filename string) {
@@ -48,15 +48,14 @@ func (app *application) logPostdata(field, data, filename string) {
 	}
 }
 
-func getPageMetadata(app *application, page Page, file string) Page {
+func getPageMetadata(page Page, file string) (Page, error) {
 	if !fileExists(file) {
-		app.errorLog.Fatalf("Metadata file does not exist in %s", page.dirName)
-		return page
+		return page, fmt.Errorf("Metadata file is not accessible in %s", page.dirName)
 	}
 
 	toml.DecodeFile(file, &page)
 
-	return page
+	return page, nil
 }
 
 func (app *application) getPostDirs() error {
@@ -69,10 +68,14 @@ func (app *application) getPostDirs() error {
 	}
 	for _, e := range enteries {
 		if e.IsDir() {
-			posts = append(posts, Post{
-				dir:      filepath.Join(postsDir, e.Name()) + "/",
-				filename: e.Name() + ".html",
-			})
+			if _, err := os.Stat(filepath.Join(postsDir, e.Name()+".html")); err != nil {
+				posts = append(posts, Post{
+					dir:      filepath.Join(postsDir, e.Name()) + "/",
+					filename: e.Name() + ".html",
+				})
+			} else {
+				app.warnLog.Printf("No html in %s. Skippin post.", e.Name())
+			}
 		}
 	}
 
