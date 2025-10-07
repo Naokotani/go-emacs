@@ -20,7 +20,7 @@ int meaning_of_life(void) {
     do {
         n = rand() % 100;  // random number 0–99
         tries++;
-    } while (n != 42);
+     while (n != 42);
 
     printf("Found the meaning of life (%d) after %d tries!\n", n, tries);
     return n;

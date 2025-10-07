@@ -66,6 +66,36 @@
                    go-emacs-binary))
   (message "Publishing blog..."))
 
+(defun go-emacs-get-parent-dir ()
+  "Gets the parent directory of the current directory."
+  (let ((dir default-directory))
+    (with-temp-buffer
+      (cd dir)
+      (cd "..")
+      (go-emacs-get-directory-name default-directory))))
+
+(defun go-emacs-get-directory-name (dir)
+  "Return name of DIR as string."
+  (file-name-nondirectory (directory-file-name (file-name-directory dir))))
+
+(defun go-emacs-publish ()
+  "Publish smartly based on current directory."
+  (interactive)
+  (cond
+   ((string= (go-emacs-get-parent-dir) (go-emacs-get-directory-name go-emacs-post-dir))
+    (progn
+      (message "Publishing post...")
+      (go-emacs-publish-post)))
+   ((string= (go-emacs-get-parent-dir) (go-emacs-get-directory-name go-emacs-page-dir))
+    (progn
+      (message "Publishing page...")
+      (go-emacs-publish-page)))
+   ((string= (go-emacs-get-parent-dir) (go-emacs-get-directory-name go-emacs-resume-dir))
+    (progn
+      (message "Publishing resume...")
+      (go-emacs-publish-resume)))
+   ((message "Not currently in a publish directory"))))
+
 (defun go-emacs-create-post (dirname)
   "Create a new blog post in posts/DIRNAME with an .org file and images/ subdir."
   (interactive "sPost directory name: ")

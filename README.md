@@ -21,6 +21,7 @@ This will load the following interactive functions designed to be used with go-e
 ### Change Root Directory
 Use `(go-emacs-refresh-paths "/path/to/project/root")` to change the directory that the helper functions point to. This will update location variables to reflect the newly defined root variable.
 
+
 ### Create Page
 `(go-emacs-create-page)`
 This will create a new "page" in the page directory. A page will appear on the top Nav, and will not contain post metadata such as the publish date. It will prompt for a directory name *which will also be used as the URL slug for the post*. There is not currently any mechanism to ensure these are unique. I considered adding the date string to the slug, but decided this would make for ugly URLs, and decided to leave it to the user to ensure unique post names.
@@ -28,6 +29,9 @@ This will create a new "page" in the page directory. A page will appear on the t
 ### Create Post
 `go-emacs-create-post)`
 Similar to `(go-emacs-create-page)`, but creates a post. A Post will be displayed on the home page, and includes a time of publishing time stamp as well as `tags` designed to group themed posts.
+
+### Publish
+`(go-emacs-publish)` Function will smartly publish based on the parent directory of the currently active buffer. It uses a `(cond)` statement to call one of the appropriate functions below, which should not need to be used directly.
 
 ### Publish Page
 `(go-emacs-publish-page)`

@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"log"
+	"os"
 
 	"github.com/naokotani/go-emacs/internal/logger"
 )
@@ -16,7 +18,7 @@ type application struct {
 }
 
 func main() {
-	logger := logger.NewLogger()
+	logger := logger.NewLogger(os.Getenv("LOG_LEVEL"))
 
 	app := &application{
 		infoLog:  logger.InfoLog,
@@ -41,4 +43,11 @@ func main() {
 	app.copySiteFiles()
 	css := app.generateCssVarsFile()
 	app.generateViews(css)
+
+	fmt.Println()
+	fmt.Printf(`************************************
+
+Blog Successfully generated at %s
+
+************************************`, app.config.Output)
 }
