@@ -58,12 +58,10 @@
         go-emacs-binary     (expand-file-name "go-emacs" go-emacs-root-dir)))
 
 (defun go-emacs-publish-blog ()
-  "Run the go-emacs binary asynchronously to publish the blog."
+  "Run the go-emacs binary with `async-shell-command'."
   (interactive)
   (let ((process-environment (cons (concat "CONFIG_PATH=" go-emacs-config) process-environment)))
-    (start-process "go-emacs-publish-blog"
-                   "*Go Emacs Blog*"
-                   go-emacs-binary))
+    (async-shell-command go-emacs-binary "*Go Blog*"))
   (message "Publishing blog..."))
 
 (defun go-emacs-get-parent-dir ()
