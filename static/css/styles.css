@@ -32,6 +32,10 @@
   vertical-align: middle;
 }
 
+.icon {
+  color: var(--navHover);
+}
+
 .intro svg {
   height: var(--h3);
 }
