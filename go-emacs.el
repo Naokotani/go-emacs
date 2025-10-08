@@ -22,6 +22,7 @@
 ;;; Code:
 
 (require 'xdg)
+(require 'org)
 (defvar go-emacs-root-dir
   (expand-file-name "go-emacs/" (xdg-user-dir "DOCUMENTS"))
   "Root directory of the go-emacs blog project.")
@@ -131,6 +132,7 @@
     (find-file org-file)))
 
 (defun go-emacs-publish-post ()
+  "Publish an org post into HTML."
   (interactive)
   (setq org-html-doctype "html5"
         org-html-html5-fancy t
@@ -140,12 +142,12 @@
   (go-emacs-publish-post-metadata))
 
 (defun go-emacs-publish-post-metadata ()
-  (interactive)
+  "Collecs metadata for a post and writes it to a metadata.toml file."
   (let* ((keywords (org-collect-keywords '("TITLE" "DATE" "TAGS" "SUMMARY")))
-         (title   (car (alist-get "TITLE" keywords nil nil #'string=)))
-         (date    (car (alist-get "DATE" keywords nil nil #'string=)))
-         (tags    (car (alist-get "TAGS" keywords nil nil #'string=)))
-         (summary (car (alist-get "SUMMARY" keywords nil nil #'string=))))
+         (title   (car (alist-get "TITLE" keywords nil nil #'equal)))
+         (date    (car (alist-get "DATE" keywords nil nil #'equal)))
+         (tags    (car (alist-get "TAGS" keywords nil nil #'equal)))
+         (summary (car (alist-get "SUMMARY" keywords nil nil #'equal))))
     (with-temp-file "metadata.toml"
       (insert (format "title=\"%s\"\n" title))
       (insert (format "tagString=\"%s\"\n" tags))
@@ -153,6 +155,7 @@
       (insert (format "datestring=\"%s\"\n" date)))))
 
 (defun go-emacs-publish-page ()
+  "Publish an org page into HTML."
   (interactive)
   (setq org-html-doctype "html5"
         org-html-html5-fancy t
@@ -162,13 +165,14 @@
   (go-emacs-publish-page-metadata))
 
 (defun go-emacs-publish-page-metadata ()
-  (interactive)
+  "Collect metadata for a page."
   (let* ((keywords (org-collect-keywords '("TITLE" "DATE" "TAGS" "SUMMARY")))
-         (title   (car (alist-get "TITLE" keywords nil nil #'string=))))
+         (title   (car (alist-get "TITLE" keywords nil nil #'equal))))
     (with-temp-file "metadata.toml"
       (insert (format "title=\"%s\"\n" title)))))
 
 (defun go-emacs-publish-resume ()
+  "Publish an org resume into HTML."
   (interactive)
   (setq org-html-doctype "html5"
         org-html-html5-fancy t
