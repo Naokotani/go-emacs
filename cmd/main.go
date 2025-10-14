@@ -49,5 +49,6 @@ func main() {
 
 Blog Successfully generated at %s
 
-************************************`, app.config.Output)
+************************************
+`, app.config.Output)
 }

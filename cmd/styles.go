@@ -14,55 +14,59 @@ type Css struct {
 }
 
 type Font struct {
-	FontUrl         string
-	HeadingFont     string
-	BodyFont        string
-	BaseFontSize    string
-	H1              string
-	H2              string
-	H3              string
-	H4              string
-	H5              string
-	SmallText       string
-	ContentDivWidth string
+	FontUrl           string
+	HeadingFont       string
+	BodyFont          string
+	BaseFontSize      string
+	H1                string
+	H2                string
+	H3                string
+	H4                string
+	H5                string
+	SmallText         string
+	ContentDivWidth   string
+	BlockquotePadding string
+	BlockquoteRadius  string
 }
 type Dark struct {
-	Background  string
-	TextColor   string
-	LineColor   string
-	HeaderText  string
-	CardBg      string
-	CardText    string
-	AnchorColor string
-	NavColor    string
-	NavText     string
-	NavHover    string
-	HeaderColor string
-	CodeBlocks  string
-	Code        string
-	BorderColor string
-	LinkColor   string
-	LinkHover   string
-	FooterColor string
+	Background      string
+	TextColor       string
+	LineColor       string
+	HeaderText      string
+	CardBg          string
+	CardText        string
+	AnchorColor     string
+	NavColor        string
+	NavText         string
+	NavHover        string
+	HeaderColor     string
+	CodeBlocks      string
+	Code            string
+	BorderColor     string
+	LinkColor       string
+	LinkHover       string
+	FooterColor     string
+	BlockquoteColor string
 }
 type Light struct {
-	Background  string
-	TextColor   string
-	LineColor   string
-	HeaderText  string
-	CardBg      string
-	CardText    string
-	AnchorColor string
-	NavColor    string
-	NavText     string
-	NavHover    string
-	HeaderColor string
-	CodeBlocks  string
-	Code        string
-	BorderColor string
-	LinkHover   string
-	LinkColor   string
-	FooterColor string
+	Background      string
+	TextColor       string
+	LineColor       string
+	HeaderText      string
+	CardBg          string
+	CardText        string
+	AnchorColor     string
+	NavColor        string
+	NavText         string
+	NavHover        string
+	HeaderColor     string
+	CodeBlocks      string
+	Code            string
+	BorderColor     string
+	LinkHover       string
+	LinkColor       string
+	FooterColor     string
+	BlockquoteColor string
 }
 
 func (app *application) generateCssVarsFile() Css {
@@ -91,6 +95,8 @@ func (app *application) generateCssVarsFile() Css {
 		buildVarString("h5", css.Font.H5),
 		buildVarString("smallText", css.Font.SmallText),
 		buildVarString("contentDivWidth", css.Font.ContentDivWidth),
+		buildVarString("blockquotePadding", css.Font.BlockquotePadding),
+		buildVarString("blockquoteRadius", css.Font.BlockquoteRadius),
 		"}",
 		"body.dark {",
 		buildVarString("background", css.Dark.Background),
@@ -110,6 +116,7 @@ func (app *application) generateCssVarsFile() Css {
 		buildVarString("linkColor", css.Dark.LinkColor),
 		buildVarString("linkHover", css.Dark.LinkHover),
 		buildVarString("footerColor", css.Dark.FooterColor),
+		buildVarString("blockquoteColor", css.Dark.BlockquoteColor),
 		"}",
 		"body.light {",
 		buildVarString("background", css.Light.Background),
@@ -129,6 +136,7 @@ func (app *application) generateCssVarsFile() Css {
 		buildVarString("linkColor", css.Light.LinkColor),
 		buildVarString("linkHover", css.Light.LinkHover),
 		buildVarString("footerColor", css.Light.FooterColor),
+		buildVarString("blockquoteColor", css.Dark.BlockquoteColor),
 		"}",
 	}
 

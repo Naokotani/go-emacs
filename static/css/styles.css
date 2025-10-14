@@ -379,6 +379,12 @@ pre {
   padding: 1rem;
 }
 
+blockquote {
+  background: var(--blockquoteColor);
+  padding: var(--blockquotePadding);
+  border-radius: var(--blockquoteRadius);
+}
+
 /* Cards */
 
 .card {

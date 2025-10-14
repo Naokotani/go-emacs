@@ -10,6 +10,8 @@ h4="1.563rem"
 h5="1.25rem"
 smallText="0.8rem"
 contentDivWidth="20rem"
+blockquotePadding = "5px 20px"
+blockquoteRadius = "5px"
 
 [dark]
 background   = "#121212"
@@ -29,6 +31,7 @@ borderColor  = "#333333"
 linkColor    = "#3399ff"
 linkHover    = "#66b2ff"
 footerColor  = "#1a1a1a"
+blockquoteColor = "#222"
 
 [light]
 background   = "#ffffff"
@@ -48,3 +51,4 @@ borderColor  = "#cccccc"
 linkColor    = "#0066cc"
 linkHover    = "#004999"
 footerColor  = "#f5f5f5"
+blockquoteColor = "#e0e0e0"
