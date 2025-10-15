@@ -40,6 +40,9 @@ This function will publish the currently opened page by producing an HTML versio
 `(go-emacs-publish-blog)`
 This is a convenience function that simply runs the `go-emacs` binary. Alternatively, you can run the binary on the command line as usual and it will work as long `CONFIG_PATH` variable is set to the location of a valid `config.toml`, or if the site files are in the default `~/Documents/go-emacs`
 
+### Serve
+`(go-emacs-serve)` function is a convenience function that will serve the static files at `http://localhost:8080`. This function uses `async-shell-command` and depends on python. Unfortunately, Emacs itself does not provide a basic web server, but if you don't have python anything that can server a static website from a directory should work.
+
 ## variables
 `go-emacs.el` defines a few variables that it uses to find to locations of your files.
 
