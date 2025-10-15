@@ -60,7 +60,7 @@ type Contact struct {
 func (app *application) parseConfig() error {
 	app.config.goEmacsDir = app.getGoEmacsDir()
 
-	toml.DecodeFile(filepath.Join(app.config.goEmacsDir, "config.toml"), &app.config)
+	toml.DecodeFile(filepath.Join(app.getXDGDocumentsDir("config.toml")), &app.config)
 
 	setDefaultLocations(app)
 

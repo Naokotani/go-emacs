@@ -5,22 +5,12 @@ go-emacs is a static site generator that leverages the Emacs' `org-html-export-t
 To see a sample website generated from these files, see [This Sample](https://naokotani.github.io/)
 
 # Setup
-go-emacs depends on a  Go binary, `go-emacs`, that can be build from the provided source code. The `Makefile` provides three commands `build`, `run` and `serve`. Build will build the binary from the provided source code and put it in the root directory. `run` will build and run the binary, creating an output directory and building the website. `serve` depends on both `build` and `run` and will create a simple testing web server using Python. The Python dependency is not required, and any web server that can server a static website from a directory will suffice.
-
-# Emacs setup
-The provided `go-emacs.el` file must be required in Emacs by adding the following to your `init.el`:
-
-```
-(add-to-list 'load-path "path/to/go-emacs")
-(require 'go-emacs)
-```
-
-This will load the following interactive functions designed to be used with go-emacs:
+Clone the go-emacs repository to you Emacs package directory and require the `go-emacs.el` file. This will provide the `go-emacs-build` function, which will build the go binary. Note that this depends on `make`. You can use the `example` directory as a jumping off point by copying it to your `~/Documents/` directory. The two TOML configuration files are located in this directory and will provide a minimal setup to generate the example blog.
 
 ## Functions
+The `go-emacs.el` file will provide the following functions:
 ### Change Root Directory
 Use `(go-emacs-refresh-paths "/path/to/project/root")` to change the directory that the helper functions point to. This will update location variables to reflect the newly defined root variable.
-
 
 ### Create Page
 `(go-emacs-create-page)`
