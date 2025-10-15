@@ -39,13 +39,29 @@
   (expand-file-name "resume/" go-emacs-root-dir)
   "Output directory for the go-emacs blog site.")
 
-(defvar go-emacs-binary
-  (expand-file-name "go-emacs" go-emacs-root-dir)
-  "Path to the go-emacs blog binary.")
+(defvar go-emacs-output-dir
+  (expand-file-name "blog/" (xdg-user-dir "DOCUMENTS"))
+  "Output directory for go-emacs blog.")
 
 (defvar go-emacs-config
   ""
   "Path to the go-emacs config.toml file.")
+
+(defun go-emacs-build ()
+  "Build the go-emacs binary."
+  (interactive)
+  (let ((default-directory (expand-file-name "go-emacs" package-user-dir)))
+    (async-shell-command "make build" "*Build Go Emacs")))
+
+(defun go-emacs-binary ()
+  "Get the go-emacs binary location."
+  (expand-file-name "go-emacs/go-emacs" package-user-dir))
+
+(defun go-emacs-serve ()
+  "Run the blog with Python web server."
+  (interactive)
+  (let ((default-directory go-emacs-output-dir))
+    (async-shell-command "python3 -m http.server 8080" "*Go Emacs Serve*")))
 
 (defun go-emacs-refresh-paths (root-path)
   "Refesh all directory paths based on `ROOT-PATH'."
@@ -53,16 +69,12 @@
   (setq go-emacs-root-dir   (expand-file-name root-path)
         go-emacs-post-dir   (expand-file-name "posts/" go-emacs-root-dir)
         go-emacs-page-dir   (expand-file-name "pages/" go-emacs-root-dir)
-        go-emacs-config   (expand-file-name "config.toml" go-emacs-root-dir)
-        go-emacs-resume-dir (expand-file-name "resume/" go-emacs-root-dir)
-        go-emacs-config (expand-file-name "resume/" go-emacs-root-dir)
-        go-emacs-binary     (expand-file-name "go-emacs" go-emacs-root-dir)))
+        go-emacs-resume-dir (expand-file-name "resume/" go-emacs-root-dir)))
 
 (defun go-emacs-publish-blog ()
   "Run the go-emacs binary with `async-shell-command'."
   (interactive)
-  (let ((process-environment (cons (concat "CONFIG_PATH=" go-emacs-config) process-environment)))
-    (async-shell-command go-emacs-binary "*Go Blog*"))
+  (async-shell-command (concat (go-emacs-binary) " -d " package-user-dir "go-emacs") "*Go Blog*")
   (message "Publishing blog..."))
 
 (defun go-emacs-get-parent-dir ()

@@ -1,12 +1,12 @@
 SRC_PATH=cmd
-BIN_PATH=./
+BIN_PATH=../
 PORT=8080
 BIN=go-emacs
 export CONFIG_PATH=
 
 build:
-	@mkdir -p ${SRC_PATH} ${BIN_PATH}
-	@go build -C ./${SRC_PATH} -o ../${BIN_PATH}/${BIN} 2>&1
+	go build -C ./${SRC_PATH} -o ${BIN_PATH}${BIN}
+	@echo "Go Emacs build complete."
 
 run: build
 	@./${BIN_PATH}/${BIN}

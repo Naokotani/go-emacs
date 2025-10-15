@@ -136,7 +136,7 @@ func (app *application) generateCssVarsFile() Css {
 		buildVarString("linkColor", css.Light.LinkColor),
 		buildVarString("linkHover", css.Light.LinkHover),
 		buildVarString("footerColor", css.Light.FooterColor),
-		buildVarString("blockquoteColor", css.Dark.BlockquoteColor),
+		buildVarString("blockquoteColor", css.Light.BlockquoteColor),
 		"}",
 	}
 
