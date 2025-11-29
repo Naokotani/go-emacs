@@ -1,14 +1,10 @@
-# The location of this config can be changed by setting the eviroment varaible CONFIG_PATH
-# to the an absolute path to a config.toml in this format.
-#
-#Absolute path to output directory. Defaults to ~/Documents/go-emacs/static
+# Absolute path to the go-emacs Package directory. This should be set automatically
+# by go-emacs.el if that function is used to publish the blog. It can also be set
+# with with passing it with the -b flag when using the go-emacs binary.
+goEmacsPackageDir=""
+
+# Absolute path to output directory. Defaults to ~/Documents/go-emacs/static
 output=""
-#Absolute path to styles.toml file. Defaults to ~/Documents/go-emacs/styles.toml
-stylesconfig=""
-#Absolute path to styles.toml file. Defaults to ~/Documents/go-emacs/styles.toml
-templateDir=""
-#Absolute path to styles.toml file. Defaults to ~/Documents/go-emacs/styles.toml
-staticDir=""
 
 # The name should be filled in, but the others can be left blank to remove
 [contact]

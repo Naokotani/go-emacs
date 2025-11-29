@@ -47,7 +47,7 @@ This is a convenience function that simply runs the `go-emacs` binary. Alternati
 `go-emacs.el` defines a few variables that it uses to find to locations of your files.
 
 ### Root Dir
-`go-emacs-blog-root-dir` There is no reason to change this directly as it is only used as a basis to locate the other required files and directories. If you want to change this, use `(go-emacs-refresh-paths)` function above.
+`go-emacs-blog-dir` There is no reason to change this directly as it is only used as a basis to locate the other required files and directories. If you want to change this, use `(go-emacs-refresh-paths)` function above.
 
 ### Location Directories
 `go-emacs-post-dir`, `go-emacs-page-dir`, `go-emacs-resume-dir`, and `go-emacs-binary` can be changed individually with `setq` if they are not located in the project root directory. This must be done *after* calling `(go-emacs-refresh-paths)`, which will reset the path back to the root directory.
@@ -56,7 +56,8 @@ This is a convenience function that simply runs the `go-emacs` binary. Alternati
 go-emacs uses a `config.toml` file to control many variables used in site generation, and the build process will fail entirely if the file is not provided. It is located in one of two ways; by checking for the value of the `CONFIG_PATH` environment variable, or by looking for it in `~/Documents/go-emacs/config.toml`. NOTE: This variable is not the directory, but the exact location of the file itself, eg. `/path/to/config.toml` NOT `/path/to/config/directory`. If the file is in the default location, this should remain set to an empty string, `""`.
 
 # Config
-The `config.toml` file is required to build the blog and is located in the root directory. By default, `go-emacs` will look for it in `~/Documents/go-emacs`, but the location can be changed by running `go-emacs` by setting the `CONFIG_PATH` variable to an absolute path to the `config.toml` file. Further documentation is provided within the file itself to explain the various settings, but at a minimum the file locations must be set if go-emacs is not located in `~/Documents/go-emacs`.
+The `config.toml` file is required to build the blog and is located in the root directory of the
+go-emacs package. It is set automatically if using the functions provided by `go-emacs.el`. Alternatively, if the binary is being using directly it is required to set it with the `-d` flag by passing the absolute path to the root directory of the go-emacs package.
 
 ## Some Options of Note
 The resume page is optional, and setting `isResume=true/false` to false will cause the build process to skip it when the site is built. The `pdf` option is blank by default and the 'download pdf' button won't be generated, putting in an absolute path to a pdf file will cause it to be copied to the resume folder when the site builds. There are two versions of the home page. A 'card' style and a more old school list style. By default, `cards=true/false` is set to true and the home page will generate in this cards style, but when set to false the list style will generated. Try 'em both! When the site builds  `rss=true/false` is set to true, meaning RSS icons and an RSS XML page will be generated. If you aren't interested in RSS, you can set it to false to skip building it.

@@ -31,8 +31,8 @@ func main() {
 	app.buildOutputDirs()
 	app.getPostDirs()
 	app.getResumeFiles()
-	app.infoLog.Printf("Loading templates in %s\n", app.config.TemplateDir)
-	templateCache, err := newTemplateCache(app.config.TemplateDir)
+	app.infoLog.Printf("Loading templates in %s\n", app.config.templateDir)
+	templateCache, err := newTemplateCache(app.config.templateDir)
 	if err != nil {
 		logger.ErrorLog.Fatal(err)
 		return

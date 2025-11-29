@@ -23,25 +23,29 @@
 
 (require 'xdg)
 (require 'org)
-(defvar go-emacs-root-dir
+(defvar go-emacs-blog-dir
   (expand-file-name "go-emacs/" (xdg-user-dir "DOCUMENTS"))
   "Root directory of the go-emacs blog project.")
 
 (defvar go-emacs-post-dir
-  (expand-file-name "posts/" go-emacs-root-dir)
+  (expand-file-name "posts/" go-emacs-blog-dir)
   "Output directory for the go-emacs blog site.")
 
 (defvar go-emacs-page-dir
-  (expand-file-name "pages/" go-emacs-root-dir)
+  (expand-file-name "pages/" go-emacs-blog-dir)
   "Output directory for the go-emacs blog site.")
 
 (defvar go-emacs-resume-dir
-  (expand-file-name "resume/" go-emacs-root-dir)
+  (expand-file-name "resume/" go-emacs-blog-dir)
   "Output directory for the go-emacs blog site.")
 
 (defvar go-emacs-output-dir
   (expand-file-name "blog/" (xdg-user-dir "DOCUMENTS"))
   "Output directory for go-emacs blog.")
+
+(defvar go-emacs-package-dir
+  (file-name-directory (or load-file-name buffer-file-name))
+  "Directory where go-emacs.el is located.")
 
 (defvar go-emacs-config
   ""
@@ -50,12 +54,12 @@
 (defun go-emacs-build ()
   "Build the go-emacs binary."
   (interactive)
-  (let ((default-directory (expand-file-name "go-emacs" package-user-dir)))
+  (let ((default-directory go-emacs-package-dir))
     (async-shell-command "make build" "*Build Go Emacs")))
 
 (defun go-emacs-binary ()
   "Get the go-emacs binary location."
-  (expand-file-name "go-emacs/go-emacs" package-user-dir))
+  (expand-file-name "go-emacs" go-emacs-package-dir))
 
 (defun go-emacs-serve ()
   "Run the blog with Python web server."
@@ -66,15 +70,15 @@
 (defun go-emacs-refresh-paths (root-path)
   "Refesh all directory paths based on `ROOT-PATH'."
   (interactive)
-  (setq go-emacs-root-dir   (expand-file-name root-path)
-        go-emacs-post-dir   (expand-file-name "posts/" go-emacs-root-dir)
-        go-emacs-page-dir   (expand-file-name "pages/" go-emacs-root-dir)
-        go-emacs-resume-dir (expand-file-name "resume/" go-emacs-root-dir)))
+  (setq go-emacs-blog-dir   (expand-file-name root-path)
+        go-emacs-post-dir   (expand-file-name "posts/" go-emacs-blog-dir)
+        go-emacs-page-dir   (expand-file-name "pages/" go-emacs-blog-dir)
+        go-emacs-resume-dir (expand-file-name "resume/" go-emacs-blog-dir)))
 
 (defun go-emacs-publish-blog ()
   "Run the go-emacs binary with `async-shell-command'."
   (interactive)
-  (async-shell-command (concat (go-emacs-binary) " -d " package-user-dir "go-emacs") "*Go Blog*")
+  (async-shell-command (concat (go-emacs-binary) " -d " go-emacs-blog-dir " -p " go-emacs-package-dir) "*Go Blog*")
   (message "Publishing blog..."))
 
 (defun go-emacs-get-parent-dir ()

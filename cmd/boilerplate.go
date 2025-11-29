@@ -35,9 +35,9 @@ func (app *application) removeAllOutDirs() {
 }
 
 func (app *application) copySiteFiles() {
-	copyDirectory(app.config.StaticDir+"/css", app.config.Output+"/static/css")
-	copyDirectory(app.config.StaticDir+"/icons", app.config.Output+"/static/icons")
-	copyDirectory(app.config.StaticDir+"/js", app.config.Output+"/static/js")
+	copyDirectory(app.config.staticDir+"/css", app.config.Output+"/static/css")
+	copyDirectory(app.config.staticDir+"/icons", app.config.Output+"/static/icons")
+	copyDirectory(app.config.staticDir+"/js", app.config.Output+"/static/js")
 }
 
 func (app *application) removeOutputDir(dir string) {

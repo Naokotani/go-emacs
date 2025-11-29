@@ -9,16 +9,17 @@ import (
 )
 
 type Config struct {
-	Output       string
-	Contact      Contact
-	StaticDir    string
-	StylesConfig string
-	TemplateDir  string
-	Site         Site
-	Resume       Resume
-	Pages        Pages
-	Posts        Posts
-	goEmacsDir   string
+	Output            string
+	Contact           Contact
+	StylesConfig      string
+	staticDir         string
+	templateDir       string
+	Site              Site
+	Resume            Resume
+	Pages             Pages
+	Posts             Posts
+	GoEmacsPackageDir string
+	goEmacsBlogDir    string
 }
 
 type Site struct {
@@ -58,9 +59,9 @@ type Contact struct {
 }
 
 func (app *application) parseConfig() error {
-	app.config.goEmacsDir = app.getGoEmacsDir()
+	app.config.goEmacsBlogDir, app.config.GoEmacsPackageDir = app.getGoEmacsDirs()
 
-	toml.DecodeFile(filepath.Join(app.getXDGDocumentsDir("config.toml")), &app.config)
+	toml.DecodeFile(filepath.Join(app.config.goEmacsBlogDir, "config.toml"), &app.config)
 
 	setDefaultLocations(app)
 
@@ -103,48 +104,34 @@ func setDefaultLocations(app *application) {
 		app.infoLog.Printf("styles.toml set to %s\n", app.config.StylesConfig)
 	}
 
-	if app.config.TemplateDir == "" {
-		app.config.TemplateDir = filepath.Join(app.config.goEmacsDir, "ui")
-		app.infoLog.Printf("Template directory not set, setting to XDG default: %s\n", app.config.TemplateDir)
-	} else {
-		app.infoLog.Printf("Template directory set to %s\n", app.config.TemplateDir)
-	}
-
-	if app.config.StaticDir == "" {
-		app.config.StaticDir = filepath.Join(app.config.goEmacsDir, "static")
-		app.infoLog.Printf("StaticDir not set, setting to XDG default: %s\n", app.config.StaticDir)
-	} else {
-		app.infoLog.Printf("StaticDir set to %s\n", app.config.StaticDir)
-
-	}
-
+	app.config.templateDir = filepath.Join(app.config.GoEmacsPackageDir, "ui")
+	app.config.staticDir = filepath.Join(app.config.GoEmacsPackageDir, "static")
 }
 
-func getDefaultGoEmacsDir() (string, error) {
-	dir, err := os.UserConfigDir()
-	if err != nil {
-		return "", err
-	}
-	return filepath.Join(dir, "emacs", "elpa", "cache", "go-emacs"), nil
-}
-
-func (app *application) getGoEmacsDir() string {
+func (app *application) getGoEmacsDirs() (string, string) {
 	configPath := flag.String("d", "", "path to config.toml file")
+	packageDir := flag.String("p", "", "path to go-emacs package")
 	flag.Parse()
+
 	if *configPath == "" {
-		var err error
-		*configPath, err = getDefaultGoEmacsDir()
-		if err != nil {
-			app.errorLog.Fatalf("Failed to get config path")
-		}
+		*configPath = app.getXDGDocumentsDir("")
 	}
+
 	app.infoLog.Printf("Config path set to %s\n", *configPath)
 
 	if !fileExists(*configPath) {
 		app.errorLog.Fatalf("Go emacs directory does not exist at %s\n", *configPath)
 	}
 
-	return *configPath
+	if *packageDir == "" && app.config.GoEmacsPackageDir != "" {
+		app.infoLog.Printf("Package dir not set with -p. Falling back to config.toml path: %s\n",
+			app.config.GoEmacsPackageDir)
+		*packageDir = app.config.GoEmacsPackageDir
+	} else if *packageDir == "" && app.config.GoEmacsPackageDir == "" {
+		app.errorLog.Fatal("No emacs package directory set.\nMust set the path with the -p flag or in the config.toml file.")
+	}
+
+	return *configPath, *packageDir
 }
 
 func (app *application) getXDGDocumentsDir(dir string) string {

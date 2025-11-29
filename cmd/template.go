@@ -61,7 +61,7 @@ func newTemplateCache(path string) (map[string]*template.Template, error) {
 }
 
 func (app *application) getRssTemplate() *xmlTemplate.Template {
-	path := app.config.TemplateDir + "/templates/rss.gotmpl"
+	path := app.config.templateDir + "/templates/rss.gotmpl"
 
 	funcs := xmlTemplate.FuncMap{
 		"rssDate": rssDate,
