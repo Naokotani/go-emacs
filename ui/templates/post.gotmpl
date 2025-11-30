@@ -3,7 +3,7 @@
   {{.Post.Summary}}
 </summary>
 <h1>{{.Title}}</h1>
-<p><small class="date">Published: {{humanDate .Date}}</small></p>
+<p><small class="date">Published: {{humanDate .Post.Date}}</small></p>
 <p><small class="tech">{{.Post.TagString}}</small></p>
 {{.Content}}
 {{end}}

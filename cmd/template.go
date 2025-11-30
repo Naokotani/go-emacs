@@ -8,11 +8,6 @@ import (
 	"time"
 )
 
-type post struct {
-	title string
-	date  time.Time
-}
-
 func humanDate(t time.Time) string {
 	return t.Format("2 Jan 2006 at 15:04 MST")
 }

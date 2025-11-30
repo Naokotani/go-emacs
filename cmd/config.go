@@ -70,7 +70,11 @@ func (app *application) parseConfig() error {
 
 func setDefaultLocations(app *application) {
 	if app.config.Output == "" {
-		app.config.Output = app.getXDGDocumentsDir("blog")
+		home, err := os.UserHomeDir()
+		if err != nil {
+			app.errorLog.Fatalf("Faile to get user home directory and output dir was not set.\n%s", err)
+		}
+		app.config.Output = home + "blog"
 		app.infoLog.Printf("Output directory not set. setting to XDG default: %s\n", app.config.Output)
 	} else {
 		app.infoLog.Printf("Output directory set to %s\n", app.config.Output)

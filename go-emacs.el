@@ -44,7 +44,7 @@
   "Output directory for go-emacs blog.")
 
 (defvar go-emacs-package-dir
-  (file-name-directory (or load-file-name buffer-file-name))
+  (file-name-directory (locate-library "go-emacs"))
   "Directory where go-emacs.el is located.")
 
 (defvar go-emacs-config
@@ -78,7 +78,12 @@
 (defun go-emacs-publish-blog ()
   "Run the go-emacs binary with `async-shell-command'."
   (interactive)
-  (async-shell-command (concat (go-emacs-binary) " -d " go-emacs-blog-dir " -p " go-emacs-package-dir) "*Go Blog*")
+  (let ((default-directory go-emacs-package-dir))
+    (async-shell-command
+     (concat (go-emacs-binary)
+             " -d " go-emacs-blog-dir
+             " -p " go-emacs-package-dir)
+     "*Go Blog*"))
   (message "Publishing blog..."))
 
 (defun go-emacs-get-parent-dir ()
